@@ -4,7 +4,10 @@ public class rpgGame {
     String[] itemIndex = {"Wooden Sword","Iron Sword","Steel Sword","Gold Sword","Titanium Sword","Health Potion","Super Potion","Viper Potion","Flashbang","Poison Ink","","","",""};
     int[] goldIndex = {5,20,50,100,300,5,15,40,30,40,0,0,0,0};
     String[][] smithInv = new String[5][2]; String[][] shopInv = new String[5][2];
-    int gold = 0; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0;
+    int gold = 10; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0;
+    int hp = 15; int maxhp = 15; int attackstat = 2; int defencestat = 2; int speedstat = 2; int hpstat = 2;
+    Boolean innpaid = false;
+    int guildrank = 0; int guildexp = 0; // NOTREGISTERED, F, D, C, B, A, S (ranks)
     int[] inventory = new int[30];
     public int addToInventory(int item) {
         inventory[item]++;
@@ -51,14 +54,15 @@ public class rpgGame {
                             int whichItem = scan.nextInt();
                             if (whichItem > 0 && whichItem < 6) {
                                 if (gold >= Integer.parseInt(smithInv[whichItem-1][1])) {
-                                    System.out.println("(Are you sure?)");
+                                    System.out.println("(Are you sure?)"); a();
                                     String yeahea = scan.nextLine().toLowerCase();
                                     if (yeahea.equals("yes")) {
                                         gold -= Integer.parseInt(smithInv[whichItem-1][1]);
                                         for (int i=0;i<10;i++) {
                                             if (smithInv[whichItem-1][0].equals(itemIndex[i])) {
-                                                i=10;
                                                 addToInventory(i);
+                                                System.out.println(itemIndex[i]+" has been bought.");
+                                                i=10;
                                                 bought = true;
                                             }
                                         }
@@ -100,14 +104,15 @@ public class rpgGame {
                             int whichItem = scan.nextInt();
                             if (whichItem > 0 && whichItem < 6) {
                                 if (gold >= Integer.parseInt(shopInv[whichItem-1][1])) {
-                                    System.out.println("(Are you sure?)");
+                                    System.out.println("(Are you sure?)"); a();
                                     String yeahea = scan.nextLine().toLowerCase();
                                     if (yeahea.equals("yes")) {
                                         gold -= Integer.parseInt(shopInv[whichItem-1][1]);
                                         for (int i=0;i<10;i++) {
                                             if (shopInv[whichItem-1][0].equals(itemIndex[i])) {
-                                                i=10;
                                                 addToInventory(i);
+                                                System.out.println(itemIndex[i]+" has been bought.");
+                                                i=10;
                                                 bought = true;
                                             }
                                         }
@@ -126,6 +131,69 @@ public class rpgGame {
                     }
                 } else {
                     System.out.println("Marred isn't here today...");
+                }
+            } else if (answer.equals("print")) {
+                for (int i=0;i<30;i++) {
+                    System.out.print(inventory[i]);
+                }
+            } else if (answer.equals("inn") || answer.equals("hotel") || answer.equals("home")) {
+                if (innclosed == 0) {
+                    if (innpaid == false) {
+                        System.out.println("\"Welcome to the inn. For 5 gold you can sleep a night and fully recover all HP.\"");
+                        System.out.println("(Would you like to sleep here? You have "+gold+" gold.)");
+                        String rest = scan.nextLine().toLowerCase();
+                        if (rest.equals("yes")) {
+                            if (gold >= 5) {
+                                gold -= 5;
+                                System.out.println("You enter your room and sleep on the bed."); a();
+                                System.out.println("(All health was recovered.)"); a();
+                                hp = maxhp;
+                                System.out.println("(...)"); a();
+                                System.out.println("You wake up to the sound of the church bells striking 8 o'clock."); a();
+                                System.out.println("\"Thank you for your patronage. We hope to see you again!\""); a();
+                            } else {
+                                System.out.println("\"We're sorry to inform you, but you do not have enough gold. We cannot offer our beds at this time.\""); a();
+                            }
+                        } else {
+                            System.out.println("\"Please come again.\""); a();
+                        }
+                    } else {
+                        System.out.println("\"Oh, welcome, adventurer. The guild has already paid for your room, so please feel free to sleep for the night.\""); a();
+                        System.out.println("You walk towards your room, which is close by the entrance."); a();
+                        System.out.println("You enter your room and sleep on the bed."); a();
+                        System.out.println("(All health was recovered.)"); a();
+                        hp = maxhp;
+                        System.out.println("(...)"); a();
+                        System.out.println("You wake up to the sound of the church bells striking 8 o'clock."); a();
+                        System.out.println("\"Thank you for your patronage. We hope to see you again!\""); a();
+                        innpaid = false;
+                    }
+                }
+            } else if (answer.equals("guild")) {
+                if (guildclosed == 0) {
+                    if (innpaid == false) {
+                        System.out.println("\"Welcome to the guild.\""); a();
+                        if (guildrank == 0) {
+                            System.out.println("\"It does not appear that you are registered.\""); a();
+                            System.out.println("\"Would you like to register to the guild?\"");
+                            String register = scan.nextLine().toLowerCase();
+                            if (register.equals("yes")) {
+                                System.out.println("\"You don't have gold to register yet, but it is fine. \""); a();
+                                System.out.println("\"Our guild will sponsor you, but you must pay back the fee of 30 gold if you wish to achieve rank C.\""); a();
+                                System.out.println("\"Do you wish to register knowing this?\"");
+                                String register2 = scan.nextLine().toLowerCase();
+                                if (register2.equals("yes")) {
+                                    System.out.println("(You are now registered to the guild!)"); a();
+                                    System.out.println("\"It is fine if you want to relax a little, but please do take quests frequently. We are in dire need of heroes.\""); a();
+                                    System.out.println("\"However, there are no quests today. We will pay your inn fee, so please come back tomorrow for fresh quests.\""); a();
+                                    innpaid = true;
+                                    guildrank = 1;
+                                }
+                            }
+                        }
+                    } else {
+                        System.out.println("\"Sorry, but like we said, there are no quests today. Please head towards the inn.\""); a();
+                    }
                 }
             }
         }
