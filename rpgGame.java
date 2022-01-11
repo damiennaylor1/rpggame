@@ -6,12 +6,17 @@ public class rpgGame {
     String[][] smithInv = new String[5][2]; String[][] shopInv = new String[5][2];
     int gold = 10; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0;
     int hp = 15; int maxhp = 15; int attackstat = 2; int defencestat = 2; int speedstat = 2; int hpstat = 2; int level = 0; int xp = 0;
-    String[] questsboard = new String[8];
+    String[][] questsboard = new String[8][3];
     String encrypt = "ypxzkds$#@";
-    String[] board = {"F: Clear the Beginners Dungeon",""};
+    String[] board = {"1: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: ???"};
+    int[][] questIndex = new int[30][2];
     Boolean innpaid = false;
     int guildrank = 0; int guildexp = 0; // NOTREGISTERED, F, D, C, B, A, S (ranks)
     int[] inventory = new int[30];
+    public void setQuests() {
+        questIndex[0][0] = 30; questIndex[0][1] = 25; questIndex[1][0] = 20; questIndex[1][1] = 40;
+        questIndex[2][0] = 10; questIndex[2][0] = 10;
+    }
     public int addToInventory(int item) {
         inventory[item]++;
         return item;
@@ -24,12 +29,14 @@ public class rpgGame {
             shopInv[i][1] = goldIndex[i+5]+"";
             
         }
+        
     }
     public void a() {
         scan.nextLine();
     }
     public void main() {
         scramble();
+        setQuests();
         System.out.println("Welcome to RPG game!"); a();
         System.out.println("Press enter to start the game."); a();
         int x=0; while (x==0) {
@@ -183,7 +190,7 @@ public class rpgGame {
                             String register = scan.nextLine().toLowerCase();
                             if (register.equals("yes")) {
                                 System.out.println("\"You don't have gold to register yet, but it is fine. \""); a();
-                                System.out.println("\"Our guild will sponsor you, but you must pay back the fee of 30 gold if you wish to achieve rank C.\""); a();
+                                System.out.println("\"Our guild will sponsor you, however you must pay back a fee of 30 gold if you wish to achieve rank C.\""); a();
                                 System.out.println("\"Do you wish to register knowing this?\"");
                                 String register2 = scan.nextLine().toLowerCase();
                                 if (register2.equals("yes")) {
@@ -215,7 +222,7 @@ public class rpgGame {
                         encrypteddata += savedata.charAt(i);
                     } else if (savedata.charAt(i) == '0') {
                         char bla = 'a';
-                        switch((int)Math.floor(Math.random()*4)+1) {
+                        switch((int)Math.floor(Math.random()*6)+1) {
                             case 1:
                                 bla = '%';
                                 break;
@@ -227,14 +234,48 @@ public class rpgGame {
                                 break;
                             case 4:
                                 bla = 'f';
+                                break;
+                            case 5:
+                                bla = '#';
+                                break;
+                            case 6:
+                                bla = '@';
+                                break;
+                        }
+                        encrypteddata += bla;
+                    } else if (savedata.charAt(i) == '1') {
+                        char bla = 'a';
+                        switch((int)Math.floor(Math.random()*2)+1) {
+                            case 1:
+                                bla = 'r';
+                                break;
+                            case 2:
+                                bla = 'j';
+                                break;
+                            case 3: 
+                                bla = 'm';
+                        }
+                        encrypteddata += bla;
+                    } else if (savedata.charAt(i) == '2') {
+                        char bla = 'a';
+                        switch((int)Math.floor(Math.random()*2)+1) {
+                            case 1:
+                                bla = 'u';
+                                break;
+                            case 2:
+                                bla = 'w';
+                                break;
+                            case 3:
+                                bla = 'g';
+                                break;
                         }
                         encrypteddata += bla;
                     } else {
-                        System.out.print(Integer.valueOf(savedata.charAt(i)+"")+" ");
+                        //System.out.print(Integer.valueOf(savedata.charAt(i)+"")+" ");
                         encrypteddata += encrypt.charAt(Integer.valueOf(savedata.charAt(i)+""));
                     }
                 }
-                System.out.println(savedata);
+                //System.out.println(savedata);
                 System.out.println(encrypteddata);
                 System.out.println("Use this string to load your data.");
             } else if (answer.equals("load") || answer.equals("loaddata")) {
@@ -242,12 +283,18 @@ public class rpgGame {
                 String unencryptthis = scan.nextLine();
                 String unencrypted = "";
                 for (int i=0;i<unencryptthis.length();i++) {
-                    if (unencryptthis.charAt(i) == '/') {
-                        unencrypted += unencryptthis.charAt(i);
-                    } else if (unencryptthis.charAt(i) == '%' || unencryptthis.charAt(i) == 'v' || unencryptthis.charAt(i) == '!' || unencryptthis.charAt(i) == 'f') {
+                    char b = unencryptthis.charAt(i);
+                    if (b == '/') {
+                        unencrypted += b;
+                    } else if (b == '%' || b == 'v' || b == '!' || b == 'f' || b == 'z' || b == '#' || b == '@') {
                        unencrypted += "0"; 
-                    } else {
-                        unencrypted += encrypt.indexOf(unencryptthis.charAt(i)+"");
+                    } else if (b == 'r' || b == 'j' || b == 'm') {
+                       unencrypted += "1";
+                    } else if (b == 'u' || b == 'w' || b == 'g') {
+                       unencrypted += "2";
+                    }
+                    else {
+                        unencrypted += encrypt.indexOf(b+"");
                     }
                 }
                 int index = unencrypted.indexOf("/");
@@ -287,12 +334,31 @@ public class rpgGame {
                 index = unencrypted.indexOf("/");
                 guildexp = Integer.parseInt(unencrypted.substring(0,index));
                 unencrypted = unencrypted.substring(index+1);
-                for (int i=0;i<unencrypted.length();i++) {
+                /*for (int i=0;i<unencrypted.length();i++) {
                     inventory[i] = Integer.parseInt(unencrypted.charAt(i)+"");
                     System.out.println(inventory[i]);
                 }
-                System.out.println(unencrypted);
+                System.out.println(unencrypted);*/
                 
+            } else if (answer.equals("set")) {
+            	System.out.println("which");
+            	String which = scan.nextLine();
+            	if (which.equals("hp")) {
+            		System.out.println("set to what");
+            		hp = scan.nextInt();
+            	}
+            	if (which.equals("maxhp")) {
+            		System.out.println("set to what");
+            		maxhp = scan.nextInt();
+            	}
+            	if (which.equals("attack")) {
+            		System.out.println("set to what");
+            		attackstat = scan.nextInt();
+            	}
+            	if (which.equals("gold")) {
+            		System.out.println("set to what");
+            		gold = scan.nextInt();
+            	}
             }
         }
     }
