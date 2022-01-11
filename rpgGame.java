@@ -7,7 +7,7 @@ public class rpgGame {
     int gold = 10; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0;
     int hp = 15; int maxhp = 15; int attackstat = 2; int defencestat = 2; int speedstat = 2; int hpstat = 2; int level = 0; int xp = 0;
     String[] questsboard = new String[8];
-    String encrypt = "pxzkds$#@";
+    String encrypt = "~pxzkds$#@";
     String[] board = {"F: Clear the Beginners Dungeon",""};
     Boolean innpaid = false;
     int guildrank = 0; int guildexp = 0; // NOTREGISTERED, F, D, C, B, A, S (ranks)
@@ -214,6 +214,7 @@ public class rpgGame {
                     if (savedata.charAt(i) == '/') {
                         encrypteddata += savedata.charAt(i);
                     } else {
+                        System.out.print(Integer.valueOf(savedata.charAt(i)+"")+" ");
                         encrypteddata += encrypt.charAt(Integer.valueOf(savedata.charAt(i)+""));
                     }
                 }
@@ -249,7 +250,7 @@ public class rpgGame {
                 unencrypted = unencrypted.substring(index+1);
                 index = unencrypted.indexOf("/");
                 defencestat = Integer.valueOf(unencrypted.substring(0,index));
-                unencrypted = unencrypted.substring(index+1);x
+                unencrypted = unencrypted.substring(index+1);
                 index = unencrypted.indexOf("/");
                 speedstat = Integer.valueOf(unencrypted.substring(0,index));
                 unencrypted = unencrypted.substring(index+1);
