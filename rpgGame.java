@@ -5,17 +5,21 @@ public class rpgGame {
     int[] goldIndex = {5,20,50,100,300,5,15,40,30,40,0,0,0,0};
     String[][] smithInv = new String[5][2]; String[][] shopInv = new String[5][2];
     int gold = 10; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0;
-    int hp = 15; int maxhp = 15; int attackstat = 2; int defencestat = 2; int speedstat = 2; int hpstat = 2; int level = 0; int xp = 0;
+    int hp = 15; int maxhp = 15; int attackstat = 2; int defencestat = 2; int speedstat = 2; int level = 0; int xp = 0;
     String[][] questsboard = new String[8][3];
+    int [][] activeQuest = new int[1][2];
     String encrypt = "ypxzkds$#@";
-    String[] board = {"1: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: ???"};
+    String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: ???"};
     int[][] questIndex = new int[30][2];
     Boolean innpaid = false;
     int guildrank = 0; int guildexp = 0; // NOTREGISTERED, F, D, C, B, A, S (ranks)
     int[] inventory = new int[30];
     public void setQuests() {
         questIndex[0][0] = 30; questIndex[0][1] = 25; questIndex[1][0] = 20; questIndex[1][1] = 40;
-        questIndex[2][0] = 10; questIndex[2][0] = 10;
+        questIndex[2][0] = 10; questIndex[2][1] = 10;
+
+        questsboard[0][0] = board[0]; questsboard[0][1] = questIndex[0][0]+""; questsboard[0][2] = questIndex[0][1]+"";
+        questsboard[1][0] = board[1]; questsboard[1][1] = questIndex[1][0]+""; questsboard[1][2] = questIndex[1][1]+"";
     }
     public int addToInventory(int item) {
         inventory[item]++;
@@ -202,164 +206,322 @@ public class rpgGame {
                                 }
                             }
                         } else {
-                            System.out.println("\"We have the following quests available:\"");
-                            /*for (int i=0;i<quests;i++) {
-                                System.out.println("["+i+"] "+questsonboard[i]);
-                            }*/
+                            if (activeQuest[0][0] == 0) {
+                                System.out.println("\"We have the following quests available:\"");
+                                for (int i=0;i<2;i++) {
+                                    System.out.println("["+(i+1)+"] "+questsboard[i][0]);
+                                    System.out.println("  "+questsboard[i][1]+" gold, "+questsboard[i][2]+" EXP.");
+                                }
+                                System.out.println("Do you wish to take a quest at this time?");
+                                if ((scan.nextLine().toLowerCase()).equals("yes")) {
+                                    System.out.println("Enter the quest (integer)");
+                                    int questnmbr = scan.nextInt(); questnmbr--;
+                                    System.out.println("You have taken: "+questsboard[questnmbr][0]+"."); a();
+                                    activeQuest[0][0] = 1;
+                                    activeQuest[0][1] = questnmbr;
+                                }
+                            } else {
+                                System.out.println("\"You currently have an active quest, so we cannot service you at this time.\""); a();
+                            }
                         }
                     } else {
                         System.out.println("\"Sorry, but like we said, there are no quests today. Please head towards the inn.\""); a();
                     }
                 }
             } else if (answer.equals("save") || answer.equals("savedata")) {
-                String savedata = gold+"/"+smithclosed+shopclosed+innclosed+guildclosed+hp+"/"+maxhp+"/"+attackstat+"/"+defencestat+"/"+speedstat+"/"+hpstat+"/"+level+"/"+xp+"/"+guildrank+"/"+guildexp+"/";
-                for (int i=0;i<30;i++) {
-                    savedata += inventory[i]+"";
-                }
-                String encrypteddata = "";
-                for (int i=0;i<savedata.length();i++) {
-                    if (savedata.charAt(i) == '/') {
-                        encrypteddata += savedata.charAt(i);
-                    } else if (savedata.charAt(i) == '0') {
-                        char bla = 'a';
-                        switch((int)Math.floor(Math.random()*6)+1) {
-                            case 1:
-                                bla = '%';
-                                break;
-                            case 2:
-                                bla = 'v';
-                                break;
-                            case 3:
-                                bla = '!';
-                                break;
-                            case 4:
-                                bla = 'f';
-                                break;
-                            case 5:
-                                bla = '#';
-                                break;
-                            case 6:
-                                bla = '@';
-                                break;
-                        }
-                        encrypteddata += bla;
-                    } else if (savedata.charAt(i) == '1') {
-                        char bla = 'a';
-                        switch((int)Math.floor(Math.random()*2)+1) {
-                            case 1:
-                                bla = 'r';
-                                break;
-                            case 2:
-                                bla = 'j';
-                                break;
-                            case 3: 
-                                bla = 'm';
-                        }
-                        encrypteddata += bla;
-                    } else if (savedata.charAt(i) == '2') {
-                        char bla = 'a';
-                        switch((int)Math.floor(Math.random()*2)+1) {
-                            case 1:
-                                bla = 'u';
-                                break;
-                            case 2:
-                                bla = 'w';
-                                break;
-                            case 3:
-                                bla = 'g';
-                                break;
-                        }
-                        encrypteddata += bla;
-                    } else {
-                        //System.out.print(Integer.valueOf(savedata.charAt(i)+"")+" ");
-                        encrypteddata += encrypt.charAt(Integer.valueOf(savedata.charAt(i)+""));
-                    }
-                }
-                //System.out.println(savedata);
-                System.out.println(encrypteddata);
-                System.out.println("Use this string to load your data.");
+                save();
             } else if (answer.equals("load") || answer.equals("loaddata")) {
-                System.out.println("Please paste your load string.");
-                String unencryptthis = scan.nextLine();
-                String unencrypted = "";
-                for (int i=0;i<unencryptthis.length();i++) {
-                    char b = unencryptthis.charAt(i);
-                    if (b == '/') {
-                        unencrypted += b;
-                    } else if (b == '%' || b == 'v' || b == '!' || b == 'f' || b == 'z' || b == '#' || b == '@') {
-                       unencrypted += "0"; 
-                    } else if (b == 'r' || b == 'j' || b == 'm') {
-                       unencrypted += "1";
-                    } else if (b == 'u' || b == 'w' || b == 'g') {
-                       unencrypted += "2";
-                    }
-                    else {
-                        unencrypted += encrypt.indexOf(b+"");
-                    }
-                }
-                int index = unencrypted.indexOf("/");
-                int gold = Integer.parseInt(unencrypted.substring(0,index));
-                unencrypted = unencrypted.substring(index+1);
-                smithclosed = Integer.parseInt(unencrypted.charAt(0)+"");
-                shopclosed = Integer.parseInt(unencrypted.charAt(1)+"");
-                innclosed = Integer.parseInt(unencrypted.charAt(2)+"");
-                guildclosed = Integer.parseInt(unencrypted.charAt(3)+"");
-                index = unencrypted.indexOf("/");
-                hp = Integer.parseInt(unencrypted.substring(4,index));
-                unencrypted = unencrypted.substring(index+1);
-                index = unencrypted.indexOf("/");
-                maxhp = Integer.parseInt(unencrypted.substring(0,index));
-                unencrypted = unencrypted.substring(index+1);
-                index = unencrypted.indexOf("/");
-                attackstat = Integer.parseInt(unencrypted.substring(0,index));
-                unencrypted = unencrypted.substring(index+1);
-                index = unencrypted.indexOf("/");
-                defencestat = Integer.parseInt(unencrypted.substring(0,index));
-                unencrypted = unencrypted.substring(index+1);
-                index = unencrypted.indexOf("/");
-                speedstat = Integer.parseInt(unencrypted.substring(0,index));
-                unencrypted = unencrypted.substring(index+1);
-                index = unencrypted.indexOf("/");
-                hpstat = Integer.parseInt(unencrypted.substring(0,index));
-                unencrypted = unencrypted.substring(index+1);
-                index = unencrypted.indexOf("/");
-                level = Integer.parseInt(unencrypted.substring(0,index));
-                unencrypted = unencrypted.substring(index+1);
-                index = unencrypted.indexOf("/");
-                xp = Integer.parseInt(unencrypted.substring(0,index));
-                unencrypted = unencrypted.substring(index+1);
-                index = unencrypted.indexOf("/");
-                guildrank = Integer.parseInt(unencrypted.substring(0,index));
-                unencrypted = unencrypted.substring(index+1);
-                index = unencrypted.indexOf("/");
-                guildexp = Integer.parseInt(unencrypted.substring(0,index));
-                unencrypted = unencrypted.substring(index+1);
-                /*for (int i=0;i<unencrypted.length();i++) {
-                    inventory[i] = Integer.parseInt(unencrypted.charAt(i)+"");
-                    System.out.println(inventory[i]);
-                }
-                System.out.println(unencrypted);*/
-                
+                load();
             } else if (answer.equals("set")) {
-            	System.out.println("which");
-            	String which = scan.nextLine();
-            	if (which.equals("hp")) {
-            		System.out.println("set to what");
-            		hp = scan.nextInt();
-            	}
-            	if (which.equals("maxhp")) {
-            		System.out.println("set to what");
-            		maxhp = scan.nextInt();
-            	}
-            	if (which.equals("attack")) {
-            		System.out.println("set to what");
-            		attackstat = scan.nextInt();
-            	}
-            	if (which.equals("gold")) {
-            		System.out.println("set to what");
-            		gold = scan.nextInt();
-            	}
+                System.out.println("which");
+                String which = scan.nextLine();
+                if (which.equals("hp")) {
+                    System.out.println("set to what");
+                    hp = scan.nextInt();
+                }
+                if (which.equals("maxhp")) {
+                    System.out.println("set to what");
+                    maxhp = scan.nextInt();
+                }
+                if (which.equals("attack")) {
+                    System.out.println("set to what");
+                    attackstat = scan.nextInt();
+                }
+                if (which.equals("gold")) {
+                    System.out.println("set to what");
+                    gold = scan.nextInt();
+                }
+            }
+            else if (answer.equals("quest")) {
+                if (activeQuest[0][0] == 1) {
+                    /*int[] data = new int[39];
+                    data[0] = activeQuest[0][1]; data[1] = gold; data[2] = hp; data[3] = maxhp; data[4] = attackstat; 
+                    data[5] = defencestat; data[6] = speedstat; data[7] = level; data[8] = xp;
+                    for (int i=9;i<39;i++) {
+                        data[i] = inventory[i-9];
+                    }
+                    rpgQuests sendTo = new rpgQuests();
+                    int[] receivedata = sendTo.start();*/
+                    quest(activeQuest[0][1]);
+                }
             }
         }
+    }
+    public int[] monsterFight(int[] stats) {
+        int health = stats[0]; int attack = stats[1]; int defence = stats[2];
+        int xpreward = stats[3]; int goldreward = stats[4]; int lvl = stats[5];
+        String name = monsternames[stats[6]];
+        System.out.println("You have encountered a LVL."+lvl+" "+name+"!");
+        Boolean done = false; while (done == false) {
+            Boolean action = false;
+            System.out.println("Choose an action:");
+            System.out.println("1. Attack; 2. Inventory;");
+            switch (scan.nextInt()) {
+                case 1:
+                    
+                    break;
+                case 2:
+                    System.out.println("You have:");
+                    System.out.println("1: "+inventory[5]+" Health Potion(s)");
+                    System.out.println("2: "+inventory[6]+" Super Potion(s)");
+                    System.out.println("3: "+inventory[7]+" Viper Potion(s)");
+                    System.out.println("Which do you want to use? (Hit 0 to return)");
+                    switch (scan.nextInt()) {
+                        case 1:
+                            if (inventory[5] > 0) {
+                                System.out.println("You have used 1 Health Potion.");
+                                inventory[5]--;
+                                hp += 10;
+                                if (hp > maxhp) {
+                                    hp = maxhp;
+                                }
+                                action = true;
+                            } else {
+                                System.out.println("You don't have any Health Potions...");
+                            }
+                            break;
+                        case 2:
+                            if (inventory[6] > 0) {
+                                System.out.println("You have used 1 Super Potion.");
+                                inventory[6]--;
+                                hp += 25;
+                                if (hp > maxhp) {
+                                    hp = maxhp;
+                                }
+                                action = true;
+                            } else {
+                                System.out.println("You don't have any Super Potions...");
+                            }
+                            break;
+                        case 3:
+                            if (inventory[7] > 0) {
+                                System.out.println("You have used 1 Viper Potion.");
+                                inventory[7]--;
+                                hp += 50;
+                                if (hp > maxhp) {
+                                    hp = maxhp;
+                                }
+                                action = true;
+                            } else {
+                                System.out.println("You don't have any Viper Potions...");
+                            }
+                            break;
+                    }
+                    break;
+            }
+            if (action == true) {
+                double dodgechance = (lvl-level)-(speed/20); if (dodgechance<3){dodgechance=3;}
+                int chance = (int)(Math.random()*(dodgechance-1+1)+1);
+                if (chance == 1) {
+                    System.out.println("The "+name+" misses the player!");
+                } else {
+                    int damage = (attack - defencestat) + (int)(Math.random()*((1+(attack-defencestat))-1+1)+1);
+                    if (damage < 1) {damage=1;}
+                    System.out.println("The "+name+" attacks the player, dealing "+damage+" damage!");
+                    int crit = (int)(Math.random()*(4-1+1)+1);
+                    if (crit == 1) {
+                        int critdmg = (int)(Math.random()*(3-1+1)+1);
+                        System.out.println("The "+name+" strikes again, dealing "+critdmg+" CRIT damage!");
+                        hp -= critdmg;
+                    }
+                    hp -= damage;
+                    if (hp < 0) {hp=0;}
+                    System.out.println("You now have "+hp+" HP.");
+                    if (hp == 0) {
+                        System.out.println("You have died.");
+                        int[] returnint = {2};
+                        return returnint;
+                    }
+                }
+            }
+        }
+        return new int[1];
+    }
+    public void levelUp() {
+        exp -= (10+(level*5));
+        level += 1;
+        System.out.println("You are now level "+level+"!");
+        maxhp++; attackstat++; defencestat++; speedstat++; hp = maxhp; int chosen = 0;
+        System.out.println("Choose a stat to boost by 1 point.");
+        String statboost = scan.nextLine().toLowerCase();
+        int attkbst = 1; int defencebst = 1; int hpbst = 1; int speedbst = 1;
+        if (statboost.equals("attack") || statboost.equals("attk")) {
+            attkbst++;
+            chosen = 1;
+            attackstat++;
+        } else if (statboost.equals("defence") || statboost.equals("dfnce")) {
+            defencebst++;
+            chosen = 1;
+            defencestat++;
+        } else if (statboost.equals("speed") || statboost.equals("spd")) {
+            speedbst++;
+            chosen = 1;
+            speedstat++;
+        } else if (statboost.equals("health") || statboost.equals("hp") || statboost.equals("maxhp")) {
+            hpbst++;
+            chosen = 1;
+            maxhp++;
+            hp = maxhp;
+        }
+        System.out.println("ATTACK: "+attackstat+"(+"+attkbst+")");
+        System.out.println("DEFENCE: "+defencestat+"(+"+defencebst+")");
+        System.out.println("SPEED: "+speedstat+"(+"+speedbst+")");
+        System.out.println("HEALTH: "+maxhp+"(+"+hpbst+")");
+    }
+
+    public int quests(int questnmbr) {
+        switch (questnmbr) {
+            
+        }
+        return 0;
+    }
+
+    public void save() {
+        String savedata = gold+"/"+smithclosed+shopclosed+innclosed+guildclosed+hp+"/"+maxhp+"/"+attackstat+"/"+defencestat+"/"+speedstat+"/"+level+"/"+xp+"/"+guildrank+"/"+guildexp+"/";
+        for (int i=0;i<30;i++) {
+            savedata += inventory[i]+"";
+        }
+        String encrypteddata = "";
+        for (int i=0;i<savedata.length();i++) {
+            if (savedata.charAt(i) == '/') {
+                encrypteddata += savedata.charAt(i);
+            } else if (savedata.charAt(i) == '0') {
+                char bla = 'a';
+                switch((int)Math.floor(Math.random()*6)+1) {
+                    case 1:
+                        bla = '%';
+                        break;
+                    case 2:
+                        bla = 'v';
+                        break;
+                    case 3:
+                        bla = '!';
+                        break;
+                    case 4:
+                        bla = 'f';
+                        break;
+                    case 5:
+                        bla = '#';
+                        break;
+                    case 6:
+                        bla = '@';
+                        break;
+                }
+                encrypteddata += bla;
+            } else if (savedata.charAt(i) == '1') {
+                char bla = 'a';
+                switch((int)Math.floor(Math.random()*2)+1) {
+                    case 1:
+                        bla = 'r';
+                        break;
+                    case 2:
+                        bla = 'j';
+                        break;
+                    case 3: 
+                        bla = 'm';
+                }
+                encrypteddata += bla;
+            } else if (savedata.charAt(i) == '2') {
+                char bla = 'a';
+                switch((int)Math.floor(Math.random()*2)+1) {
+                    case 1:
+                        bla = 'u';
+                        break;
+                    case 2:
+                        bla = 'w';
+                        break;
+                    case 3:
+                        bla = 'g';
+                        break;
+                }
+                encrypteddata += bla;
+            } else {
+                //System.out.print(Integer.valueOf(savedata.charAt(i)+"")+" ");
+                encrypteddata += encrypt.charAt(Integer.valueOf(savedata.charAt(i)+""));
+            }
+        }
+        //System.out.println(savedata);
+        System.out.println(encrypteddata);
+        System.out.println("Use this string to load your data.");
+    }
+    public void load() {
+        System.out.println("Please paste your load string.");
+        String unencryptthis = scan.nextLine();
+        String unencrypted = "";
+        for (int i=0;i<unencryptthis.length();i++) {
+            char b = unencryptthis.charAt(i);
+            if (b == '/') {
+                unencrypted += b;
+            } else if (b == '%' || b == 'v' || b == '!' || b == 'f' || b == 'z' || b == '#' || b == '@') {
+                unencrypted += "0"; 
+            } else if (b == 'r' || b == 'j' || b == 'm') {
+                unencrypted += "1";
+            } else if (b == 'u' || b == 'w' || b == 'g') {
+                unencrypted += "2";
+            }
+            else {
+                unencrypted += encrypt.indexOf(b+"");
+            }
+        }
+        int index = unencrypted.indexOf("/");
+        gold = Integer.parseInt(unencrypted.substring(0,index));
+        unencrypted = unencrypted.substring(index+1);
+        smithclosed = Integer.parseInt(unencrypted.charAt(0)+"");
+        shopclosed = Integer.parseInt(unencrypted.charAt(1)+"");
+        innclosed = Integer.parseInt(unencrypted.charAt(2)+"");
+        guildclosed = Integer.parseInt(unencrypted.charAt(3)+"");
+        index = unencrypted.indexOf("/");
+        hp = Integer.parseInt(unencrypted.substring(4,index));
+        unencrypted = unencrypted.substring(index+1);
+        index = unencrypted.indexOf("/");
+        maxhp = Integer.parseInt(unencrypted.substring(0,index));
+        unencrypted = unencrypted.substring(index+1);
+        index = unencrypted.indexOf("/");
+        attackstat = Integer.parseInt(unencrypted.substring(0,index));
+        unencrypted = unencrypted.substring(index+1);
+        index = unencrypted.indexOf("/");
+        defencestat = Integer.parseInt(unencrypted.substring(0,index));
+        unencrypted = unencrypted.substring(index+1);
+        index = unencrypted.indexOf("/");
+        speedstat = Integer.parseInt(unencrypted.substring(0,index));
+        unencrypted = unencrypted.substring(index+1);
+        index = unencrypted.indexOf("/");
+        level = Integer.parseInt(unencrypted.substring(0,index));
+        unencrypted = unencrypted.substring(index+1);
+        index = unencrypted.indexOf("/");
+        xp = Integer.parseInt(unencrypted.substring(0,index));
+        unencrypted = unencrypted.substring(index+1);
+        index = unencrypted.indexOf("/");
+        guildrank = Integer.parseInt(unencrypted.substring(0,index));
+        unencrypted = unencrypted.substring(index+1);
+        index = unencrypted.indexOf("/");
+        guildexp = Integer.parseInt(unencrypted.substring(0,index));
+        unencrypted = unencrypted.substring(index+1);
+        /*for (int i=0;i<unencrypted.length();i++) {
+            inventory[i] = Integer.parseInt(unencrypted.charAt(i)+"");
+            System.out.println(inventory[i]);
+        }
+        System.out.println(unencrypted);*/
+        System.out.println("Data loaded.");
     }
 }
