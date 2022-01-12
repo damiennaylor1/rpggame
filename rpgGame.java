@@ -46,53 +46,60 @@ public class rpgGame {
         System.out.println("Press enter to start the game."); a();
         int x=0; while (x==0) {
             System.out.println("Where would you like to go?");
-            System.out.println("(Blacksmith, Marreds (shop), Inn, Guild)");
+            System.out.println("(Blacksmith, Marreds (shop), Inn, Guild, Quest)");
             String answer = scan.nextLine().toLowerCase();
             if (answer.equals("blacksmith") || answer.equals("black smith")) {
                 if (smithclosed == 0) {
                     System.out.println("\"Welcome to my shop, 'lad. Need you some tools?\"");
-                    String yesno = scan.nextLine().toLowerCase();
-                    if (yesno.equals("yes") || yesno.equals("y")) {
-                        //
-                        int done=0;Boolean bought=false;while(done==0){
-                            if (bought == true) {
-                                System.out.println("(Continue shopping?)");
-                                String next = scan.nextLine().toLowerCase();
-                                if (next.equals("yes") || next.equals("y")) {} else {
-                                    System.out.println("You exit the blacksmith's shop.");
-                                    done=1;break;
+                    int gothrough = 0;  while (gothrough == 0) {
+                        System.out.print("");
+                        String yesno = scan.nextLine().toLowerCase();
+                        if (yesno.equals("yes") || yesno.equals("y")) {
+                            gothrough = 1;
+                            //
+                            int done=0;Boolean bought=false;while(done==0){
+                                if (bought == true) {
+                                    System.out.println("(Continue shopping?)");
+                                    String next = scan.nextLine().toLowerCase();
+                                    if (next.equals("yes") || next.equals("y")) {} else {
+                                        System.out.println("You exit the blacksmith's shop.");
+                                        done=1;break;
+                                    }
                                 }
-                            }
-                            for (int i=0;i<5;i++) {
-                                System.out.print(smithInv[i][0]+" - "+smithInv[i][1]+" gold. ");
-                            }
-                            System.out.println("\n\"Want any of my stock?\" (Use integer, enter 0 to exit)");
-                            int whichItem = scan.nextInt();
-                            if (whichItem > 0 && whichItem < 6) {
-                                if (gold >= Integer.parseInt(smithInv[whichItem-1][1])) {
-                                    System.out.println("(Are you sure?)"); a();
-                                    String yeahea = scan.nextLine().toLowerCase();
-                                    if (yeahea.equals("yes")) {
-                                        gold -= Integer.parseInt(smithInv[whichItem-1][1]);
-                                        for (int i=0;i<10;i++) {
-                                            if (smithInv[whichItem-1][0].equals(itemIndex[i])) {
-                                                addToInventory(i);
-                                                System.out.println(itemIndex[i]+" has been bought.");
-                                                i=10;
-                                                bought = true;
+                                for (int i=0;i<5;i++) {
+                                    System.out.print(smithInv[i][0]+" - "+smithInv[i][1]+" gold. ");
+                                }
+                                System.out.println("\n\"Want any of my stock?\" (Use integer, enter 0 to exit)");
+                                int whichItem = scan.nextInt();
+                                if (whichItem > 0 && whichItem < 6) {
+                                    if (gold >= Integer.parseInt(smithInv[whichItem-1][1])) {
+                                        System.out.println("(Are you sure?)"); a();
+                                        String yeahea = scan.nextLine().toLowerCase();
+                                        if (yeahea.equals("yes")) {
+                                            gold -= Integer.parseInt(smithInv[whichItem-1][1]);
+                                            for (int i=0;i<10;i++) {
+                                                if (smithInv[whichItem-1][0].equals(itemIndex[i])) {
+                                                    addToInventory(i);
+                                                    System.out.println(itemIndex[i]+" has been bought.");
+                                                    i=10;
+                                                    bought = true;
+                                                }
                                             }
                                         }
+                                    } else {
+                                        System.out.println("\"Not enough gold for that one, sonny.\""); a();
                                     }
                                 } else {
-                                    System.out.println("\"Not enough gold for that one, sonny.\""); a();
-                                }
-                            } else {
-                                if (whichItem==0) {
-                                    bought = true; a();
-                                } else {
-                                    System.out.println("\"I don't have that item, young'n.\""); a();
+                                    if (whichItem==0) {
+                                        bought = true; a();
+                                    } else {
+                                        System.out.println("\"I don't have that item, young'n.\""); a();
+                                    }
                                 }
                             }
+                        } else if (yesno.equals("no") || yesno.equals("n")) {
+                            gothrough = 1;
+                            System.out.println("You exit the blacksmith's shop.");
                         }
                     }
                 } else {
@@ -101,48 +108,55 @@ public class rpgGame {
             } else if (answer.equals("marreds") || answer.equals("shop")) {
                 if (shopclosed == 0) {
                     System.out.println("\"Welcome to the shop. Like what you see?\"");
-                    String likewhat = scan.nextLine().toLowerCase();
-                    if (likewhat.equals("yes") || likewhat.equals("y")) {
-                        //
-                        int done=0;Boolean bought=false;while(done==0){
-                            if (bought == true) {
-                                System.out.println("(Continue shopping?)");
-                                String next = scan.nextLine().toLowerCase();
-                                if (next.equals("yes") || next.equals("y")) {} else {
-                                    System.out.println("You exit Marred's shop.");
-                                    done=1;break;
+                    int gothrough = 0;  while (gothrough == 0) {
+                        System.out.print("");
+                        String likewhat = scan.nextLine().toLowerCase();
+                        if (likewhat.equals("yes") || likewhat.equals("y")) {
+                            gothrough=1;
+                            //
+                            int done=0;Boolean bought=false;while(done==0){
+                                if (bought == true) {
+                                    System.out.println("(Continue shopping?)");
+                                    String next = scan.nextLine().toLowerCase();
+                                    if (next.equals("yes") || next.equals("y")) {} else {
+                                        System.out.println("You exit Marred's shop.");
+                                        done=1;break;
+                                    }
                                 }
-                            }
-                            for (int i=0;i<5;i++) {
-                                System.out.print(shopInv[i][0]+" - "+shopInv[i][1]+" gold. ");
-                            }
-                            System.out.println("\n\"Want my goods?\" (Use integer, enter 0 to exit)");
-                            int whichItem = scan.nextInt();
-                            if (whichItem > 0 && whichItem < 6) {
-                                if (gold >= Integer.parseInt(shopInv[whichItem-1][1])) {
-                                    System.out.println("(Are you sure?)"); a();
-                                    String yeahea = scan.nextLine().toLowerCase();
-                                    if (yeahea.equals("yes")) {
-                                        gold -= Integer.parseInt(shopInv[whichItem-1][1]);
-                                        for (int i=0;i<10;i++) {
-                                            if (shopInv[whichItem-1][0].equals(itemIndex[i])) {
-                                                addToInventory(i);
-                                                System.out.println(itemIndex[i]+" has been bought.");
-                                                i=10;
-                                                bought = true;
+                                for (int i=0;i<5;i++) {
+                                    System.out.print(shopInv[i][0]+" - "+shopInv[i][1]+" gold. ");
+                                }
+                                System.out.println("\n\"Want my goods?\" (Use integer, enter 0 to exit)");
+                                int whichItem = scan.nextInt();
+                                if (whichItem > 0 && whichItem < 6) {
+                                    if (gold >= Integer.parseInt(shopInv[whichItem-1][1])) {
+                                        System.out.println("(Are you sure?)"); a();
+                                        String yeahea = scan.nextLine().toLowerCase();
+                                        if (yeahea.equals("yes")) {
+                                            gold -= Integer.parseInt(shopInv[whichItem-1][1]);
+                                            for (int i=0;i<10;i++) {
+                                                if (shopInv[whichItem-1][0].equals(itemIndex[i])) {
+                                                    addToInventory(i);
+                                                    System.out.println(itemIndex[i]+" has been bought.");
+                                                    i=10;
+                                                    bought = true;
+                                                }
                                             }
                                         }
+                                    } else {
+                                        System.out.println("\"I run a buisness here, not a charity.\""); a();
                                     }
                                 } else {
-                                    System.out.println("\"I run a buisness here, not a charity.\""); a();
-                                }
-                            } else {
-                                if (whichItem==0) {
-                                    bought = true; a();
-                                } else {
-                                    System.out.println("\"Don't have that one in stock.\""); a();
+                                    if (whichItem==0) {
+                                        bought = true; a();
+                                    } else {
+                                        System.out.println("\"Don't have that one in stock.\""); a();
+                                    }
                                 }
                             }
+                        } else if (likewhat.equals("no") || likewhat.equals("n")) {
+                            gothrough=1;
+                            System.out.println("You exit Marred's shop.");
                         }
                     }
                 } else {
@@ -157,21 +171,26 @@ public class rpgGame {
                     if (innpaid == false) {
                         System.out.println("\"Welcome to the inn. For 5 gold you can sleep a night and fully recover all HP.\"");
                         System.out.println("(Would you like to sleep here? You have "+gold+" gold.)");
-                        String rest = scan.nextLine().toLowerCase();
-                        if (rest.equals("yes")) {
-                            if (gold >= 5) {
-                                gold -= 5;
-                                System.out.println("You enter your room and sleep on the bed."); a();
-                                System.out.println("(All health was recovered.)"); a();
-                                hp = maxhp;
-                                System.out.println("(...)"); a();
-                                System.out.println("You wake up to the sound of the church bells striking 8 o'clock."); a();
-                                System.out.println("\"Thank you for your patronage. We hope to see you again!\""); a();
-                            } else {
-                                System.out.println("\"We're sorry to inform you, but you do not have enough gold. We cannot offer our beds at this time.\""); a();
+                        int gothrough = 0;  while (gothrough == 0) {
+                            System.out.print("");
+                            String rest = scan.nextLine().toLowerCase();
+                            if (rest.equals("yes")) {
+                                gothrough=1;
+                                if (gold >= 5) {
+                                    gold -= 5;
+                                    System.out.println("You enter your room and sleep on the bed."); a();
+                                    System.out.println("(All health was recovered.)"); a();
+                                    hp = maxhp;
+                                    System.out.println("(...)"); a();
+                                    System.out.println("You wake up to the sound of the church bells striking 8 o'clock."); a();
+                                    System.out.println("\"Thank you for your patronage. We hope to see you again!\""); a();
+                                } else {
+                                    System.out.println("\"We're sorry to inform you, but you do not have enough gold. We cannot offer our beds at this time.\""); a();
+                                }
+                            } else if (rest.equals("no") || rest.equals("n")) {
+                                gothrough = 0;
+                                System.out.println("\"Please come again.\""); a();
                             }
-                        } else {
-                            System.out.println("\"Please come again.\""); a();
                         }
                     } else {
                         System.out.println("\"Oh, welcome, adventurer. The guild has already paid for your room, so please feel free to sleep for the night.\""); a();
@@ -220,9 +239,24 @@ public class rpgGame {
                                     System.out.println("You have taken: "+questsboard[questnmbr][0]+"."); a();
                                     activeQuest[0][0] = 1;
                                     activeQuest[0][1] = questnmbr;
+                                    if (inventory[0] == 0 && inventory[1] == 0 && inventory[2] == 0) {
+                                        System.out.println("\"You are required to own a wooden sword before embarking.\""); a();
+                                        if (gold<5) {
+                                            System.out.println("You don't have enough gold, so we will give you a spare one."); a();
+                                            inventory[0]++;
+                                        }
+                                    }
                                 }
                             } else {
-                                System.out.println("\"You currently have an active quest, so we cannot service you at this time.\""); a();
+                                if (inventory[0] == 0 && inventory[1] == 0 && inventory[2] == 0) {
+                                    System.out.println("\"You are required to own a wooden sword before embarking.\""); a();
+                                    if (gold<5) {
+                                        System.out.println("You don't have enough gold, so we will give you a spare one."); a();
+                                        inventory[0]++;
+                                    }
+                                } else {
+                                    System.out.println("\"You currently have an active quest, so we cannot service you at this time.\""); a();
+                                }
                             }
                         }
                     } else {
@@ -254,17 +288,21 @@ public class rpgGame {
                 }
             }
             else if (answer.equals("quest")) {
-                System.out.println(activeQuest[0][0]+" "+activeQuest[0][1]);
-                if (activeQuest[0][0] == 1) {
-                    /*int[] data = new int[39];
-                    data[0] = activeQuest[0][1]; data[1] = gold; data[2] = hp; data[3] = maxhp; data[4] = attackstat; 
-                    data[5] = defencestat; data[6] = speedstat; data[7] = level; data[8] = xp;
-                    for (int i=9;i<39;i++) {
-                        data[i] = inventory[i-9];
+                //System.out.println(activeQuest[0][0]+" "+activeQuest[0][1]);
+                if (inventory[0]>0) {
+                    if (activeQuest[0][0] == 1) {
+                        /*int[] data = new int[39];
+                        data[0] = activeQuest[0][1]; data[1] = gold; data[2] = hp; data[3] = maxhp; data[4] = attackstat; 
+                        data[5] = defencestat; data[6] = speedstat; data[7] = level; data[8] = xp;
+                        for (int i=9;i<39;i++) {
+                            data[i] = inventory[i-9];
+                        }
+                        rpgQuests sendTo = new rpgQuests();
+                        int[] receivedata = sendTo.start();*/
+                        quests(activeQuest[0][1]);
                     }
-                    rpgQuests sendTo = new rpgQuests();
-                    int[] receivedata = sendTo.start();*/
-                    quests(activeQuest[0][1]);
+                } else {
+                    System.out.println("/'Leaving without a sword is suicide.../'"); a();
                 }
             }
         }
@@ -280,7 +318,36 @@ public class rpgGame {
             System.out.println("1. Attack; 2. Inventory;");
             switch (scan.nextInt()) {
                 case 1:
-                    
+                    int boost = 0;
+                    if (inventory[0] > 0) {
+                        if (inventory[1] > 0) {
+                            if (inventory[2] > 0) {
+                                boost = (int)(Math.random()*(15-8+8)+8);
+                            } else {
+                                boost = (int)(Math.random()*(10-4+4)+4);
+                            }
+                        } else {
+                            boost = (int)(Math.random()*(5-1+1)+1);
+                        }
+                    }
+                    int damage = (attackstat - defence) + boost;
+                    if (damage < 1) {
+                        damage = 1;
+                    }
+                    System.out.println("You attack the "+name+", dealing "+damage+" damage."); a();
+                    health -= damage;
+                    int crit = (int)(Math.random()*(4-1+1)+1);
+                    if (crit == 1) {
+                        int critdmg = (int)(Math.random()*(3-1+1)+1);
+                        System.out.println("You strike again, dealing "+critdmg+" CRIT damage!"); a();
+                        health -= critdmg;
+                    }
+                    if (health < 0) {health=0;}
+                    System.out.println("The monster is at "+health+" health."); a();
+                    action = true;
+                    if (health==0) {
+                        done = true; action = false;
+                    }
                     break;
                 case 2:
                     System.out.println("You have:");
@@ -291,7 +358,7 @@ public class rpgGame {
                     switch (scan.nextInt()) {
                         case 1:
                             if (inventory[5] > 0) {
-                                System.out.println("You have used 1 Health Potion.");
+                                System.out.println("You have used 1 Health Potion."); a();
                                 inventory[5]--;
                                 hp += 10;
                                 if (hp > maxhp) {
@@ -299,12 +366,12 @@ public class rpgGame {
                                 }
                                 action = true;
                             } else {
-                                System.out.println("You don't have any Health Potions...");
+                                System.out.println("You don't have any Health Potions..."); a();
                             }
                             break;
                         case 2:
                             if (inventory[6] > 0) {
-                                System.out.println("You have used 1 Super Potion.");
+                                System.out.println("You have used 1 Super Potion."); a();
                                 inventory[6]--;
                                 hp += 25;
                                 if (hp > maxhp) {
@@ -312,12 +379,12 @@ public class rpgGame {
                                 }
                                 action = true;
                             } else {
-                                System.out.println("You don't have any Super Potions...");
+                                System.out.println("You don't have any Super Potions..."); a();
                             }
                             break;
                         case 3:
                             if (inventory[7] > 0) {
-                                System.out.println("You have used 1 Viper Potion.");
+                                System.out.println("You have used 1 Viper Potion."); a();
                                 inventory[7]--;
                                 hp += 50;
                                 if (hp > maxhp) {
@@ -325,7 +392,7 @@ public class rpgGame {
                                 }
                                 action = true;
                             } else {
-                                System.out.println("You don't have any Viper Potions...");
+                                System.out.println("You don't have any Viper Potions..."); a();
                             }
                             break;
                     }
@@ -335,27 +402,30 @@ public class rpgGame {
                 double dodgechance = (lvl-level)-(speedstat/20); if (dodgechance<3){dodgechance=3;}
                 int chance = (int)(Math.random()*(dodgechance-1+1)+1);
                 if (chance == 1) {
-                    System.out.println("The "+name+" misses the player!");
+                    System.out.println("The "+name+" misses the player!"); a();
                 } else {
                     int damage = (attack - defencestat) + (int)(Math.random()*((1+(attack-defencestat))-1+1)+1);
                     if (damage < 1) {damage=1;}
-                    System.out.println("The "+name+" attacks the player, dealing "+damage+" damage!");
+                    System.out.println("The "+name+" attacks the player, dealing "+damage+" damage!"); a();
                     int crit = (int)(Math.random()*(4-1+1)+1);
                     if (crit == 1) {
                         int critdmg = (int)(Math.random()*(3-1+1)+1);
-                        System.out.println("The "+name+" strikes again, dealing "+critdmg+" CRIT damage!");
+                        System.out.println("The "+name+" strikes again, dealing "+critdmg+" CRIT damage!"); a();
                         hp -= critdmg;
                     }
                     hp -= damage;
                     if (hp < 0) {hp=0;}
-                    System.out.println("You now have "+hp+" HP.");
+                    System.out.println("You now have "+hp+" HP."); a();
                     if (hp == 0) {
-                        System.out.println("You have died.");
+                        System.out.println("You have died."); a();
                         int[] returnint = {2};
                         return returnint;
                     }
                 }
             }
+        }
+        if (health==0) {
+            System.out.println("You have killed the "+name+"!"); a();
         }
         return new int[1];
     }
