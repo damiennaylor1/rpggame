@@ -10,6 +10,7 @@ public class rpgGame {
     int [][] activeQuest = new int[1][2];
     String encrypt = "ypxzkds$#@";
     String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: ???"};
+    String[] monsternames = {"Zombie","Goblin","Skeleton"};
     int[][] questIndex = new int[30][2];
     Boolean innpaid = false;
     int guildrank = 0; int guildexp = 0; // NOTREGISTERED, F, D, C, B, A, S (ranks)
@@ -253,6 +254,7 @@ public class rpgGame {
                 }
             }
             else if (answer.equals("quest")) {
+                System.out.println(activeQuest[0][0]+" "+activeQuest[0][1]);
                 if (activeQuest[0][0] == 1) {
                     /*int[] data = new int[39];
                     data[0] = activeQuest[0][1]; data[1] = gold; data[2] = hp; data[3] = maxhp; data[4] = attackstat; 
@@ -262,7 +264,7 @@ public class rpgGame {
                     }
                     rpgQuests sendTo = new rpgQuests();
                     int[] receivedata = sendTo.start();*/
-                    quest(activeQuest[0][1]);
+                    quests(activeQuest[0][1]);
                 }
             }
         }
@@ -283,8 +285,8 @@ public class rpgGame {
                 case 2:
                     System.out.println("You have:");
                     System.out.println("1: "+inventory[5]+" Health Potion(s)");
-                    System.out.println("2: "+inventory[6]+" Super Potion(s)");
-                    System.out.println("3: "+inventory[7]+" Viper Potion(s)");
+                    System.out.println("2: "+inventory[6]+"  Super Potion(s)");
+                    System.out.println("3: "+inventory[7]+"  Viper Potion(s)");
                     System.out.println("Which do you want to use? (Hit 0 to return)");
                     switch (scan.nextInt()) {
                         case 1:
@@ -330,7 +332,7 @@ public class rpgGame {
                     break;
             }
             if (action == true) {
-                double dodgechance = (lvl-level)-(speed/20); if (dodgechance<3){dodgechance=3;}
+                double dodgechance = (lvl-level)-(speedstat/20); if (dodgechance<3){dodgechance=3;}
                 int chance = (int)(Math.random()*(dodgechance-1+1)+1);
                 if (chance == 1) {
                     System.out.println("The "+name+" misses the player!");
@@ -358,7 +360,7 @@ public class rpgGame {
         return new int[1];
     }
     public void levelUp() {
-        exp -= (10+(level*5));
+        xp -= (10+(level*5));
         level += 1;
         System.out.println("You are now level "+level+"!");
         maxhp++; attackstat++; defencestat++; speedstat++; hp = maxhp; int chosen = 0;
@@ -390,12 +392,25 @@ public class rpgGame {
     }
 
     public int quests(int questnmbr) {
+        /* int health = stats[0]; int attack = stats[1]; int defence = stats[2];
+        int xpreward = stats[3]; int goldreward = stats[4]; int lvl = stats[5];
+        */
         switch (questnmbr) {
-            
+            case 0:
+                System.out.println("You have arrived at the Beginners Dungeon."); a();
+                int[] sendstats = {15,3,2,15,10,2,0};
+                monsterFight(sendstats);
+                if (hp == 0) {
+                    death();
+                }
         }
         return 0;
     }
-
+    
+    public void death() {
+        //end
+    }
+    
     public void save() {
         String savedata = gold+"/"+smithclosed+shopclosed+innclosed+guildclosed+hp+"/"+maxhp+"/"+attackstat+"/"+defencestat+"/"+speedstat+"/"+level+"/"+xp+"/"+guildrank+"/"+guildexp+"/";
         for (int i=0;i<30;i++) {
