@@ -7,7 +7,7 @@ public class rpgGame {
     int gold = 10; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0;
     int hp = 15; int maxhp = 15; int attackstat = 2; int defencestat = 2; int speedstat = 2; int level = 0; int xp = 0;
     String[][] questsboard = new String[8][3];
-    int [][] activeQuest = new int[1][2];
+    int [][] activeQuest = new int[1][2]; int x=0;
     String encrypt = "ypxzkds$#@";
     String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: ???"};
     String[] monsternames = {"Zombie","Goblin","Skeleton"};
@@ -44,7 +44,7 @@ public class rpgGame {
         setQuests();
         System.out.println("Welcome to RPG game!"); a();
         System.out.println("Press enter to start the game."); a();
-        int x=0; while (x==0) {
+        while (x==0) {
             System.out.println("Where would you like to go?");
             System.out.println("(Blacksmith, Marreds (shop), Inn, Guild, Quest)");
             String answer = scan.nextLine().toLowerCase();
@@ -299,7 +299,14 @@ public class rpgGame {
                         }
                         rpgQuests sendTo = new rpgQuests();
                         int[] receivedata = sendTo.start();*/
-                        quests(activeQuest[0][1]);
+                        int catchInt = quests(activeQuest[0][1]);
+                        if (catchInt == 1) {
+                            System.out.println("You have completed the quest!"); a();
+                            int xpgain = Integer.parseInt(questsboard[activeQuest[0][1]][2]); int goldgain = Integer.parseInt(questsboard[activeQuest[0][1]][1]);
+                            System.out.println("You have gained "+xpgain+" XP and "+(xpgain/2)+" guild XP."); a();
+                            System.out.println("You have gained "+goldgain+" gold.");
+                            activeQuest[0][0] = 0; activeQuest[0][1]=0;
+                        }
                     }
                 } else {
                     System.out.println("/'Leaving without a sword is suicide.../'"); a();
@@ -426,12 +433,26 @@ public class rpgGame {
         }
         if (health==0) {
             System.out.println("You have killed the "+name+"!"); a();
+            System.out.println("You have gained "+xpreward+" XP."); a();
+            int done2=1;while (done2<0) {
+                if (xp >= (10+(level*5))) {
+                    levelUp(done2);
+                } else {
+                    done2=0;
+                }
+            }
+            System.out.println("You have gained "+goldreward+" gold."); a();
+            gold += goldreward;
+            System.out.println("You now have "+gold+" gold."); a();
         }
         return new int[1];
     }
-    public void levelUp() {
+    public int levelUp(int howMany) {
         xp -= (10+(level*5));
         level += 1;
+        if (howMany == 1) {
+            System.out.println("You have leveled up!");
+        }
         System.out.println("You are now level "+level+"!");
         maxhp++; attackstat++; defencestat++; speedstat++; hp = maxhp; int chosen = 0;
         System.out.println("Choose a stat to boost by 1 point.");
@@ -459,12 +480,14 @@ public class rpgGame {
         System.out.println("DEFENCE: "+defencestat+"(+"+defencebst+")");
         System.out.println("SPEED: "+speedstat+"(+"+speedbst+")");
         System.out.println("HEALTH: "+maxhp+"(+"+hpbst+")");
+        return 0;
     }
 
     public int quests(int questnmbr) {
         /* int health = stats[0]; int attack = stats[1]; int defence = stats[2];
         int xpreward = stats[3]; int goldreward = stats[4]; int lvl = stats[5];
         */
+        int finished = 0;
         switch (questnmbr) {
             case 0:
                 System.out.println("You have arrived at the Beginners Dungeon."); a();
@@ -472,13 +495,18 @@ public class rpgGame {
                 monsterFight(sendstats);
                 if (hp == 0) {
                     death();
+                    finished = 0;
+                } else {
+                    finished = 1;
                 }
+                break;
+                
         }
-        return 0;
+        return finished;
     }
     
     public void death() {
-        //end
+        x=1;
     }
     
     public void save() {
