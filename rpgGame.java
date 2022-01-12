@@ -7,7 +7,7 @@ public class rpgGame {
     int gold = 10; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0;
     int hp = 15; int maxhp = 15; int attackstat = 2; int defencestat = 2; int speedstat = 2; int level = 0; int xp = 0;
     String[][] questsboard = new String[8][3];
-    int [][] activeQuest = new int[1][2]; int x=0;
+    int [][] activeQuest = new int[1][2]; int x=0; int[] guildxpreqs = {100,200,400,800,2000}; String[] guildranks = {"F","D","C","B","A","S"};
     String encrypt = "ypxzkds$#@";
     String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: ???"};
     String[] monsternames = {"Zombie","Goblin","Skeleton"};
@@ -304,7 +304,20 @@ public class rpgGame {
                             System.out.println("You have completed the quest!"); a();
                             int xpgain = Integer.parseInt(questsboard[activeQuest[0][1]][2]); int goldgain = Integer.parseInt(questsboard[activeQuest[0][1]][1]);
                             System.out.println("You have gained "+xpgain+" XP and "+(xpgain/2)+" guild XP."); a();
+                            int done=1;while (done<0) {
+                                if (xp >= (10+(level*5))) {
+                                    levelUp(done);
+                                        done++;
+                                } else {
+                                        done=0;
+                                }
+                            }
+                            if (guildexp >= guildxpreqs[guildrank]) {
+                                System.out.println("You are now eligible for rank "+guildranks[guildrank+1]+".");
+                            }
                             System.out.println("You have gained "+goldgain+" gold.");
+                            gold += goldgain;
+                            System.out.println("You now have "+gold+" gold.");
                             activeQuest[0][0] = 0; activeQuest[0][1]=0;
                         }
                     }
@@ -437,13 +450,14 @@ public class rpgGame {
             int done2=1;while (done2<0) {
                 if (xp >= (10+(level*5))) {
                     levelUp(done2);
+                    done2++;
                 } else {
                     done2=0;
                 }
             }
             System.out.println("You have gained "+goldreward+" gold."); a();
             gold += goldreward;
-            System.out.println("You now have "+gold+" gold."); a();
+            System.out.println("You now have "+gold+" gold.");
         }
         return new int[1];
     }
@@ -630,11 +644,11 @@ public class rpgGame {
         index = unencrypted.indexOf("/");
         guildexp = Integer.parseInt(unencrypted.substring(0,index));
         unencrypted = unencrypted.substring(index+1);
-        /*for (int i=0;i<unencrypted.length();i++) {
+        for (int i=0;i<unencrypted.length();i++) {
             inventory[i] = Integer.parseInt(unencrypted.charAt(i)+"");
-            System.out.println(inventory[i]);
+           // System.out.println(inventory[i]);
         }
-        System.out.println(unencrypted);*/
+        //System.out.println(unencrypted);
         System.out.println("Data loaded.");
     }
 }
