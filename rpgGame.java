@@ -1,7 +1,7 @@
 import java.util.Scanner;
 public class rpgGame {
     Scanner scan = new Scanner(System.in);
-    String[] itemIndex = {"Wooden Sword","Iron Sword","Steel Sword","Gold Sword","Titanium Sword","Health Potion","Super Potion","Viper Potion","Flashbang","Poison Ink","","","",""};
+    String[] itemIndex = {"Wooden Sword","Iron Sword","Steel Sword","Gold Sword","Titanium Sword","Health Potion","Super Potion","Viper Potion","Flashbang","Poison Ink","Low-Tier Crafting Materals","Mid-Tier Crafting Materials","High-Tier Crafting Materials",""};
     int[] goldIndex = {5,20,50,100,300,5,15,40,30,40,0,0,0,0};
     String[][] smithInv = new String[5][2]; String[][] shopInv = new String[5][2];
     int gold = 10; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0;
@@ -362,87 +362,40 @@ public class rpgGame {
             Boolean action = false;
             System.out.println("Choose an action:");
             System.out.println("1. Attack; 2. Inventory;");
-            switch (scan.nextInt()) {
-                case 1:
-                    int boost = 0;
-                    if (inventory[0] > 0) {
-                        if (inventory[1] > 0) {
-                            if (inventory[2] > 0) {
-                                boost = (int)(Math.random()*(15-8+8)+8);
-                            } else {
-                                boost = (int)(Math.random()*(10-4+4)+4);
-                            }
+            String catchLine = scan.nextLine().toLowerCase(); if (catchLine.equals("attack") || catchLine.equals("1")) {
+                int boost = 0;
+                if (inventory[0] > 0) {
+                    if (inventory[1] > 0) {
+                        if (inventory[2] > 0) {
+                            boost = (int)(Math.random()*(15-8+8)+8);
                         } else {
-                            boost = (int)(Math.random()*(5-1+1)+1);
+                            boost = (int)(Math.random()*(10-4+4)+4);
                         }
+                    } else {
+                        boost = (int)(Math.random()*(5-1+1)+1);
                     }
-                    int damage = (attackstat - defence) + boost;
-                    if (damage < 1) {
-                        damage = 1;
-                    }
-                    System.out.println("You attack the "+name+", dealing "+damage+" damage."); a();
-                    health -= damage;
-                    int crit = (int)(Math.random()*(4-1+1)+1);
-                    if (crit == 1) {
-                        int critdmg = (int)(Math.random()*(3-1+1)+1);
-                        System.out.println("You strike again, dealing "+critdmg+" CRIT damage!"); a();
-                        health -= critdmg;
-                    }
-                    if (health < 0) {health=0;}
-                    System.out.println("The monster is at "+health+" health."); a();
-                    action = true;
-                    if (health==0) {
-                        done = true; action = false;
-                    }
-                    break;
-                case 2:
-                    System.out.println("You have:");
-                    System.out.println("1: "+inventory[5]+" Health Potion(s)");
-                    System.out.println("2: "+inventory[6]+"  Super Potion(s)");
-                    System.out.println("3: "+inventory[7]+"  Viper Potion(s)");
-                    System.out.println("Which do you want to use? (Hit 0 to return)");
-                    switch (scan.nextInt()) {
-                        case 1:
-                            if (inventory[5] > 0) {
-                                System.out.println("You have used 1 Health Potion."); a();
-                                inventory[5]--;
-                                hp += 10;
-                                if (hp > maxhp) {
-                                    hp = maxhp;
-                                }
-                                action = true;
-                            } else {
-                                System.out.println("You don't have any Health Potions..."); a();
-                            }
-                            break;
-                        case 2:
-                            if (inventory[6] > 0) {
-                                System.out.println("You have used 1 Super Potion."); a();
-                                inventory[6]--;
-                                hp += 25;
-                                if (hp > maxhp) {
-                                    hp = maxhp;
-                                }
-                                action = true;
-                            } else {
-                                System.out.println("You don't have any Super Potions..."); a();
-                            }
-                            break;
-                        case 3:
-                            if (inventory[7] > 0) {
-                                System.out.println("You have used 1 Viper Potion."); a();
-                                inventory[7]--;
-                                hp += 50;
-                                if (hp > maxhp) {
-                                    hp = maxhp;
-                                }
-                                action = true;
-                            } else {
-                                System.out.println("You don't have any Viper Potions..."); a();
-                            }
-                            break;
-                    }
-                    break;
+                }
+                int damage = (attackstat - defence) + boost;
+                if (damage < 1) {
+                    damage = 1;
+                }
+                System.out.println("You attack the "+name+", dealing "+damage+" damage."); a();
+                health -= damage;
+                int crit = (int)(Math.random()*(4-1+1)+1);
+                if (crit == 1) {
+                    int critdmg = (int)(Math.random()*(3-1+1)+1);
+                    System.out.println("You strike again, dealing "+critdmg+" CRIT damage!"); a();
+                    health -= critdmg;
+                }
+                if (health < 0) {health=0;}
+                System.out.println("The monster is at "+health+" health."); a();
+                action = true;
+                if (health==0) {
+                    done = true; action = false;
+                }
+            }
+            else if (catchLine.equals("inventory") || catchLine.equals("2")) {
+                healUp();
             }
             if (action == true) {
                 double dodgechance = (lvl-level)-(speedstat/20); if (dodgechance<3){dodgechance=3;}
@@ -474,7 +427,7 @@ public class rpgGame {
             System.out.println("You have killed the "+name+"!"); a();
             System.out.println("You have gained "+xpreward+" XP."); a();
             int done2=1;while (done2<0) {
-                if (xp >= (10+(level*5))) {
+                if (xp >= (10+(level*15))) {
                     levelUp(done2);
                     done2++;
                 } else {
@@ -487,8 +440,55 @@ public class rpgGame {
         }
         return new int[1];
     }
+    
+    public void healUp() {
+        System.out.println("You have:");
+        System.out.println("1: "+inventory[5]+" Health Potion(s)");
+        System.out.println("2: "+inventory[6]+"  Super Potion(s)");
+        System.out.println("3: "+inventory[7]+"  Viper Potion(s)");
+        System.out.println("Which do you want to use? (Hit 0 to return)");
+        switch (scan.nextInt()) {
+            case 1:
+                if (inventory[5] > 0) {
+                    System.out.println("You have used 1 Health Potion."); a();
+                    inventory[5]--;
+                    hp += 10;
+                    if (hp > maxhp) {
+                        hp = maxhp;
+                    }
+                } else {
+                    System.out.println("You don't have any Health Potions..."); a();
+                }
+                break;
+            case 2:
+                if (inventory[6] > 0) {
+                    System.out.println("You have used 1 Super Potion."); a();
+                    inventory[6]--;
+                    hp += 25;
+                    if (hp > maxhp) {
+                        hp = maxhp;
+                    }
+                } else {
+                    System.out.println("You don't have any Super Potions..."); a();
+                }
+                break;
+            case 3:
+                if (inventory[7] > 0) {
+                    System.out.println("You have used 1 Viper Potion."); a();
+                    inventory[7]--;
+                    hp += 50;
+                    if (hp > maxhp) {
+                        hp = maxhp;
+                    }
+                } else {
+                    System.out.println("You don't have any Viper Potions..."); a();
+                }
+                break;
+        }
+    }
+    
     public int levelUp(int howMany) {
-        xp -= (10+(level*5));
+        xp -= (10+(level*15));
         level += 1;
         if (howMany == 1) {
             System.out.println("You have leveled up!");
@@ -537,13 +537,64 @@ public class rpgGame {
         switch (questnmbr) {
             case 0:
                 System.out.println("You have arrived at the Beginners Dungeon."); a();
-                int[] sendstats = {15,3,2,15,10,2,0};
-                monsterFight(sendstats);
-                if (hp == 0) {
-                    death();
-                    finished = 0;
-                } else {
-                    finished = 1;
+                int roomcount = (int)(Math.random()*(5-3+3)+3);
+                int z=0;
+                for (int i=0;i<roomcount;i++) {
+                    int rng = (int)(Math.random()*(6-1+1)+1);
+                    switch (rng) {
+                        case 1:
+                        case 2:
+                        case 3:
+                            int[] sendstats = {10,2,1,10,5,1,2};
+                            monsterFight(sendstats);
+                            if (hp == 0) {
+                                death();
+                                finished = 0;
+                                return finished;
+                            }
+                            break;
+                        case 4:
+                        case 5:
+                            int[] sendstats2 = {15,3,2,15,10,2,0};
+                            monsterFight(sendstats2);
+                            if (hp == 0) {
+                                death();
+                                finished = 0;
+                                return finished;
+                            }
+                            break;
+                        case 6:
+                            int rng2 = (int)(Math.random()*(5-1+1)+1);
+                            switch (rng2) {
+                                case 1:
+                                case 2:
+                                    System.out.println("You open a chest and discover "+itemIndex[10]+"!"); a();
+                                    inventory[10]++;
+                                    break;
+                                case 3:
+                                case 4:
+                                    System.out.println("You open a chest and discover "+itemIndex[11]+"!"); a();
+                                    inventory[11]++;
+                                    break;
+                                case 5:
+                                    System.out.println("You open a chest and discover "+itemIndex[12]+"!"); a();
+                                    inventory[12]++;
+                                    break;
+                            }
+                            
+                    }
+                    if (i>=roomcount&&z==0) {
+                        System.out.println("You discover a resting spot, and decide to close your eyes."); a();
+                        System.out.println("(...)"); a();
+                        System.out.println("(Your HP has fully recovered.)"); a();
+                        System.out.println("You wake up, and decide to continue before anything crawls into you during your sleep."); a();
+                    } else {
+                        System.out.println("Do you wish to use a potion?");
+                        String ineedahero = scan.nextLine().toLowerCase();
+                        if (ineedahero.equals("yes") || ineedahero.equals("1")) {
+                            healUp();
+                        }
+                    }
                 }
                 break;
             case 1:
