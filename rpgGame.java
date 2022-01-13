@@ -7,9 +7,9 @@ public class rpgGame {
     int gold = 10; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0;
     int hp = 15; int maxhp = 15; int attackstat = 2; int defencestat = 2; int speedstat = 2; int level = 0; int xp = 0;
     String[][] questsboard = new String[8][3];
-    int [][] activeQuest = new int[1][2]; int x=0; int[] guildxpreqs = {100,200,400,800,2000}; String[] guildranks = {"F","D","C","B","A","S"};
+    int [][] activeQuest = new int[1][2]; int x=0; int[] guildxpreqs = {0,100,200,400,800,2000}; String[] guildranks = {"F","D","C","B","A","S"};
     String encrypt = "ypxzkds$#@";
-    String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: ???"};
+    String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: Free EXP!"};
     String[] monsternames = {"Zombie","Goblin","Skeleton"};
     int[][] questIndex = new int[30][2];
     Boolean innpaid = false;
@@ -17,10 +17,11 @@ public class rpgGame {
     int[] inventory = new int[30];
     public void setQuests() {
         questIndex[0][0] = 30; questIndex[0][1] = 25; questIndex[1][0] = 20; questIndex[1][1] = 40;
-        questIndex[2][0] = 10; questIndex[2][1] = 10;
+        questIndex[2][0] = 0; questIndex[2][1] = 50;
 
         questsboard[0][0] = board[0]; questsboard[0][1] = questIndex[0][0]+""; questsboard[0][2] = questIndex[0][1]+"";
         questsboard[1][0] = board[1]; questsboard[1][1] = questIndex[1][0]+""; questsboard[1][2] = questIndex[1][1]+"";
+        questsboard[2][0] = board[1]; questsboard[2][1] = questIndex[2][0]+""; questsboard[2][2] = questIndex[2][1]+"";
     }
     public int addToInventory(int item) {
         inventory[item]++;
@@ -227,8 +228,30 @@ public class rpgGame {
                             }
                         } else {
                             if (activeQuest[0][0] == 0) {
+                                if (guildexp >= guildxpreqs[guildrank]) {
+                                    System.out.println("\"You are eligible for a guild promotion!\""); a();
+                                    if (guildrank == 2) {
+                                        System.out.println("\"However, per our argeement, you must pay the 30 gold.\""); a();
+                                        if (gold>=30) {
+                                            System.out.println("\"Do you wish to pay the fee?\" (Owned gold: "+gold+")");
+                                            String payfee = scan.nextLine().toLowerCase();
+                                            if (payfee.equals("yes") || payfee.equals("y")) {
+                                                guildexp -= guildxpreqs[guildrank];
+                                                guildrank++;
+                                            }
+                                        }
+                                    } else {
+                                        System.out.println("Do you wish to promote?");
+                                        String promoteorno = scan.nextLine().toLowerCase();
+                                        if (promoteorno.equals("yes") || promoteorno.equals("y")) {
+                                            guildexp -= guildxpreqs[guildrank];
+                                            guildrank++;
+                                            System.out.println("You have achieved guild rank "+guildranks[guildrank]+"!"); a();
+                                        }
+                                    }
+                                }
                                 System.out.println("\"We have the following quests available:\"");
-                                for (int i=0;i<2;i++) {
+                                for (int i=0;i<3;i++) {
                                     System.out.println("["+(i+1)+"] "+questsboard[i][0]);
                                     System.out.println("  "+questsboard[i][1]+" gold, "+questsboard[i][2]+" EXP.");
                                 }
@@ -304,16 +327,19 @@ public class rpgGame {
                             System.out.println("You have completed the quest!"); a();
                             int xpgain = Integer.parseInt(questsboard[activeQuest[0][1]][2]); int goldgain = Integer.parseInt(questsboard[activeQuest[0][1]][1]);
                             System.out.println("You have gained "+xpgain+" XP and "+(xpgain/2)+" guild XP."); a();
-                            int done=1;while (done<0) {
+                            System.out.println(xp);
+                            xp += xpgain; guildexp += xpgain/2;
+                            System.out.println(xp);
+                            int done=1;while (done>0) {
                                 if (xp >= (10+(level*5))) {
                                     levelUp(done);
-                                        done++;
+                                    done++;
                                 } else {
                                         done=0;
                                 }
                             }
                             if (guildexp >= guildxpreqs[guildrank]) {
-                                System.out.println("You are now eligible for rank "+guildranks[guildrank+1]+".");
+                                System.out.println("You are now eligible for rank "+guildranks[guildrank]+".");
                             }
                             System.out.println("You have gained "+goldgain+" gold.");
                             gold += goldgain;
@@ -468,32 +494,38 @@ public class rpgGame {
             System.out.println("You have leveled up!");
         }
         System.out.println("You are now level "+level+"!");
-        maxhp++; attackstat++; defencestat++; speedstat++; hp = maxhp; int chosen = 0;
+        maxhp++; attackstat++; defencestat++; speedstat++; hp = maxhp; int chosen=0;;
+        chosen=0;
         System.out.println("Choose a stat to boost by 1 point.");
-        String statboost = scan.nextLine().toLowerCase();
-        int attkbst = 1; int defencebst = 1; int hpbst = 1; int speedbst = 1;
-        if (statboost.equals("attack") || statboost.equals("attk")) {
-            attkbst++;
-            chosen = 1;
-            attackstat++;
-        } else if (statboost.equals("defence") || statboost.equals("dfnce")) {
-            defencebst++;
-            chosen = 1;
-            defencestat++;
-        } else if (statboost.equals("speed") || statboost.equals("spd")) {
-            speedbst++;
-            chosen = 1;
-            speedstat++;
-        } else if (statboost.equals("health") || statboost.equals("hp") || statboost.equals("maxhp")) {
-            hpbst++;
-            chosen = 1;
-            maxhp++;
-            hp = maxhp;
+        while (chosen==0) {
+            System.out.print("");
+            String statboost = scan.nextLine().toLowerCase();
+            int attkbst = 1; int defencebst = 1; int hpbst = 1; int speedbst = 1;
+            if (statboost.equals("attack") || statboost.equals("attk")) {
+                attkbst++;
+                chosen = 1;
+                attackstat++;
+            } else if (statboost.equals("defence") || statboost.equals("dfnce")) {
+                defencebst++;
+                chosen = 1;
+                defencestat++;
+            } else if (statboost.equals("speed") || statboost.equals("spd")) {
+                speedbst++;
+                chosen = 1;
+                speedstat++;
+            } else if (statboost.equals("health") || statboost.equals("hp") || statboost.equals("maxhp")) {
+                hpbst++;
+                chosen = 1;
+                maxhp++;
+                hp = maxhp;
+            }
+            if (chosen==1) {
+                System.out.println("ATTACK: "+attackstat+"(+"+attkbst+")");
+                System.out.println("DEFENCE: "+defencestat+"(+"+defencebst+")");
+                System.out.println("SPEED: "+speedstat+"(+"+speedbst+")");
+                System.out.println("HEALTH: "+maxhp+"(+"+hpbst+")");
+            }
         }
-        System.out.println("ATTACK: "+attackstat+"(+"+attkbst+")");
-        System.out.println("DEFENCE: "+defencestat+"(+"+defencebst+")");
-        System.out.println("SPEED: "+speedstat+"(+"+speedbst+")");
-        System.out.println("HEALTH: "+maxhp+"(+"+hpbst+")");
         return 0;
     }
 
@@ -514,7 +546,12 @@ public class rpgGame {
                     finished = 1;
                 }
                 break;
-                
+            case 1:
+                //
+                break;
+            case 2:
+                finished = 1;
+                break;
         }
         return finished;
     }
