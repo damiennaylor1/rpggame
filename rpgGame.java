@@ -4,10 +4,10 @@ public class rpgGame {
     String[] itemIndex = {"Wooden Sword","Iron Sword","Steel Sword","Gold Sword","Titanium Sword","Health Potion","Super Potion","Viper Potion","Flashbang","Poison Ink","Low-Tier Crafting Materals","Mid-Tier Crafting Materials","High-Tier Crafting Materials",""};
     int[] goldIndex = {5,20,50,100,300,5,15,40,30,40,0,0,0,0};
     String[][] smithInv = new String[5][2]; String[][] shopInv = new String[5][2];
-    int gold = 10; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0;
+    int gold = 10; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0; int craftclosed = 0;
     int hp = 15; int maxhp = 15; int attackstat = 2; int defencestat = 2; int speedstat = 2; int level = 0; int xp = 0;
     String[][] questsboard = new String[8][3];
-    int [][] activeQuest = new int[1][2]; int x=0; int[] guildxpreqs = {0,100,200,400,800,2000}; String[] guildranks = {"F","D","C","B","A","S"};
+    int [][] activeQuest = new int[1][2]; int x=0; int[] guildxpreqs = {0,0,100,200,400,800,2000}; String[] guildranks = {"NOTREGISTERED","F","D","C","B","A","S"};
     String encrypt = "ypxzkds$#@";
     String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: Free EXP!"};
     String[] monsternames = {"Zombie","Goblin","Skeleton"};
@@ -170,21 +170,52 @@ public class rpgGame {
             } else if (answer.equals("craft") || answer.equals("crafts") || answer.equals("craftsman")) {
                 if (craftclosed == 0) {
                     System.out.println("\"Welcome to the crafting library. \""); a();
-                    System.out.println("\"Would you like to see the recipes?\"");
+                    if (guildrank == 4 && authority == 0) {
+                        System.out.println("\"Good thing you came in. There's been some rumors about a legendary demonic sword recently.\"");
+                    }
+                    if (guildrank == 6 && authority == 1) {
+                        System.out.println("\"Come over here for a second.\""); a();
+                        System.out.println("(The craftsman hands you a blank scrap of paper.)"); a();
+                        System.out.println("You can clearly tell the paper has lasted for hundred of years, but looks recently torn."); a();
+                        System.out.println("\"My buddy's been dungeon hunting for months trying to find clues as to the legendary demonic sword.\""); a();
+                        System.out.println("(He gestures towards the scrap of paper in your hand.)"); a();
+                        System.out.println("\"If you put some demonic energy into it, then...\""); a();
+                        System.out.println("The paper's writings begin to show."); a();
+                        System.out.println("(...)");
+                        System.out.println("Just as the paper was going to finish, the door is barged open."); a();
+                        System.out.println("It is the town guards."); a();
+                        System.out.println("\"Samael, come out with your hands up.\""); a();
+                        System.out.println("\"You are under arrest for demon research and suspected communication with demons.\"");
+                        System.out.println("The craftsman walks out with his hands up, but as he passes you, you can clearly see the paper dangling from his pocket."); a();
+                        System.out.println("In the cover of his silhouette, you take the paper before he exits the door."); a();
+                        System.out.println("While he is loaded onto the cart, he smiles and winks at you."); a();
+                        System.out.println("Once the guards have made their way down the street, you hold out the paper and feed it demonic energy."); a();
+                        System.out.println("It reads:");
+                    }
+                    System.out.println("(Would you like to see the recipes?)");
                     String recipequestion = scan.nextLine();
                     if (recipequestion.equals("yes") || recipequestion.equals("y")) {
-                        //
+                        
+                        System.out.println("Mythical Dagger + Poison Ink + Mid Tier Materials (x2) = Samael's Dagger");
+                        System.out.println("Titanium Sword + High Tier Materials (x2) + Angelic Essence = Blade of Odysseus");
+                        System.out.println("Titanium Sword + High Tier Materials (x2) + Demonic Essence = Blade of Abaddon");
+                        if (authority < 1) {
+                            System.out.println("Blade of Odysseus + Blade of Abaddon + ??? = ???");
+                        else if (authority < 2) {
+                            System.out.println("Blade of Odysseus + Blade of Abaddon + Demonic Crown = Adrammelech");
+                        }
                     }
                     System.out.println("Your inventory: \n");
                     for (int i=0;i<30;i++) {
                         if (inventory[i] > 0) {
-                            System.out.print(itemIndex[i]+"");
+                            System.out.print(itemIndex[i]+" ");
                             if (inventory[i] > 1) {
-                                System.out.print(" (x"+inventory[i]+")");
+                                System.out.print("(x"+inventory[i]+") ");
                             }
-                            System.out.print(";");
                         }
                     }
+                } else {
+                    System.out.println("(They just got arrested, of course the shop would still be closed...)");
                 }
             } else if (answer.equals("inn") || answer.equals("hotel") || answer.equals("home")) {
                 if (innclosed == 0) {
@@ -357,8 +388,8 @@ public class rpgGame {
                                         done=0;
                                 }
                             }
-                            if (guildexp >= guildxpreqs[guildrank]) {
-                                System.out.println("You are now eligible for rank "+guildranks[guildrank]+".");
+                            if (guildexp >= guildxpreqs[guildrank+1]) {
+                                System.out.println("You are now eligible for rank "+guildranks[guildrank+1]+".");
                             }
                             System.out.println("You have gained "+goldgain+" gold.");
                             gold += goldgain;
@@ -603,7 +634,7 @@ public class rpgGame {
                             
                     }
                     int healhp = (int)(Math.random()*(5-1+1)+1); int healbyhowmuch = 0;
-                    switch (healup) {
+                    switch (healhp) {
                         case 1: case 2: healbyhowmuch=1; break;
                         case 3: case 4: healbyhowmuch=2; break;
                         case 5: healbyhowmuch=3; break;
