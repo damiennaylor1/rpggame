@@ -583,11 +583,21 @@ public class rpgGame {
                             }
                             
                     }
-                    if (i>=roomcount&&z==0) {
+                    int healhp = (int)(Math.random()*(5-1+1)+1); int healbyhowmuch = 0;
+                    switch (healup) {
+                        case 1: case 2: healbyhowmuch=1; break;
+                        case 3: case 4: healbyhowmuch=2; break;
+                        case 5: healbyhowmuch=3; break;
+                    }
+                    System.out.println("You have recovered "+healbyhowmuch+" HP."); a();
+                    hp += healbyhowmuch;
+                    System.out.println("You are now at "+hp+" HP."); a();
+                    if (i>=roomcount/2&&z==0) {
                         System.out.println("You discover a resting spot, and decide to close your eyes."); a();
                         System.out.println("(...)"); a();
                         System.out.println("(Your HP has fully recovered.)"); a();
                         System.out.println("You wake up, and decide to continue before anything crawls into you during your sleep."); a();
+                        hp=maxhp;
                     } else {
                         System.out.println("Do you wish to use a potion?");
                         String ineedahero = scan.nextLine().toLowerCase();
@@ -595,6 +605,9 @@ public class rpgGame {
                             healUp();
                         }
                     }
+                }
+                if (hp > 0) {
+                    finished = 1;
                 }
                 break;
             case 1:
