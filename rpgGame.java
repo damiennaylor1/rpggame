@@ -167,6 +167,25 @@ public class rpgGame {
                 for (int i=0;i<30;i++) {
                     System.out.print(inventory[i]);
                 }
+            } else if (answer.equals("craft") || answer.equals("crafts") || answer.equals("craftsman")) {
+                if (craftclosed == 0) {
+                    System.out.println("\"Welcome to the crafting library. \""); a();
+                    System.out.println("\"Would you like to see the recipes?\"");
+                    String recipequestion = scan.nextLine();
+                    if (recipequestion.equals("yes") || recipequestion.equals("y")) {
+                        //
+                    }
+                    System.out.println("Your inventory: \n");
+                    for (int i=0;i<30;i++) {
+                        if (inventory[i] > 0) {
+                            System.out.print(itemIndex[i]+"");
+                            if (inventory[i] > 1) {
+                                System.out.print(" (x"+inventory[i]+")");
+                            }
+                            System.out.print(";");
+                        }
+                    }
+                }
             } else if (answer.equals("inn") || answer.equals("hotel") || answer.equals("home")) {
                 if (innclosed == 0) {
                     if (innpaid == false) {
@@ -331,7 +350,7 @@ public class rpgGame {
                             xp += xpgain; guildexp += xpgain/2;
                             System.out.println(xp);
                             int done=1;while (done>0) {
-                                if (xp >= (10+(level*5))) {
+                                if (xp >= (10+(level*15))) {
                                     levelUp(done);
                                     done++;
                                 } else {
@@ -344,7 +363,7 @@ public class rpgGame {
                             System.out.println("You have gained "+goldgain+" gold.");
                             gold += goldgain;
                             System.out.println("You now have "+gold+" gold.");
-                            activeQuest[0][0] = 0; activeQuest[0][1]=0;
+                            activeQuest[0][0] = 0; activeQuest[0][1] = 0;
                         }
                     }
                 } else {
@@ -436,7 +455,7 @@ public class rpgGame {
             }
             System.out.println("You have gained "+goldreward+" gold."); a();
             gold += goldreward;
-            System.out.println("You now have "+gold+" gold.");
+            System.out.println("You now have "+gold+" gold."); a();
         }
         return new int[1];
     }
