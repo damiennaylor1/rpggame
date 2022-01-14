@@ -233,14 +233,35 @@ public class rpgGame {
                             }
                             if (theIndex == true) {
                                 total += getItem;
-                                if ()
+                                length++;
+                                if (i!=2) {
+                                    total += "/";
+                                }
                             } else {
                                 i--;
                             }
+                        } else {
+                            if (length > 0) {
+                                total = total.substring(0, total.length() - 1))
+                            }
                         }
                     }
-                    for (int i=0;i<recipes.length();i++) {
-                        
+                    String backuptotal = total;
+                    int[] storage = new int[5];
+                    if (length > 1) {
+                        for (int i2=0;i2<length;i2++) {
+                            int slashIndex = total.indexOf("/");
+                            String sub = total.substring(0,slashIndex);
+                            for (int i=0;i<recipes.length();i++) {
+                                if (recipes[i].indexOf(sub) > -1) {
+                                    if (i == 0) {
+                                        storage; /// work this
+                                    } else {
+                                        
+                                    }
+                                }
+                            }
+                        }
                     }
                 } else {
                     System.out.println("(They just got arrested, of course the shop would still be closed...)");
