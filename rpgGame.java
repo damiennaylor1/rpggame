@@ -169,9 +169,14 @@ public class rpgGame {
                 }
             } else if (answer.equals("craft") || answer.equals("crafts") || answer.equals("craftsman")) {
                 if (craftclosed == 0) {
-                    System.out.println("\"Welcome to the crafting library. \""); a();
+                    if (arrested == 0) {
+                        System.out.println("\"Welcome to the crafting library. \""); a();
+                    } else {
+                        System.out.println("You enter the crafting library."); a();
+                    }
                     if (guildrank == 4 && authority == 0) {
-                        System.out.println("\"Good thing you came in. There's been some rumors about a legendary demonic sword recently.\"");
+                        System.out.println("\"Good thing you came in. There's been some rumors about a legendary demonic sword recently.\""); a();
+                        authority = 1;
                     }
                     if (guildrank == 6 && authority == 1) {
                         System.out.println("\"Come over here for a second.\""); a();
@@ -190,7 +195,8 @@ public class rpgGame {
                         System.out.println("In the cover of his silhouette, you take the paper before he exits the door."); a();
                         System.out.println("While he is loaded onto the cart, he smiles and winks at you."); a();
                         System.out.println("Once the guards have made their way down the street, you hold out the paper and feed it demonic energy."); a();
-                        System.out.println("It reads:");
+                        System.out.println("It reads:\nBlade of Odysseus + Blade of Abaddon + Demonic CROWN = Adrammelech"); a();
+                        authority = 2;
                     }
                     System.out.println("(Would you like to see the recipes?)");
                     String recipequestion = scan.nextLine();
@@ -199,9 +205,9 @@ public class rpgGame {
                         System.out.println("Mythical Dagger + Poison Ink + Mid Tier Materials (x2) = Samael's Dagger");
                         System.out.println("Titanium Sword + High Tier Materials (x2) + Angelic Essence = Blade of Odysseus");
                         System.out.println("Titanium Sword + High Tier Materials (x2) + Demonic Essence = Blade of Abaddon");
-                        if (authority < 1) {
+                        if (authority == 1) {
                             System.out.println("Blade of Odysseus + Blade of Abaddon + ??? = ???");
-                        else if (authority < 2) {
+                        else if (authority == 2) {
                             System.out.println("Blade of Odysseus + Blade of Abaddon + Demonic Crown = Adrammelech");
                         }
                     }
@@ -213,6 +219,28 @@ public class rpgGame {
                                 System.out.print("(x"+inventory[i]+") ");
                             }
                         }
+                    }
+                    int length = 0; String total = "";
+                    for (int i=0;i<3;i++) {
+                        System.out.println("Enter string of item, type 0 to exit.");
+                        String getItem = scan.nextLine();
+                        Boolean theIndex = false;
+                        if (!getItem.equals("0")) {
+                            for (int i2=0;i2<itemIndex.length();i2++) {
+                                if (itemIndex[i2].equals(getItem)) {
+                                    theIndex = true;    
+                                }
+                            }
+                            if (theIndex == true) {
+                                total += getItem;
+                                if ()
+                            } else {
+                                i--;
+                            }
+                        }
+                    }
+                    for (int i=0;i<recipes.length();i++) {
+                        
                     }
                 } else {
                     System.out.println("(They just got arrested, of course the shop would still be closed...)");
