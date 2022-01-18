@@ -11,7 +11,7 @@ public class rpgGame {
     String encrypt = "ypxzkds$#@";
     String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: Free EXP!"};
     String[] monsternames = {"Zombie","Goblin","Skeleton"};
-    String[] recipes = {"Wooden Sword + ","Wooden Sword + Titantium Sword","Super Potion + Health Potion + Viper Potion","Flashbang + Poison Ink","Mid-Tier Crafting Materials + Low-Tier Crafting Materials"};
+    String[] recipes = {"Wooden Sword + Low-Tier Materials","Wooden Sword + Titantium Sword","Super Potion + Health Potion + Viper Potion","Flashbang + Poison Ink","Mid-Tier Crafting Materials + Low-Tier Crafting Materials"};
     String[] reciperesults = {"Useless Item"};
     int[][] questIndex = new int[30][2];
     Boolean innpaid = false;
@@ -221,6 +221,58 @@ public class rpgGame {
                                 System.out.print("(x"+inventory[i]+") ");
                             }
                         }
+                    }
+                    int[] legalrecipes = new int[5]; int legalindex = 0;
+                    for (int i=0;i<5;i++) {
+                        String firstString = recipes[i]; int bla = 0; int bla2 = 0;
+                        for (int i3=0;i3<3;i3++) {
+                            bla++;
+                            int plusIndex = firstString.indexOf("+"); String getVari = "";
+                            if (plusIndex != -1) {
+                                getVari = firstString.substring(0,(plusIndex-1));
+                            } else {
+                                getVari = firstString.substring(0);
+                            }
+                            System.out.println(firstString + "  " + getVari);
+                            System.out.println(plusIndex);
+                            int freq = 0;
+                            if (getVari.indexOf("(") != -1) {
+                                freq = Integer.parseInt(getVari.charAt(getVari.indexOf("(")+1)+"");
+                                System.out.println("freq");
+                            } else {
+                                freq = 1;
+                            }
+                            int x = -1; for (int i2=0;i2<itemIndex.length;i2++) {
+                                if (getVari.equals(itemIndex[i2])) {
+                                    x=i2;
+                                    i2=itemIndex.length;
+                                }
+                            }
+                            if (x > -1) {
+                                if (inventory[x] > freq) {
+                                    bla++;
+                                }
+                            }
+                            if (plusIndex != -1) {
+                                firstString = firstString.substring(plusIndex+2);
+                            } else {
+                                i3 = 2;
+                            }
+                        }
+                        if (bla == bla2) { 
+                            legalrecipes[legalindex] = i;
+                            legalindex++;
+                        }
+                    }
+                    if (legalindex > 0) {
+                        System.out.print("The recipes: ");
+                        for (int i=0;i<legalindex;i++) {
+                            if (i>0){System.out.print(",");}
+                            System.out.print("("+recipes[legalrecipes[i]]+" = "+reciperesults[i]+")");
+                        }
+                        System.out.println(" are available.");
+                    } else {
+                        System.out.println("There are no recipes you can craft currently."); a();
                     }
                     int length = 0; String total = "";
                     for (int i=0;i<3;i++) {
