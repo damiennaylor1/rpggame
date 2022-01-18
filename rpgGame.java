@@ -4,13 +4,15 @@ public class rpgGame {
     String[] itemIndex = {"Wooden Sword","Iron Sword","Steel Sword","Gold Sword","Titanium Sword","Health Potion","Super Potion","Viper Potion","Flashbang","Poison Ink","Low-Tier Crafting Materals","Mid-Tier Crafting Materials","High-Tier Crafting Materials",""};
     int[] goldIndex = {5,20,50,100,300,5,15,40,30,40,0,0,0,0};
     String[][] smithInv = new String[5][2]; String[][] shopInv = new String[5][2];
-    int gold = 10; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0; int craftclosed = 0;
-    int hp = 15; int maxhp = 15; int attackstat = 2; int defencestat = 2; int speedstat = 2; int level = 0; int xp = 0;
+    int gold = 10; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0; int craftclosed = 0; int arrested = 0;
+    int hp = 15; int maxhp = 15; int attackstat = 2; int defencestat = 2; int speedstat = 2; int level = 0; int xp = 0; int authority = 0;
     String[][] questsboard = new String[8][3];
     int [][] activeQuest = new int[1][2]; int x=0; int[] guildxpreqs = {0,0,100,200,400,800,2000}; String[] guildranks = {"NOTREGISTERED","F","D","C","B","A","S"};
     String encrypt = "ypxzkds$#@";
     String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: Free EXP!"};
     String[] monsternames = {"Zombie","Goblin","Skeleton"};
+    String[] recipes = {"Wooden Sword + ","Wooden Sword + Titantium Sword","Super Potion + Health Potion + Viper Potion","Flashbang + Poison Ink","Mid-Tier Crafting Materials + Low-Tier Crafting Materials"};
+    String[] reciperesults = {"Useless Item"};
     int[][] questIndex = new int[30][2];
     Boolean innpaid = false;
     int guildrank = 0; int guildexp = 0; // NOTREGISTERED, F, D, C, B, A, S (ranks)
@@ -207,7 +209,7 @@ public class rpgGame {
                         System.out.println("Titanium Sword + High Tier Materials (x2) + Demonic Essence = Blade of Abaddon");
                         if (authority == 1) {
                             System.out.println("Blade of Odysseus + Blade of Abaddon + ??? = ???");
-                        else if (authority == 2) {
+                        } else if (authority == 2) {
                             System.out.println("Blade of Odysseus + Blade of Abaddon + Demonic Crown = Adrammelech");
                         }
                     }
@@ -222,45 +224,71 @@ public class rpgGame {
                     }
                     int length = 0; String total = "";
                     for (int i=0;i<3;i++) {
-                        System.out.println("Enter string of item, type 0 to exit.");
+                        System.out.println("Enter string of item, type \"exit\" to exit.");
                         String getItem = scan.nextLine();
                         Boolean theIndex = false;
-                        if (!getItem.equals("0")) {
-                            for (int i2=0;i2<itemIndex.length();i2++) {
+                        if (!getItem.equals("exit")) {
+                            for (int i2=0;i2<itemIndex.length;i2++) {
                                 if (itemIndex[i2].equals(getItem)) {
                                     theIndex = true;    
                                 }
                             }
                             if (theIndex == true) {
-                                total += getItem;
+                                total += getItem + "/";
                                 length++;
-                                if (i!=2) {
-                                    total += "/";
-                                }
+                                //if (i!=2) {
+                                    //total += "/";
+                                //}
                             } else {
                                 i--;
                             }
                         } else {
                             if (length > 0) {
-                                total = total.substring(0, total.length() - 1))
+                                total = total.substring(0, total.length() - 1);
+                                System.out.println(total);
                             }
+                            i=2;
                         }
+                        System.out.println(length);
                     }
-                    String backuptotal = total;
-                    int[] storage = new int[5];
+                    // String backuptotal = total;
+                    int[] storage = new int[5]; int storageIndex = 0;
                     if (length > 1) {
                         for (int i2=0;i2<length;i2++) {
                             int slashIndex = total.indexOf("/");
                             String sub = total.substring(0,slashIndex);
-                            for (int i=0;i<recipes.length();i++) {
-                                if (recipes[i].indexOf(sub) > -1) {
-                                    if (i == 0) {
-                                        storage; /// work this
-                                    } else {
-                                        
+                            if (i2 == 0) {
+                                System.out.println(recipes.length);
+                                for (int i=0;i<recipes.length;i++) {
+                                    if (recipes[i].indexOf(sub) > -1) {
+                                        storage[storageIndex] = i; /// work this
+                                        storageIndex++;
                                     }
                                 }
+                            } else {
+                                for (int i=0;i<storage.length;i++) {
+                                    if (storage[i] != -2) {
+                                        if (recipes[storage[i]].indexOf(sub) == -1) {
+                                            storage[i] = 0;
+                                            for (int i3 = i;i3<storageIndex;i3++) {
+                                                storage[i3] = -2;
+                                            }
+                                            i--;
+                                            storageIndex--;
+                                        }
+                                    }
+                                } 
                             }
+                        }
+                        int remainingrecipe = -1;
+                        for (int i=0;i<5;i++) {
+                            if (storage[i] != -2) {
+                                remainingrecipe = i;
+                                i = 4;
+                            }
+                        }
+                        if (remainingrecipe != -1) {
+                            System.out.println("The recipe: ("+recipes[remainingrecipe]+" = "+reciperesults[remainingrecipe]+") is available.");
                         }
                     }
                 } else {
@@ -304,6 +332,11 @@ public class rpgGame {
                         innpaid = false;
                     }
                 }
+            } else if (answer.equals("inventory")) {
+                System.out.println("Enter index #:");
+                int getIndex = scan.nextInt();
+                inventory[getIndex]++;
+                a();
             } else if (answer.equals("guild")) {
                 if (guildclosed == 0) {
                     if (innpaid == false) {
