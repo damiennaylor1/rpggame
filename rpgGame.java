@@ -1,7 +1,7 @@
 import java.util.Scanner;
 public class rpgGame {
     Scanner scan = new Scanner(System.in);
-    String[] itemIndex = {"Wooden Sword","Iron Sword","Steel Sword","Gold Sword","Titanium Sword","Health Potion","Super Potion","Viper Potion","Flashbang","Poison Ink","Low-Tier Crafting Materals","Mid-Tier Crafting Materials","High-Tier Crafting Materials",""};
+    String[] itemIndex = {"Wooden Sword","Iron Sword","Steel Sword","Gold Sword","Titanium Sword","Health Potion","Super Potion","Viper Potion","Flashbang","Poison Ink","Low-Tier Crafting Materials","Mid-Tier Crafting Materials","High-Tier Crafting Materials",""};
     int[] goldIndex = {5,20,50,100,300,5,15,40,30,40,0,0,0,0};
     String[][] smithInv = new String[5][2]; String[][] shopInv = new String[5][2];
     int gold = 10; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0; int craftclosed = 0; int arrested = 0;
@@ -11,7 +11,7 @@ public class rpgGame {
     String encrypt = "ypxzkds$#@";
     String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: Free EXP!"};
     String[] monsternames = {"Zombie","Goblin","Skeleton"};
-    String[] recipes = {"Wooden Sword + Low-Tier Materials","Wooden Sword + Titantium Sword","Super Potion + Health Potion + Viper Potion","Flashbang + Poison Ink","Mid-Tier Crafting Materials + Low-Tier Crafting Materials"};
+    String[] recipes = {"Wooden Sword + Low-Tier Crafting Materials","Wooden Sword + Titanium Sword","Super Potion + Health Potion + Viper Potion","Flashbang + Poison Ink","Mid-Tier Crafting Materials + Low-Tier Crafting Materials"};
     String[] reciperesults = {"Useless Item"};
     int[][] questIndex = new int[30][2];
     Boolean innpaid = false;
@@ -233,12 +233,12 @@ public class rpgGame {
                             } else {
                                 getVari = firstString.substring(0);
                             }
-                            System.out.println(firstString + "  " + getVari);
+                            System.out.println(firstString + "  -" + getVari+"-");
                             System.out.println(plusIndex);
                             int freq = 0;
                             if (getVari.indexOf("(") != -1) {
                                 freq = Integer.parseInt(getVari.charAt(getVari.indexOf("(")+1)+"");
-                                System.out.println("freq");
+                                System.out.println(freq);
                             } else {
                                 freq = 1;
                             }
@@ -248,9 +248,10 @@ public class rpgGame {
                                     i2=itemIndex.length;
                                 }
                             }
+                            System.out.println(x);
                             if (x > -1) {
-                                if (inventory[x] > freq) {
-                                    bla++;
+                                if (inventory[x] >= freq) {
+                                    bla2++;
                                 }
                             }
                             if (plusIndex != -1) {
@@ -259,6 +260,7 @@ public class rpgGame {
                                 i3 = 2;
                             }
                         }
+                        System.out.println(bla +" "+bla2);
                         if (bla == bla2) { 
                             legalrecipes[legalindex] = i;
                             legalindex++;
