@@ -12,7 +12,7 @@ public class rpgGame {
     String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: Free EXP!"};
     String[] monsternames = {"Zombie","Goblin","Skeleton"};
     String[] recipes = {"Wooden Sword + Low-Tier Crafting Materials","Wooden Sword + Titanium Sword","Super Potion + Health Potion + Viper Potion","Flashbang + Poison Ink","Mid-Tier Crafting Materials + Low-Tier Crafting Materials"};
-    String[] reciperesults = {"Useless Item"};
+    String[] reciperesults = {"Titanium Sword", "A Sword", "C", "D", "E"};
     int[][] questIndex = new int[30][2];
     Boolean innpaid = false;
     int guildrank = 0; int guildexp = 0; // NOTREGISTERED, F, D, C, B, A, S (ranks)
@@ -213,14 +213,18 @@ public class rpgGame {
                             System.out.println("Blade of Odysseus + Blade of Abaddon + Demonic Crown = Adrammelech");
                         }
                     }
-                    System.out.println("Your inventory: \n");
+                    System.out.println("Your inventory: \n"); int b=0;
                     for (int i=0;i<30;i++) {
                         if (inventory[i] > 0) {
                             System.out.print(itemIndex[i]+" ");
                             if (inventory[i] > 1) {
                                 System.out.print("(x"+inventory[i]+") ");
                             }
+                            b++;
                         }
+                    }
+                    if (b>0) {
+                        System.out.println();
                     }
                     int[] legalrecipes = new int[5]; int legalindex = 0;
                     for (int i=0;i<5;i++) {
@@ -233,12 +237,9 @@ public class rpgGame {
                             } else {
                                 getVari = firstString.substring(0);
                             }
-                            System.out.println(firstString + "  -" + getVari+"-");
-                            System.out.println(plusIndex);
                             int freq = 0;
                             if (getVari.indexOf("(") != -1) {
                                 freq = Integer.parseInt(getVari.charAt(getVari.indexOf("(")+1)+"");
-                                System.out.println(freq);
                             } else {
                                 freq = 1;
                             }
@@ -248,7 +249,6 @@ public class rpgGame {
                                     i2=itemIndex.length;
                                 }
                             }
-                            System.out.println(x);
                             if (x > -1) {
                                 if (inventory[x] >= freq) {
                                     bla2++;
@@ -260,7 +260,6 @@ public class rpgGame {
                                 i3 = 2;
                             }
                         }
-                        System.out.println(bla +" "+bla2);
                         if (bla == bla2) { 
                             legalrecipes[legalindex] = i;
                             legalindex++;
@@ -270,80 +269,77 @@ public class rpgGame {
                         System.out.print("The recipes: ");
                         for (int i=0;i<legalindex;i++) {
                             if (i>0){System.out.print(",");}
-                            System.out.print("("+recipes[legalrecipes[i]]+" = "+reciperesults[i]+")");
+                            System.out.print("("+recipes[legalrecipes[i]]+" = "+reciperesults[legalrecipes[i]]+")");
                         }
-                        System.out.println(" are available.");
-                    } else {
-                        System.out.println("There are no recipes you can craft currently."); a();
-                    }
-                    int length = 0; String total = "";
-                    for (int i=0;i<3;i++) {
-                        System.out.println("Enter string of item, type \"exit\" to exit.");
-                        String getItem = scan.nextLine();
-                        Boolean theIndex = false;
-                        if (!getItem.equals("exit")) {
-                            for (int i2=0;i2<itemIndex.length;i2++) {
-                                if (itemIndex[i2].equals(getItem)) {
-                                    theIndex = true;    
-                                }
-                            }
-                            if (theIndex == true) {
-                                total += getItem + "/";
-                                length++;
-                                //if (i!=2) {
-                                    //total += "/";
-                                //}
+                        System.out.println(" are available."); a();
+                        int z=0; while (z==0) {
+                            System.out.println("Which recipe do you wish to craft?");
+                            String wR = scan.nextLine();
+                            String numbercheck = "1 2 3 4 5";
+                            int cR = -1;
+                            if (numbercheck.indexOf(wR) > -1) {
+                                // Number input!
+                                cR = legalrecipes[Integer.parseInt(wR)-1];
+                                // get items in recipe, reduce their numbers by x, increase crafted item by y
                             } else {
-                                i--;
-                            }
-                        } else {
-                            if (length > 0) {
-                                total = total.substring(0, total.length() - 1);
-                                System.out.println(total);
-                            }
-                            i=2;
-                        }
-                        System.out.println(length);
-                    }
-                    // String backuptotal = total;
-                    int[] storage = new int[5]; int storageIndex = 0;
-                    if (length > 1) {
-                        for (int i2=0;i2<length;i2++) {
-                            int slashIndex = total.indexOf("/");
-                            String sub = total.substring(0,slashIndex);
-                            if (i2 == 0) {
-                                System.out.println(recipes.length);
-                                for (int i=0;i<recipes.length;i++) {
-                                    if (recipes[i].indexOf(sub) > -1) {
-                                        storage[storageIndex] = i; /// work this
-                                        storageIndex++;
+                                for (int i=0;i<legalindex;i++) {
+                                    if (wR.equals(reciperesults[legalrecipes[i]])) {
+                                        cR = legalrecipes[i];
+                                        i=legalindex;
                                     }
                                 }
-                            } else {
-                                for (int i=0;i<storage.length;i++) {
-                                    if (storage[i] != -2) {
-                                        if (recipes[storage[i]].indexOf(sub) == -1) {
-                                            storage[i] = 0;
-                                            for (int i3 = i;i3<storageIndex;i3++) {
-                                                storage[i3] = -2;
-                                            }
-                                            i--;
-                                            storageIndex--;
+                            }
+                            if (cR > -1) {
+                                String firstString = recipes[cR]; int bla = 0; int bla2 = 0; String[] itemLog = new String[3];
+                                for (int i=0;i<3;i++) {
+                                    itemLog[i] = "-1"; bla++;
+                                    int plusIndex = firstString.indexOf("+"); String getVari = "";
+                                    if (plusIndex != -1) {
+                                        getVari = firstString.substring(0,(plusIndex-1));
+                                    } else {
+                                        getVari = firstString.substring(0);
+                                    }
+                                    int freq = 0;
+                                    if (getVari.indexOf("(") != -1) {
+                                        freq = Integer.parseInt(getVari.charAt(getVari.indexOf("(")+1)+"");
+                                    } else {
+                                        freq = 1;
+                                    }
+                                    int x = -1; for (int i2=0;i2<itemIndex.length;i2++) {
+                                        if (getVari.equals(itemIndex[i2])) {
+                                            x=i2;
+                                            i2=itemIndex.length;
                                         }
                                     }
-                                } 
+                                    if (x > -1) {
+                                        if (inventory[x] >= freq) {
+                                            bla2++;
+                                            itemLog[i] = x+"/"+freq;
+                                        }
+                                    }
+                                }
+                                if (bla==bla2) {
+                                    for (int i=0;i<3;i++) {
+                                        if (!itemLog[i].equals("-1")) {
+                                            int slashIndex = itemLog[i].indexOf("/");
+                                            if (slashIndex > -1) {
+                                                inventory[Integer.parseInt(itemLog[i].substring(0,slashIndex))] -= Integer.parseInt(itemLog[i].substring(slashIndex+1));
+                                            }
+                                        }
+                                    }
+                                    int v = -1; for (int i=0;i<itemIndex.length;i++) {
+                                        if (itemIndex[i].equals(reciperesults[cR])) {
+                                            v = i;
+                                        }
+                                    }
+                                    inventory[v]++;
+                                    System.out.println("You have crafted a " + itemIndex[v] +"!");
+                                    z=1;
+                                }
                             }
                         }
-                        int remainingrecipe = -1;
-                        for (int i=0;i<5;i++) {
-                            if (storage[i] != -2) {
-                                remainingrecipe = i;
-                                i = 4;
-                            }
-                        }
-                        if (remainingrecipe != -1) {
-                            System.out.println("The recipe: ("+recipes[remainingrecipe]+" = "+reciperesults[remainingrecipe]+") is available.");
-                        }
+                    } else {
+                        System.out.println("There are no recipes you can craft currently."); a();
                     }
                 } else {
                     System.out.println("(They just got arrested, of course the shop would still be closed...)");
