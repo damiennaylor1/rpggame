@@ -10,7 +10,7 @@ public class rpgGame {
     int [][] activeQuest = new int[1][2]; int x=0; int[] guildxpreqs = {0,0,100,200,400,800,2000}; String[] guildranks = {"NOTREGISTERED","F","D","C","B","A","S"};
     String encrypt = "ypxzkds$#@";
     String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: Free EXP!","D: Hunt the \"Black Wolf\""};
-    String[] monsternames = {"Zombie","Goblin","Skeleton"};
+    String[] monsternames = {"Zombie","Goblin","Skeleton","\"Black Wolf\""};
     String[] recipes = {"Wooden Sword + Low-Tier Crafting Materials (2x)","Wooden Sword + Titanium Sword","Super Potion + Health Potion + Viper Potion","Low-Tier Crafting Materials (2x)","Mid-Tier Crafting Materials + Low-Tier Crafting Materials"};
     String[] reciperesults = {"Titanium Sword", "A Sword", "C", "Mid-Tier Crafting Materials", "E"};
     int[][] questIndex = new int[30][2];
@@ -19,7 +19,7 @@ public class rpgGame {
     int[] inventory = new int[30];
     public void setQuests() {
         questIndex[0][0] = 30; questIndex[0][1] = 25; questIndex[1][0] = 20; questIndex[1][1] = 40;
-        questIndex[2][0] = 0; questIndex[2][1] = 50;
+        questIndex[2][0] = 0; questIndex[2][1] = 50; questIndex[3][0] = 80; questIndex[3][1] = 60;
 
         questsboard[0][0] = board[0]; questsboard[0][1] = questIndex[0][0]+""; questsboard[0][2] = questIndex[0][1]+"";
         questsboard[1][0] = board[1]; questsboard[1][1] = questIndex[1][0]+""; questsboard[1][2] = questIndex[1][1]+"";
@@ -835,6 +835,13 @@ public class rpgGame {
                 break;
             case 2:
                 finished = 1;
+                break;
+            case 3:
+                System.out.println("You have entered the cave where the \"Black Wolf\" resides."); a();
+                // int health = stats[0]; int attack = stats[1]; int defence = stats[2];
+                // int xpreward = stats[3]; int goldreward = stats[4]; int lvl = stats[5];
+                int[] sendstats = {30,4,3,80,100,5,3};
+                monsterFight(sendstats);
                 break;
         }
         return finished;
