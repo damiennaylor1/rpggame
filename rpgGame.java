@@ -9,7 +9,7 @@ public class rpgGame {
     String[][] questsboard = new String[8][3];
     int [][] activeQuest = new int[1][2]; int x=0; int[] guildxpreqs = {0,0,100,200,400,800,2000}; String[] guildranks = {"NOTREGISTERED","F","D","C","B","A","S"};
     String encrypt = "ypxzkds$#@";
-    String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: Free EXP!"};
+    String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: Free EXP!","D: Hunt the \"Black Wolf\""};
     String[] monsternames = {"Zombie","Goblin","Skeleton"};
     String[] recipes = {"Wooden Sword + Low-Tier Crafting Materials (2x)","Wooden Sword + Titanium Sword","Super Potion + Health Potion + Viper Potion","Low-Tier Crafting Materials (2x)","Mid-Tier Crafting Materials + Low-Tier Crafting Materials"};
     String[] reciperesults = {"Titanium Sword", "A Sword", "C", "Mid-Tier Crafting Materials", "E"};
@@ -23,7 +23,31 @@ public class rpgGame {
 
         questsboard[0][0] = board[0]; questsboard[0][1] = questIndex[0][0]+""; questsboard[0][2] = questIndex[0][1]+"";
         questsboard[1][0] = board[1]; questsboard[1][1] = questIndex[1][0]+""; questsboard[1][2] = questIndex[1][1]+"";
-        questsboard[2][0] = board[1]; questsboard[2][1] = questIndex[2][0]+""; questsboard[2][2] = questIndex[2][1]+"";
+        questsboard[2][0] = board[2]; questsboard[2][1] = questIndex[2][0]+""; questsboard[2][2] = questIndex[2][1]+"";
+        questsboard[3][0] = board[3]; questsboard[3][1] = questIndex[3][0]+""; questsboard[3][2] = questIndex[3][1]+"";
+        /*questsboard[4][0] = board[4]; questsboard[4][1] = questIndex[4][0]+""; questsboard[4][2] = questIndex[4][1]+"";
+        questsboard[5][0] = board[5]; questsboard[5][1] = questIndex[5][0]+""; questsboard[5][2] = questIndex[5][1]+"";
+        questsboard[6][0] = board[6]; questsboard[6][1] = questIndex[6][0]+""; questsboard[6][2] = questIndex[6][1]+"";
+        questsboard[7][0] = board[7]; questsboard[7][1] = questIndex[7][0]+""; questsboard[7][2] = questIndex[7][1]+"";
+        questsboard[8][0] = board[8]; questsboard[8][1] = questIndex[8][0]+""; questsboard[8][2] = questIndex[8][1]+"";
+        questsboard[9][0] = board[9]; questsboard[9][1] = questIndex[9][0]+""; questsboard[9][2] = questIndex[9][1]+"";
+        questsboard[10][0] = board[10]; questsboard[10][1] = questIndex[10][0]+""; questsboard[10][2] = questIndex[10][1]+"";
+        questsboard[11][0] = board[11]; questsboard[11][1] = questIndex[11][0]+""; questsboard[11][2] = questIndex[11][1]+"";
+        questsboard[12][0] = board[12]; questsboard[12][1] = questIndex[12][0]+""; questsboard[12][2] = questIndex[12][1]+"";
+        questsboard[13][0] = board[13]; questsboard[13][1] = questIndex[13][0]+""; questsboard[13][2] = questIndex[13][1]+"";
+        questsboard[14][0] = board[14]; questsboard[14][1] = questIndex[14][0]+""; questsboard[14][2] = questIndex[14][1]+"";
+        questsboard[15][0] = board[15]; questsboard[15][1] = questIndex[15][0]+""; questsboard[15][2] = questIndex[15][1]+"";
+        questsboard[16][0] = board[16]; questsboard[16][1] = questIndex[16][0]+""; questsboard[16][2] = questIndex[16][1]+"";
+        questsboard[17][0] = board[17]; questsboard[17][1] = questIndex[17][0]+""; questsboard[17][2] = questIndex[17][1]+"";
+        questsboard[18][0] = board[18]; questsboard[18][1] = questIndex[18][0]+""; questsboard[18][2] = questIndex[18][1]+"";
+        questsboard[19][0] = board[19]; questsboard[19][1] = questIndex[19][0]+""; questsboard[19][2] = questIndex[19][1]+"";*/
+        
+        /*
+        Code for this:
+        for (int i=0;i<20;i++) {
+            System.out.println("questsboard["+i+"][0] = board["+i+"]; questsboard["+i+"][1] = questIndex["+i+"][0]+\"\"; questsboard["+i+"][2] = questIndex["+i+"][1]+\"\";");
+        }
+        */
     }
     public int addToInventory(int item) {
         inventory[item]++;
