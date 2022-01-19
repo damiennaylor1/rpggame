@@ -11,8 +11,8 @@ public class rpgGame {
     String encrypt = "ypxzkds$#@";
     String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: Free EXP!"};
     String[] monsternames = {"Zombie","Goblin","Skeleton"};
-    String[] recipes = {"Wooden Sword + Low-Tier Crafting Materials","Wooden Sword + Titanium Sword","Super Potion + Health Potion + Viper Potion","Flashbang + Poison Ink","Mid-Tier Crafting Materials + Low-Tier Crafting Materials"};
-    String[] reciperesults = {"Titanium Sword", "A Sword", "C", "D", "E"};
+    String[] recipes = {"Wooden Sword + Low-Tier Crafting Materials (2x)","Wooden Sword + Titanium Sword","Super Potion + Health Potion + Viper Potion","Low-Tier Crafting Materials (2x)","Mid-Tier Crafting Materials + Low-Tier Crafting Materials"};
+    String[] reciperesults = {"Titanium Sword", "A Sword", "C", "Mid-Tier Crafting Materials", "E"};
     int[][] questIndex = new int[30][2];
     Boolean innpaid = false;
     int guildrank = 0; int guildexp = 0; // NOTREGISTERED, F, D, C, B, A, S (ranks)
@@ -240,6 +240,9 @@ public class rpgGame {
                             int freq = 0;
                             if (getVari.indexOf("(") != -1) {
                                 freq = Integer.parseInt(getVari.charAt(getVari.indexOf("(")+1)+"");
+                                System.out.println("Freq: "+freq);
+                                System.out.println(getVari + ": Index of ( is "+getVari.indexOf("("));
+                                getVari = getVari.substring(0,getVari.indexOf("(")-1);
                             } else {
                                 freq = 1;
                             }
