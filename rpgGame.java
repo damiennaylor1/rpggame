@@ -240,8 +240,6 @@ public class rpgGame {
                             int freq = 0;
                             if (getVari.indexOf("(") != -1) {
                                 freq = Integer.parseInt(getVari.charAt(getVari.indexOf("(")+1)+"");
-                                System.out.println("Freq: "+freq);
-                                System.out.println(getVari + ": Index of ( is "+getVari.indexOf("("));
                                 getVari = getVari.substring(0,getVari.indexOf("(")-1);
                             } else {
                                 freq = 1;
@@ -274,7 +272,7 @@ public class rpgGame {
                             if (i>0){System.out.print(",");}
                             System.out.print("("+recipes[legalrecipes[i]]+" = "+reciperesults[legalrecipes[i]]+")");
                         }
-                        System.out.println(" are available."); a();
+                        System.out.println(" are available.");
                         int z=0; while (z==0) {
                             System.out.println("Which recipe do you wish to craft?");
                             String wR = scan.nextLine();
@@ -295,16 +293,18 @@ public class rpgGame {
                             if (cR > -1) {
                                 String firstString = recipes[cR]; int bla = 0; int bla2 = 0; String[] itemLog = new String[3];
                                 for (int i=0;i<3;i++) {
-                                    itemLog[i] = "-1"; bla++;
+                                    itemLog[i] = "-1"; bla++; Boolean lastone = false;
                                     int plusIndex = firstString.indexOf("+"); String getVari = "";
                                     if (plusIndex != -1) {
                                         getVari = firstString.substring(0,(plusIndex-1));
                                     } else {
                                         getVari = firstString.substring(0);
+                                        lastone = true;
                                     }
                                     int freq = 0;
                                     if (getVari.indexOf("(") != -1) {
                                         freq = Integer.parseInt(getVari.charAt(getVari.indexOf("(")+1)+"");
+                                        getVari = getVari.substring(0,getVari.indexOf("(")-1);
                                     } else {
                                         freq = 1;
                                     }
@@ -318,11 +318,16 @@ public class rpgGame {
                                         if (inventory[x] >= freq) {
                                             bla2++;
                                             itemLog[i] = x+"/"+freq;
+                                            if (lastone == true) {
+                                                i=3;
+                                            }
                                         }
                                     }
                                 }
                                 if (bla==bla2) {
-                                    for (int i=0;i<3;i++) {
+                                    for (int i=0;i<bla;i++) {
+                                        // Weird bug with singular item that would make itemLog[i+1] = "null"? 
+                                        // Bandaid fix with i<bla
                                         if (!itemLog[i].equals("-1")) {
                                             int slashIndex = itemLog[i].indexOf("/");
                                             if (slashIndex > -1) {
@@ -336,7 +341,7 @@ public class rpgGame {
                                         }
                                     }
                                     inventory[v]++;
-                                    System.out.println("You have crafted a " + itemIndex[v] +"!");
+                                    System.out.println("You have crafted a \"" + itemIndex[v] +"\"!");
                                     z=1;
                                 }
                             }
@@ -386,10 +391,16 @@ public class rpgGame {
                     }
                 }
             } else if (answer.equals("inventory")) {
-                System.out.println("Enter index #:");
-                int getIndex = scan.nextInt();
-                inventory[getIndex]++;
-                a();
+                Boolean stop = false; while (stop==false) {
+                    System.out.println("Enter index #:");
+                    String getthatthing = scan.nextLine();
+                    if (!getthatthing.equals("stop")) {
+                        int getIndex = Integer.parseInt(getthatthing);
+                        inventory[getIndex]++;
+                    } else {
+                        stop = true;
+                    }
+                }
             } else if (answer.equals("guild")) {
                 if (guildclosed == 0) {
                     if (innpaid == false) {
