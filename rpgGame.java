@@ -5,11 +5,12 @@ public class rpgGame {
     int[] goldIndex = {5,20,50,100,300,5,15,40,30,40,0,0,0,0};
     String[][] smithInv = new String[5][2]; String[][] shopInv = new String[5][2];
     int gold = 10; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0; int craftclosed = 0; int arrested = 0;
-    int hp = 15; int maxhp = 15; int attackstat = 2; int defencestat = 2; int speedstat = 2; int level = 0; int xp = 0; int authority = 0;
+    int hp = 15; int maxhp = 15; int attackstat = 2; int defencestat = 2; int speedstat = 2; int level = 1; int xp = 0; int authority = 0;
     String[][] questsboard = new String[8][3];
     int [][] activeQuest = new int[1][2]; int x=0; int[] guildxpreqs = {0,100,200,400,800,2000}; String[] guildranks = {"NOTREGISTERED","F","D","C","B","A","S"};
     String encrypt = "ypxzkds$#@";
     String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: Free EXP!","D: Hunt the \"Black Wolf\""};
+    // String[] questranks = {"F","F","F","D"}; // depreciated for now, no use (old code is working again)
     String[] monsternames = {"Zombie","Goblin","Skeleton","\"Black Wolf\""};
     String[] recipes = {"Wooden Sword + Low-Tier Crafting Materials (2x)","Wooden Sword + Titanium Sword","Super Potion + Health Potion + Viper Potion","Low-Tier Crafting Materials (2x)","Mid-Tier Crafting Materials + Low-Tier Crafting Materials"};
     String[] reciperesults = {"Titanium Sword", "A Sword", "C", "Mid-Tier Crafting Materials", "E"};
@@ -221,7 +222,7 @@ public class rpgGame {
                         System.out.println("In the cover of his silhouette, you take the paper before he exits the door."); a();
                         System.out.println("While he is loaded onto the cart, he smiles and winks at you."); a();
                         System.out.println("Once the guards have made their way down the street, you hold out the paper and feed it demonic energy."); a();
-                        System.out.println("It reads:\nBlade of Odysseus + Blade of Abaddon + Demonic CROWN = Adrammelech"); a();
+                        System.out.println("It reads:\nBlade of Odysseus + Blade of Abaddon + Demonic Crown = Adrammelech"); a();
                         authority = 2;
                     }
                     System.out.println("(Would you like to see the recipes?)");
@@ -470,15 +471,24 @@ public class rpgGame {
                                         }
                                     }
                                 }
-                                System.out.println("Enter the rank of quests you wish to see.");
-                                String whichRank = scan.nextLine().toUpperCase();
+                                String whichRank = ""; 
+                                if (guildrank>1) {
+                                    System.out.println("Enter the rank of quests you wish to see.");
+                                    whichRank = scan.nextLine().toUpperCase();
+                                } else {
+                                    System.out.println("Do you wish to take a quest?");
+                                    String yesnowhat = scan.nextLine().toLowerCase();
+                                    if (yesnowhat.equals("yes")) {
+                                        whichRank = "F";
+                                    }
+                                }
                                 String rankLetters = "-FDCBAS"; int switchVari = rankLetters.indexOf(whichRank);
                                 //if (switchVari == -1) {switchVari=1;}
                                 int[] storageofQuests = new int[20]; int storageIndex = 0;
                                 for (int i=0;i<20;i++) {storageofQuests[i] = -1;}
                                 if (guildrank>=switchVari) {
                                     int prefixvari = 1;
-                                    for (int i=0;i<3;i++) {
+                                    for (int i=0;i<4;i++) {
                                         if (rankLetters.indexOf(questsboard[i][0].charAt(0))==switchVari) {
                                             System.out.println("["+(prefixvari)+"] "+questsboard[i][0]);
                                             System.out.println("  "+questsboard[i][1]+" gold, "+questsboard[i][2]+" EXP.");
@@ -667,7 +677,7 @@ public class rpgGame {
             System.out.println("You have killed the "+name+"!"); a();
             System.out.println("You have gained "+xpreward+" XP."); a();
             int done2=1;while (done2<0) {
-                if (xp >= (10+(level*15))) {
+                if (xp >= (level*40)) {
                     levelUp(done2);
                     done2++;
                 } else {
@@ -728,7 +738,7 @@ public class rpgGame {
     }
     
     public int levelUp(int howMany) {
-        xp -= (10+(level*15));
+        xp -= (level*25);
         level += 1;
         if (howMany == 1) {
             System.out.println("You have leveled up!");
@@ -860,8 +870,11 @@ public class rpgGame {
                 System.out.println("You have entered the cave where the \"Black Wolf\" resides."); a();
                 // int health = stats[0]; int attack = stats[1]; int defence = stats[2];
                 // int xpreward = stats[3]; int goldreward = stats[4]; int lvl = stats[5];
-                int[] sendstats = {30,4,3,80,100,5,3};
+                int[] sendstats = {30,6,5,80,100,5,3};
                 monsterFight(sendstats);
+                if (hp > 0) {
+                    finished = 1;
+                }
                 break;
         }
         return finished;
@@ -872,7 +885,7 @@ public class rpgGame {
     }
     
     public void save() {
-        String savedata = gold+"/"+smithclosed+shopclosed+innclosed+guildclosed+hp+"/"+maxhp+"/"+attackstat+"/"+defencestat+"/"+speedstat+"/"+level+"/"+xp+"/"+guildrank+"/"+guildexp+"/"+craftclosed+"/"+arrested+"/"+authority+"/";
+        String savedata = "/"+gold+"/"+smithclosed+shopclosed+innclosed+guildclosed+hp+"/"+maxhp+"/"+attackstat+"/"+defencestat+"/"+speedstat+"/"+level+"/"+xp+"/"+guildrank+"/"+guildexp+"/"+craftclosed+"/"+arrested+"/"+authority+"/";
         for (int i=0;i<30;i++) {
             savedata += inventory[i]+"/";
         }
@@ -943,6 +956,8 @@ public class rpgGame {
         System.out.println("Please paste your load string.");
         String unencryptthis = scan.nextLine();
         String unencrypted = "";
+        unencryptthis = unencryptthis.substring(1);
+        System.out.println(unencryptthis);
         for (int i=0;i<unencryptthis.length();i++) {
             char b = unencryptthis.charAt(i);
             if (b == '/') {
