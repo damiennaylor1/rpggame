@@ -872,13 +872,15 @@ public class rpgGame {
     }
     
     public void save() {
-        String savedata = gold+"/"+smithclosed+shopclosed+innclosed+guildclosed+hp+"/"+maxhp+"/"+attackstat+"/"+defencestat+"/"+speedstat+"/"+level+"/"+xp+"/"+guildrank+"/"+guildexp+"/";
+        int gold = 10; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0; int craftclosed = 0; int arrested = 0;
+    int hp = 15; int maxhp = 15; int attackstat = 2; int defencestat = 2; int speedstat = 2; int level = 0; int xp = 0; int authority = 0;
+        String savedata = gold+"/"+smithclosed+shopclosed+innclosed+guildclosed+hp+"/"+maxhp+"/"+attackstat+"/"+defencestat+"/"+speedstat+"/"+level+"/"+xp+"/"+guildrank+"/"+guildexp+"/"+craftclosed+"/"+arrested+"/"+authority+"/";
         for (int i=0;i<30;i++) {
-            savedata += inventory[i]+"";
+            savedata += inventory[i]+"/";
         }
         String encrypteddata = "";
         for (int i=0;i<savedata.length();i++) {
-            if (savedata.charAt(i) == '/') {
+            if (savedata.charAt(i) == '/' || savedata.charAt(i) == '=') {
                 encrypteddata += savedata.charAt(i);
             } else if (savedata.charAt(i) == '0') {
                 char bla = 'a';
@@ -992,11 +994,24 @@ public class rpgGame {
         index = unencrypted.indexOf("/");
         guildexp = Integer.parseInt(unencrypted.substring(0,index));
         unencrypted = unencrypted.substring(index+1);
-        for (int i=0;i<unencrypted.length();i++) {
-            inventory[i] = Integer.parseInt(unencrypted.charAt(i)+"");
-           // System.out.println(inventory[i]);
+        index = unencrypted.indexOf("/");
+        craftclosed = Integer.parseInt(unencrypted.substring(0,index));
+        unencrypted = unencrypted.substring(index+1);
+        index = unencrypted.indexOf("/");
+        arrested = Integer.parseInt(unencrypted.substring(0,index));
+        unencrypted = unencrypted.substring(index+1);
+        index = unencrypted.indexOf("/");
+        authority = Integer.parseInt(unencrypted.substring(0,index));
+        unencrypted = unencrypted.substring(index+1);
+        for (int i=0;i<30;i++) {
+            index = unencrypted.indexOf("/");
+            if (index != -1) {
+                inventory[i] = Integer.parseInt(unencrypted.substring(0,index));
+                unencrypted = unencrypted.substring(index+1);
+            } else {
+                inventory[i] = Integer.parseInt(unencrypted.substring(0));
+            }
         }
-        //System.out.println(unencrypted);
         System.out.println("Data loaded.");
     }
 }
