@@ -479,7 +479,7 @@ public class rpgGame {
                                 if (guildrank>=switchVari) {
                                     int prefixvari = 1;
                                     for (int i=0;i<3;i++) {
-                                        if (rankLetters.indexOf(questsboard[i][0].charAt(0))<=switchVari) {
+                                        if (rankLetters.indexOf(questsboard[i][0].charAt(0))==switchVari) {
                                             System.out.println("["+(prefixvari)+"] "+questsboard[i][0]);
                                             System.out.println("  "+questsboard[i][1]+" gold, "+questsboard[i][2]+" EXP.");
                                             storageofQuests[storageIndex] = i; storageIndex++;
@@ -489,14 +489,14 @@ public class rpgGame {
                                     System.out.println("Which quest do you wish to take? (Enter 0 to exit)");
                                     Boolean doneYet = false; while (doneYet == false) {
                                         System.out.print("");
-                                        String chosenQuest = scan.nextLine(); String numbers="0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19";
+                                        String chosenQuest = scan.nextLine(); String numbers="012345678";
                                         if (numbers.indexOf(chosenQuest) != -1) {
                                             if (chosenQuest.equals("0")) {doneYet=true; break;} else {
-                                                if ((numbers.indexOf(chosenQuest)/2)-1 < storageIndex) {
-                                                    System.out.println("You have taken: "+questsboard[storageofQuests[numbers.indexOf(chosenQuest)/2]-1][0]+"."); a();
+                                                if (numbers.indexOf(chosenQuest)-1 < storageIndex && numbers.indexOf(chosenQuest)-1 > -1) {
+                                                    System.out.println("You have taken: "+questsboard[storageofQuests[numbers.indexOf(chosenQuest)-1]][0]+"."); a();
                                                     doneYet = true;
                                                     activeQuest[0][0] = 1;
-                                                    activeQuest[0][1] = storageofQuests[numbers.indexOf(chosenQuest)/2]-1;
+                                                    activeQuest[0][1] = storageofQuests[numbers.indexOf(chosenQuest)-1];
                                                 } else {
                                                     System.out.println("Integer is too high!");
                                                 }
