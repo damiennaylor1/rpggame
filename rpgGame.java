@@ -243,7 +243,6 @@ public class rpgGame {
                     System.out.println("(Would you like to see the recipes?)");
                     String recipequestion = scan.nextLine();
                     if (recipequestion.equals("yes") || recipequestion.equals("y")) {
-                        
                         System.out.println("Mythical Dagger + Poison Ink + Mid Tier Materials (x2) = Samael's Dagger");
                         System.out.println("Titanium Sword + High Tier Materials (x2) + Angelic Essence = Blade of Odysseus");
                         System.out.println("Titanium Sword + High Tier Materials (x2) + Demonic Essence = Blade of Abaddon");
@@ -515,7 +514,7 @@ public class rpgGame {
                                 for (int i=0;i<20;i++) {storageofQuests[i] = -1;}
                                 if (guildrank>=switchVari) {
                                     int prefixvari = 1;
-                                    for (int i=0;i<4;i++) {
+                                    for (int i=0;i<board.length;i++) {
                                         if (rankLetters.indexOf(questsboard[i][0].charAt(0))==switchVari) {
                                             System.out.println("["+(prefixvari)+"] "+questsboard[i][0]);
                                             System.out.println("  "+questsboard[i][1]+" gold, "+questsboard[i][2]+" EXP.");
@@ -587,7 +586,7 @@ public class rpgGame {
             }
             else if (answer.equals("quest")) {
                 //System.out.println(activeQuest[0][0]+" "+activeQuest[0][1]);
-                if (inventory[0]>0) {
+                if (inventory[0]>0 || activeQuest[0][1] == 4){
                     if (activeQuest[0][0] == 1) {
                         /*int[] data = new int[39];
                         data[0] = activeQuest[0][1]; data[1] = gold; data[2] = hp; data[3] = maxhp; data[4] = attackstat; 
@@ -904,6 +903,81 @@ public class rpgGame {
                 if (hp > 0) {
                     finished = 1;
                 }
+                break;
+            case 4:
+                System.out.println("You make your way towards the guild."); a();
+                System.out.println("Hello, adventurer. Are you here for the paperwork quest? Please make your way over here."); a();
+                System.out.println("Thank you for coming. Please help with the guild transactions."); a();
+                System.out.println("(To complete this quest, answer mathmatical questions.)"); a();
+                for (int i=0;i<10;i++) {
+                    int y = (int)(Math.random()*(4-1+1)+1); int g=0, p=0, v=0; int wrong = 0; int answer = 0;
+                    switch (y) {
+                        case 1:
+                            g = (int)(Math.random()*(1500-50+50)+50);
+                            p = (int)(Math.random()*(1500-50+50)+50);
+                            if (g < p) {
+                                v = g;
+                                g = p;
+                                p = v;
+                            }
+                            System.out.println("["+i+"] "+g+" - "+p+" = ___");
+                            answer = scan.nextInt();
+                            if (answer == (g-p)) {
+                                System.out.println("Correct!"); a();
+                            } else {
+                                System.out.println("Incorrect. The correct answer is "+(g-p)+"."); a();
+                                wrong = 1;
+                            }
+                            break;
+                        case 2:
+                            g = (int)(Math.random()*(1500-50+50)+50);
+                            p = (int)(Math.random()*(1500-50+50)+50);
+                            System.out.println("["+i+"] "+g+" + "+p+" = ___");
+                            answer = scan.nextInt();
+                            if (answer == (g+p)) {
+                                System.out.println("Correct!"); a();
+                            } else {
+                                System.out.println("Incorrect. The correct answer is "+(g+p)+"."); a();
+                                wrong = 1;
+                            }
+                            break;
+                        case 3:
+                            g = (int)(Math.random()*(14-1+1)+1);
+                            p = (int)(Math.random()*(14-1+1)+1);
+                            System.out.println("["+i+"] "+g+" * "+p+" = ___");
+                            answer = scan.nextInt();
+                            if (answer == (g*p)) {
+                                System.out.println("Correct!"); a();
+                            } else {
+                                System.out.println("Incorrect. The correct answer is "+(g*p)+"."); a();
+                                wrong = 1;
+                            }
+                            break;
+                        case 4:
+                            g = (int)(Math.random()*(14-1+1)+1);
+                            p = (int)(Math.random()*(14-1+1)+1);
+                            if (g < p) {
+                                v = g;
+                                g = p;
+                                p = v;
+                            }
+                            System.out.println("["+i+"] "+g+" % "+p+" = ___");
+                            answer = scan.nextInt();
+                            if (answer == (g%p)) {
+                                System.out.println("Correct!"); a();
+                            } else {
+                                System.out.println("Incorrect. The correct answer is "+(g%p)+"."); a();
+                                wrong = 1;
+                            }
+                            break;
+                    }
+                    if (wrong == 1) {
+                        i--;
+                    }
+                }
+                System.out.println("Thank you for your hard work. The paperwork is all done."); a();
+                System.out.println("We hope to see you again?");
+                finished = 1;
                 break;
         }
         return finished;
