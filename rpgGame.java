@@ -872,8 +872,6 @@ public class rpgGame {
     }
     
     public void save() {
-        int gold = 10; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0; int craftclosed = 0; int arrested = 0;
-    int hp = 15; int maxhp = 15; int attackstat = 2; int defencestat = 2; int speedstat = 2; int level = 0; int xp = 0; int authority = 0;
         String savedata = gold+"/"+smithclosed+shopclosed+innclosed+guildclosed+hp+"/"+maxhp+"/"+attackstat+"/"+defencestat+"/"+speedstat+"/"+level+"/"+xp+"/"+guildrank+"/"+guildexp+"/"+craftclosed+"/"+arrested+"/"+authority+"/";
         for (int i=0;i<30;i++) {
             savedata += inventory[i]+"/";
