@@ -7,7 +7,7 @@ public class rpgGame {
     int gold = 10; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0; int craftclosed = 0; int arrested = 0;
     int hp = 15; int maxhp = 15; int attackstat = 2; int defencestat = 2; int speedstat = 2; int level = 0; int xp = 0; int authority = 0;
     String[][] questsboard = new String[8][3];
-    int [][] activeQuest = new int[1][2]; int x=0; int[] guildxpreqs = {0,0,100,200,400,800,2000}; String[] guildranks = {"NOTREGISTERED","F","D","C","B","A","S"};
+    int [][] activeQuest = new int[1][2]; int x=0; int[] guildxpreqs = {0,100,200,400,800,2000}; String[] guildranks = {"NOTREGISTERED","F","D","C","B","A","S"};
     String encrypt = "ypxzkds$#@";
     String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: Free EXP!","D: Hunt the \"Black Wolf\""};
     String[] monsternames = {"Zombie","Goblin","Skeleton","\"Black Wolf\""};
@@ -470,25 +470,43 @@ public class rpgGame {
                                         }
                                     }
                                 }
-                                System.out.println("\"We have the following quests available:\"");
-                                for (int i=0;i<3;i++) {
-                                    System.out.println("["+(i+1)+"] "+questsboard[i][0]);
-                                    System.out.println("  "+questsboard[i][1]+" gold, "+questsboard[i][2]+" EXP.");
-                                }
-                                System.out.println("Do you wish to take a quest at this time?");
-                                if ((scan.nextLine().toLowerCase()).equals("yes")) {
-                                    System.out.println("Enter the quest (integer)");
-                                    int questnmbr = scan.nextInt(); questnmbr--;
-                                    System.out.println("You have taken: "+questsboard[questnmbr][0]+"."); a();
-                                    activeQuest[0][0] = 1;
-                                    activeQuest[0][1] = questnmbr;
-                                    if (inventory[0] == 0 && inventory[1] == 0 && inventory[2] == 0) {
-                                        System.out.println("\"You are required to own a wooden sword before embarking.\""); a();
-                                        if (gold<5) {
-                                            System.out.println("You don't have enough gold, so we will give you a spare one."); a();
-                                            inventory[0]++;
+                                System.out.println("Enter the rank of quests you wish to see.");
+                                String whichRank = scan.nextLine().toUpperCase();
+                                String rankLetters = "-FDCBAS"; int switchVari = rankLetters.indexOf(whichRank);
+                                //if (switchVari == -1) {switchVari=1;}
+                                int[] storageofQuests = new int[20]; int storageIndex = 0;
+                                for (int i=0;i<20;i++) {storageofQuests[i] = -1;}
+                                if (guildrank>=switchVari) {
+                                    int prefixvari = 1;
+                                    for (int i=0;i<3;i++) {
+                                        if (rankLetters.indexOf(questsboard[i][0].charAt(0))<=switchVari) {
+                                            System.out.println("["+(prefixvari)+"] "+questsboard[i][0]);
+                                            System.out.println("  "+questsboard[i][1]+" gold, "+questsboard[i][2]+" EXP.");
+                                            storageofQuests[storageIndex] = i; storageIndex++;
+                                            prefixvari++;
                                         }
                                     }
+                                    System.out.println("Which quest do you wish to take? (Enter 0 to exit)");
+                                    Boolean doneYet = false; while (doneYet == false) {
+                                        System.out.print("");
+                                        String chosenQuest = scan.nextLine(); String numbers="0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19";
+                                        if (numbers.indexOf(chosenQuest) != -1) {
+                                            if (chosenQuest.equals("0")) {doneYet=true; break;} else {
+                                                if ((numbers.indexOf(chosenQuest)/2)-1 < storageIndex) {
+                                                    System.out.println("You have taken: "+questsboard[storageofQuests[numbers.indexOf(chosenQuest)/2]-1][0]+"."); a();
+                                                    doneYet = true;
+                                                    activeQuest[0][0] = 1;
+                                                    activeQuest[0][1] = storageofQuests[numbers.indexOf(chosenQuest)/2]-1;
+                                                } else {
+                                                    System.out.println("Integer is too high!");
+                                                }
+                                            }
+                                        } else {
+                                            System.out.println("Input must be an integer!");
+                                        }
+                                    }
+                                } else {
+                                    System.out.println("You are not of the required rank!");
                                 }
                             } else {
                                 if (inventory[0] == 0 && inventory[1] == 0 && inventory[2] == 0) {
@@ -568,7 +586,9 @@ public class rpgGame {
                         }
                     }
                 } else {
-                    System.out.println("/'Leaving without a sword is suicide.../'"); a();
+                    if (activeQuest[0][0]==1) {
+                        System.out.println("'Leaving without a sword is suicide...'"); a();
+                    }
                 }
             }
         }
