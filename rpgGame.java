@@ -9,7 +9,7 @@ public class rpgGame {
     String[][] questsboard = new String[8][3];
     int [][] activeQuest = new int[1][2]; int x=0; int[] guildxpreqs = {0,100,200,400,800,2000}; String[] guildranks = {"NOTREGISTERED","F","D","C","B","A","S"};
     String encrypt = "ypxzkds$#@";
-    String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: Free EXP!","D: Hunt the \"Black Wolf\""};
+    String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: Free EXP!","D: Hunt the \"Black Wolf\"","F: Help the Guild with Paperwork"};
     // String[] questranks = {"F","F","F","D"}; // depreciated for now, no use (old code is working again)
     String[] monsternames = {"Zombie","Goblin","Skeleton","\"Black Wolf\""};
     String[] recipes = {"Wooden Sword + Low-Tier Crafting Materials (2x)","Wooden Sword + Titanium Sword","Super Potion + Health Potion + Viper Potion","Low-Tier Crafting Materials (2x)","Mid-Tier Crafting Materials + Low-Tier Crafting Materials"};
@@ -19,15 +19,22 @@ public class rpgGame {
     int guildrank = 0; int guildexp = 0; // NOTREGISTERED, F, D, C, B, A, S (ranks)
     int[] inventory = new int[30];
     public void setQuests() {
-        questIndex[0][0] = 30; questIndex[0][1] = 25; questIndex[1][0] = 20; questIndex[1][1] = 40;
+        questIndex[0][0] = 35; questIndex[0][1] = 25; questIndex[1][0] = 20; questIndex[1][1] = 40;
         questIndex[2][0] = 0; questIndex[2][1] = 50; questIndex[3][0] = 80; questIndex[3][1] = 60;
-
+        questIndex[4][0] = 15; questIndex[4][1] = 45; /*questIndex[5][0] = 0; questIndex[5][1] = 0;
+        questIndex[6][0] = 0; questIndex[6][1] = 0; questIndex[7][0] = 0; questIndex[7][1] = 0;
+        questIndex[8][0] = 0; questIndex[8][1] = 0; questIndex[9][0] = 0; questIndex[9][1] = 0;
+        questIndex[10][0] = 0; questIndex[10][1] = 0; questIndex[11][0] = 0; questIndex[11][1] = 0;
+        questIndex[12][0] = 0; questIndex[12][1] = 0; questIndex[13][0] = 0; questIndex[13][1] = 0;
+        questIndex[14][0] = 0; questIndex[14][1] = 0; questIndex[15][0] = 0; questIndex[15][1] = 0;
+        questIndex[16][0] = 0; questIndex[16][1] = 0; questIndex[17][0] = 0; questIndex[17][1] = 0;
+        questIndex[18][0] = 0; questIndex[18][1] = 0; questIndex[19][0] = 0; questIndex[19][1] = 0;*/
         questsboard[0][0] = board[0]; questsboard[0][1] = questIndex[0][0]+""; questsboard[0][2] = questIndex[0][1]+"";
         questsboard[1][0] = board[1]; questsboard[1][1] = questIndex[1][0]+""; questsboard[1][2] = questIndex[1][1]+"";
         questsboard[2][0] = board[2]; questsboard[2][1] = questIndex[2][0]+""; questsboard[2][2] = questIndex[2][1]+"";
         questsboard[3][0] = board[3]; questsboard[3][1] = questIndex[3][0]+""; questsboard[3][2] = questIndex[3][1]+"";
-        /*questsboard[4][0] = board[4]; questsboard[4][1] = questIndex[4][0]+""; questsboard[4][2] = questIndex[4][1]+"";
-        questsboard[5][0] = board[5]; questsboard[5][1] = questIndex[5][0]+""; questsboard[5][2] = questIndex[5][1]+"";
+        questsboard[4][0] = board[4]; questsboard[4][1] = questIndex[4][0]+""; questsboard[4][2] = questIndex[4][1]+"";
+        /*questsboard[5][0] = board[5]; questsboard[5][1] = questIndex[5][0]+""; questsboard[5][2] = questIndex[5][1]+"";
         questsboard[6][0] = board[6]; questsboard[6][1] = questIndex[6][0]+""; questsboard[6][2] = questIndex[6][1]+"";
         questsboard[7][0] = board[7]; questsboard[7][1] = questIndex[7][0]+""; questsboard[7][2] = questIndex[7][1]+"";
         questsboard[8][0] = board[8]; questsboard[8][1] = questIndex[8][0]+""; questsboard[8][2] = questIndex[8][1]+"";
@@ -47,6 +54,9 @@ public class rpgGame {
         Code for this:
         for (int i=0;i<20;i++) {
             System.out.println("questsboard["+i+"][0] = board["+i+"]; questsboard["+i+"][1] = questIndex["+i+"][0]+\"\"; questsboard["+i+"][2] = questIndex["+i+"][1]+\"\";");
+        }
+        for (int i=0;i<20;i++) {
+            System.out.println("questIndex["+(i*2)+"][0] = 0; questIndex["+(i*2)+"][1] = 0; questIndex["+((i*2)+1)+"][0] = 0; questIndex["+((i*2)+1)+"][1] = 0;");
         }
         */
     }
@@ -72,9 +82,14 @@ public class rpgGame {
         setQuests();
         System.out.println("Welcome to RPG game!"); a();
         System.out.println("Press enter to start the game."); a();
+        Boolean didntType = false;
         while (x==0) {
-            System.out.println("Where would you like to go?");
-            System.out.println("(Blacksmith, Marreds (shop), Inn, Guild, Quest)");
+            if (didntType == false) {
+                System.out.println("Where would you like to go?");
+                System.out.println("(Blacksmith, Marreds (shop), Inn, Guild, Quest)");
+            }
+            didntType = false;
+            System.out.print("");
             String answer = scan.nextLine().toLowerCase();
             if (answer.equals("blacksmith") || answer.equals("black smith")) {
                 if (smithclosed == 0) {
@@ -433,18 +448,30 @@ public class rpgGame {
                         if (guildrank == 0) {
                             System.out.println("\"It does not appear that you are registered.\""); a();
                             System.out.println("\"Would you like to register to the guild?\"");
-                            String register = scan.nextLine().toLowerCase();
-                            if (register.equals("yes")) {
-                                System.out.println("\"You don't have gold to register yet, but it is fine. \""); a();
-                                System.out.println("\"Our guild will sponsor you, however you must pay back a fee of 30 gold if you wish to achieve rank C.\""); a();
-                                System.out.println("\"Do you wish to register knowing this?\"");
-                                String register2 = scan.nextLine().toLowerCase();
-                                if (register2.equals("yes")) {
-                                    System.out.println("(You are now registered to the guild!)"); a();
-                                    System.out.println("\"It is fine if you want to relax a little, but please do take quests frequently. We are in dire need of heroes.\""); a();
-                                    System.out.println("\"However, there are no quests today. We will pay your inn fee, so please come back tomorrow for fresh quests.\""); a();
-                                    innpaid = true;
-                                    guildrank = 1;
+                            Boolean didntPass = true; while (didntPass == true) {
+                                System.out.print("");
+                                String register = scan.nextLine().toLowerCase();
+                                if (register.equals("yes")) {
+                                    didntPass = false;
+                                    System.out.println("\"You don't have gold to register yet, but it is fine. \""); a();
+                                    System.out.println("\"Our guild will sponsor you, however you must pay back a fee of 30 gold if you wish to achieve rank C.\""); a();
+                                    System.out.println("\"Do you wish to register knowing this?\"");
+                                    Boolean didntPass2 = true; while (didntPass2 == true) {
+                                        System.out.print("");
+                                        String register2 = scan.nextLine().toLowerCase();
+                                        if (register2.equals("yes")) {
+                                            didntPass2 = false;
+                                            System.out.println("(You are now registered to the guild!)"); a();
+                                            System.out.println("\"It is fine if you want to relax a little, but please do take quests frequently. We are in dire need of heroes.\""); a();
+                                            System.out.println("\"However, there are no quests today. We will pay your inn fee, so please come back tomorrow for fresh quests.\""); a();
+                                            innpaid = true;
+                                            guildrank = 1;
+                                        } else if (register2.equals("no")) {
+                                            didntPass2 = false;
+                                        }
+                                    }
+                                } else if (register.equals("no")) {
+                                    didntPass = false;
                                 }
                             }
                         } else {
@@ -597,9 +624,11 @@ public class rpgGame {
                     }
                 } else {
                     if (activeQuest[0][0]==1) {
-                        System.out.println("'Leaving without a sword is suicide...'"); a();
+                        System.out.println("'Leaving without a sword is suicide...'");
                     }
                 }
+            } else {
+                didntType = true;
             }
         }
     }
