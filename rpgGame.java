@@ -1,4 +1,8 @@
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.FileNotFoundException;
 public class rpgGame {
     Scanner scan = new Scanner(System.in);
     String[] itemIndex = {"Wooden Sword","Iron Sword","Steel Sword","Gold Sword","Titanium Sword","Health Potion","Super Potion","Viper Potion","Flashbang","Poison Ink","Low-Tier Crafting Materials","Mid-Tier Crafting Materials","High-Tier Crafting Materials",""};
@@ -15,6 +19,7 @@ public class rpgGame {
     String[] recipes = {"Wooden Sword + Low-Tier Crafting Materials (2x)","Wooden Sword + Titanium Sword","Super Potion + Health Potion + Viper Potion","Low-Tier Crafting Materials (2x)","Mid-Tier Crafting Materials + Low-Tier Crafting Materials"};
     String[] reciperesults = {"Titanium Sword", "A Sword", "C", "Mid-Tier Crafting Materials", "E"};
     int[][] questIndex = new int[30][2];
+    String data = "";
     Boolean innpaid = false;
     int guildrank = 0; int guildexp = 0; // NOTREGISTERED, F, D, C, B, A, S (ranks)
     int[] inventory = new int[30];
@@ -80,6 +85,17 @@ public class rpgGame {
     public void main() {
         scramble();
         setQuests();
+        try {
+            File myObj = new File("C:\\Program Files\\rpgGame\\savefile.txt");
+            Scanner myReader = new Scanner(myObj);
+            data = myReader.nextLine();
+            load();
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Save file does not exist. Creating one now.");
+            save();
+            //e.printStackTrace();
+        }
         System.out.println("Welcome to RPG game!"); a();
         System.out.println("Press enter to start the game."); a();
         Boolean didntType = false;
@@ -629,6 +645,7 @@ public class rpgGame {
             } else {
                 didntType = true;
             }
+            save();
         }
     }
     public int[] monsterFight(int[] stats) {
@@ -988,10 +1005,11 @@ public class rpgGame {
     }
     
     public void save() {
-        String savedata = "/"+gold+"/"+smithclosed+shopclosed+innclosed+guildclosed+hp+"/"+maxhp+"/"+attackstat+"/"+defencestat+"/"+speedstat+"/"+level+"/"+xp+"/"+guildrank+"/"+guildexp+"/"+craftclosed+"/"+arrested+"/"+authority+"/";
+        String savedata = gold+"/"+smithclosed+shopclosed+innclosed+guildclosed+hp+"/"+maxhp+"/"+attackstat+"/"+defencestat+"/"+speedstat+"/"+level+"/"+xp+"/"+guildrank+"/"+guildexp+"/"+craftclosed+"/"+arrested+"/"+authority+"/";
         for (int i=0;i<30;i++) {
             savedata += inventory[i]+"/";
         }
+        System.out.println(savedata);
         String encrypteddata = "";
         for (int i=0;i<savedata.length();i++) {
             if (savedata.charAt(i) == '/' || savedata.charAt(i) == '=') {
@@ -1052,20 +1070,27 @@ public class rpgGame {
             }
         }
         //System.out.println(savedata);
-        System.out.println(encrypteddata);
-        System.out.println("Use this string to load your data.");
+        try {
+            File myObj = new File("C:\\Users\\Program Files\\rpgGame\\savefile.txt");
+            myObj.delete();
+            File myObj2 = new File("C:\\Program Files\\rpgGame\\savefile.txt");
+            myObj2.createNewFile();
+            FileWriter myWriter = new FileWriter("C:\\Program Files\\rpgGame\\savefile.txt");
+            myWriter.write(encrypteddata);
+            myWriter.close();
+          } catch (IOException e) {
+            System.out.println("An error occurred with saving.");
+            e.printStackTrace();
+          }
     }
-    public void load() {
-        System.out.println("Please paste your load string.");
-        String unencryptthis = scan.nextLine();
+    public String load() {
+        String unencryptthis = data;
         String unencrypted = "";
-        unencryptthis = unencryptthis.substring(1);
-        System.out.println(unencryptthis);
         for (int i=0;i<unencryptthis.length();i++) {
             char b = unencryptthis.charAt(i);
             if (b == '/') {
                 unencrypted += b;
-            } else if (b == '%' || b == 'v' || b == '!' || b == 'f' || b == 'z' || b == '#' || b == '@') {
+            } else if (b == '%' || b == 'v' || b == '!' || b == 'f' || b == '#' || b == '@') {
                 unencrypted += "0"; 
             } else if (b == 'r' || b == 'j' || b == 'm') {
                 unencrypted += "1";
@@ -1076,6 +1101,7 @@ public class rpgGame {
                 unencrypted += encrypt.indexOf(b+"");
             }
         }
+        System.out.println(unencrypted);
         int index = unencrypted.indexOf("/");
         gold = Integer.parseInt(unencrypted.substring(0,index));
         unencrypted = unencrypted.substring(index+1);
@@ -1085,6 +1111,7 @@ public class rpgGame {
         guildclosed = Integer.parseInt(unencrypted.charAt(3)+"");
         index = unencrypted.indexOf("/");
         hp = Integer.parseInt(unencrypted.substring(4,index));
+        System.out.println(unencrypted.substring(4,index));
         unencrypted = unencrypted.substring(index+1);
         index = unencrypted.indexOf("/");
         maxhp = Integer.parseInt(unencrypted.substring(0,index));
@@ -1129,5 +1156,6 @@ public class rpgGame {
             }
         }
         System.out.println("Data loaded.");
+        return "a";
     }
 }
