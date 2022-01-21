@@ -13,9 +13,9 @@ public class rpgGame {
     String[][] questsboard = new String[8][3];
     int [][] activeQuest = new int[1][2]; int x=0; int[] guildxpreqs = {0,100,200,400,800,2000}; String[] guildranks = {"NOTREGISTERED","F","D","C","B","A","S"};
     String encrypt = "ypxzkds$#@";
-    String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: Free EXP!","D: Hunt the \"Black Wolf\"","F: Help the Guild with Paperwork"};
+    String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: Free EXP!","D: Hunt the \"Black Wolf\"","F: Help the Guild with Paperwork","D: Clear the Mystical Dungeon","D: Subjugate a Wanted Criminal","C: Hunt the \"Wise One\""};
     // String[] questranks = {"F","F","F","D"}; // depreciated for now, no use (old code is working again)
-    String[] monsternames = {"Zombie","Goblin","Skeleton","\"Black Wolf\""};
+    String[] monsternames = {"Zombie","Goblin","Skeleton","\"Black Wolf\"","Novice Wizard","Apprentice Wizard","\"Wise One\"","Wanted Criminal"};
     String[] recipes = {"Wooden Sword + Low-Tier Crafting Materials (2x)","Wooden Sword + Titanium Sword","Super Potion + Health Potion + Viper Potion","Low-Tier Crafting Materials (2x)","Mid-Tier Crafting Materials + Low-Tier Crafting Materials"};
     String[] reciperesults = {"Titanium Sword", "A Sword", "C", "Mid-Tier Crafting Materials", "E"};
     int[][] questIndex = new int[30][2];
@@ -26,9 +26,9 @@ public class rpgGame {
     public void setQuests() {
         questIndex[0][0] = 35; questIndex[0][1] = 25; questIndex[1][0] = 20; questIndex[1][1] = 40;
         questIndex[2][0] = 0; questIndex[2][1] = 50; questIndex[3][0] = 80; questIndex[3][1] = 60;
-        questIndex[4][0] = 15; questIndex[4][1] = 45; /*questIndex[5][0] = 0; questIndex[5][1] = 0;
-        questIndex[6][0] = 0; questIndex[6][1] = 0; questIndex[7][0] = 0; questIndex[7][1] = 0;
-        questIndex[8][0] = 0; questIndex[8][1] = 0; questIndex[9][0] = 0; questIndex[9][1] = 0;
+        questIndex[4][0] = 15; questIndex[4][1] = 45; questIndex[5][0] = 40; questIndex[5][1] = 100;
+        questIndex[6][0] = 70; questIndex[6][1] = 70; questIndex[7][0] = 80; questIndex[7][1] = 140;
+        /*questIndex[8][0] = 0; questIndex[8][1] = 0; questIndex[9][0] = 0; questIndex[9][1] = 0;
         questIndex[10][0] = 0; questIndex[10][1] = 0; questIndex[11][0] = 0; questIndex[11][1] = 0;
         questIndex[12][0] = 0; questIndex[12][1] = 0; questIndex[13][0] = 0; questIndex[13][1] = 0;
         questIndex[14][0] = 0; questIndex[14][1] = 0; questIndex[15][0] = 0; questIndex[15][1] = 0;
@@ -39,10 +39,10 @@ public class rpgGame {
         questsboard[2][0] = board[2]; questsboard[2][1] = questIndex[2][0]+""; questsboard[2][2] = questIndex[2][1]+"";
         questsboard[3][0] = board[3]; questsboard[3][1] = questIndex[3][0]+""; questsboard[3][2] = questIndex[3][1]+"";
         questsboard[4][0] = board[4]; questsboard[4][1] = questIndex[4][0]+""; questsboard[4][2] = questIndex[4][1]+"";
-        /*questsboard[5][0] = board[5]; questsboard[5][1] = questIndex[5][0]+""; questsboard[5][2] = questIndex[5][1]+"";
+        questsboard[5][0] = board[5]; questsboard[5][1] = questIndex[5][0]+""; questsboard[5][2] = questIndex[5][1]+"";
         questsboard[6][0] = board[6]; questsboard[6][1] = questIndex[6][0]+""; questsboard[6][2] = questIndex[6][1]+"";
         questsboard[7][0] = board[7]; questsboard[7][1] = questIndex[7][0]+""; questsboard[7][2] = questIndex[7][1]+"";
-        questsboard[8][0] = board[8]; questsboard[8][1] = questIndex[8][0]+""; questsboard[8][2] = questIndex[8][1]+"";
+        /*questsboard[8][0] = board[8]; questsboard[8][1] = questIndex[8][0]+""; questsboard[8][2] = questIndex[8][1]+"";
         questsboard[9][0] = board[9]; questsboard[9][1] = questIndex[9][0]+""; questsboard[9][2] = questIndex[9][1]+"";
         questsboard[10][0] = board[10]; questsboard[10][1] = questIndex[10][0]+""; questsboard[10][2] = questIndex[10][1]+"";
         questsboard[11][0] = board[11]; questsboard[11][1] = questIndex[11][0]+""; questsboard[11][2] = questIndex[11][1]+"";
@@ -645,7 +645,9 @@ public class rpgGame {
             } else {
                 didntType = true;
             }
-            save();
+            if (didntType == false) {
+                save();
+            }
         }
     }
     public int[] monsterFight(int[] stats) {
@@ -996,6 +998,139 @@ public class rpgGame {
                 System.out.println("We hope to see you again?");
                 finished = 1;
                 break;
+                // "D: Clear the Mystical Dungeon","D: Subjugate a Wanted Criminal","C: Hunt the \"Wise One\""}
+            case 5:
+                System.out.println("You have arrived at the Mystical Dungeon."); a();
+                int roomcount = (int)(Math.random()*(7-4+4)+4);
+                int z=0;
+                for (int i=0;i<roomcount;i++) {
+                    int rng = (int)(Math.random()*(6-1+1)+1);
+                    switch (rng) {
+                        case 1:
+                        case 2:
+                        case 3:
+                            int[] sendstats = {20,6,3,25,15,4,4};
+                            monsterFight(sendstats);
+                            if (hp == 0) {
+                                death();
+                                finished = 0;
+                                return finished;
+                            }
+                            break;
+                        case 4:
+                        case 5:
+                            int[] sendstats2 = {30,8,6,40,25,7,5};
+                            monsterFight(sendstats2);
+                            if (hp == 0) {
+                                death();
+                                finished = 0;
+                                return finished;
+                            }
+                            int rnglevel = (int)(Math.random()*(3-1+1)+1);
+                            System.out.println("The wizard has a necromancy spell that rises a LVL:"+rnglevel+" Skeleton!"); a();
+                            int[] sendstats3 = {4+(rnglevel*3),rnglevel+1,rnglevel,5+(rnglevel*5),(rnglevel*5),rnglevel,2);
+                            monsterFight(sendstats3);
+                            if (hp == 0) {
+                                death();
+                                finished = 0;
+                                return finished;
+                            }
+                            break;
+                        case 6:
+                            int rng2 = (int)(Math.random()*(5-1+1)+1);
+                            switch (rng2) {
+                                case 1:
+                                case 2:
+                                    System.out.println("You open a chest and discover 2x "+itemIndex[10]+"!"); a();
+                                    inventory[10]++;
+                                    break;
+                                case 3:
+                                case 4:
+                                    System.out.println("You open a chest and discover "+itemIndex[11]+"!"); a();
+                                    inventory[11]++;
+                                    break;
+                                case 5:
+                                    System.out.println("You open a chest and discover "+itemIndex[12]+"!"); a();
+                                    inventory[12]++;
+                                    break;
+                            }
+                            
+                    }
+                    int healhp = (int)(Math.random()*(5-1+1)+1); int healbyhowmuch = 0;
+                    switch (healhp) {
+                        case 1: case 2: healbyhowmuch=1; break;
+                        case 3: case 4: healbyhowmuch=2; break;
+                        case 5: healbyhowmuch=3; break;
+                    }
+                    System.out.println("You have recovered "+healbyhowmuch+" HP."); a();
+                    hp += healbyhowmuch;
+                    System.out.println("You are now at "+hp+" HP."); a();
+                    if (i>=roomcount/2&&z==0) {
+                        System.out.println("You discover a resting spot, and decide to close your eyes."); a();
+                        System.out.println("(...)"); a();
+                        System.out.println("(Your HP has fully recovered.)"); a();
+                        System.out.println("You wake up, and decide to continue before anything crawls into you during your sleep."); a();
+                        hp=maxhp;
+                        z=1;
+                    } else {
+                        System.out.println("Do you wish to use a potion?");
+                        String ineedahero = scan.nextLine().toLowerCase();
+                        if (ineedahero.equals("yes") || ineedahero.equals("1")) {
+                            healUp();
+                        }
+                    }
+                }
+                if (hp > 0) {
+                    finished = 1;
+                }
+                break;
+            case 6:
+                System.out.println("You have arrived at the criminal's hideout."); a();
+                int rng = (int)(Math.random()*(2-1+1)+1);
+                // 2 variants: More hp, less attack/defence; Less hp, more attack/defence
+                switch (rng) {
+                    case 1:
+                        System.out.println("\"You will never take me alive!\""); a();
+                        int[] sendstats = {35,8,6,40,25,6,7};
+                        monsterFight(sendstats);
+                        if (hp == 0) {
+                            death();
+                            finished = 0;
+                            return finished;
+                        }
+                        break;
+                    case 2:
+                        System.out.println("(The criminal clearly needs a beating before they'll submit...)"); a();
+                        int[] sendstats = {25,10,8,40,25,6,7};
+                        monsterFight(sendstats);
+                        if (hp == 0) {
+                            death();
+                            finished = 0;
+                            return finished;
+                        }
+                        break;
+                }
+                if (hp > 0) {
+                    finished = 1;
+                }
+                break;
+            case 7:
+                System.out.println("You have approached the \"Lair of the Wise One\""); a();
+                System.out.println("A gush of unimaginable mana blasts against you."); a();
+                System.out.println("You barely have enough vitality to withstand it."); a();
+                System.out.println("Once the mana wind disperses, a lich stands before you.") a();
+                int[] sendstats = {60,14,12,100,50,15,6};
+                monsterFight(sendstats);
+                if (hp == 0) {
+                    death();
+                    finished = 0;
+                    return finished;
+                }
+                if (hp > 0) {
+                    finished = 1;
+                    System.out.println("The \"Wise One\"'s body lays before you."); a();
+                    System.out.println("(You get the feeling that this was too easy for the \"Wise One\"...)"); a();
+                }
         }
         return finished;
     }
