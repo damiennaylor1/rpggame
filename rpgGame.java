@@ -11,11 +11,11 @@ public class rpgGame {
     int gold = 10; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0; int craftclosed = 0; int arrested = 0;
     int hp = 15; int maxhp = 15; int attackstat = 2; int defencestat = 2; int speedstat = 2; int level = 1; int xp = 0; int authority = 0;
     int [][] activeQuest = new int[1][2]; int x=0; int[] guildxpreqs = {0,100,200,400,800,2000}; String[] guildranks = {"NOTREGISTERED","F","D","C","B","A","S"};
-    String encrypt = "ypxzkds$#@";
-    String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: Free EXP!","D: Hunt the \"Black Wolf\"","F: Help the Guild with Paperwork","D: Clear the Mystical Dungeon","D: Subjugate a Wanted Criminal","C: Hunt the \"Wise One\"","C: Exterminate the \"7th Squadron of the Skeleton Army\""};
+    String encrypt = "ypxzkds$ow";
+    String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: Free EXP!","D: Hunt the \"Black Wolf\"","F: Help the Guild with Paperwork","D: Clear the Mystical Dungeon","D: Subjugate a Wanted Criminal","C: Hunt the \"Wise One\"","C: Exterminate the \"7th Squadron of the Skeleton Army\"","B: Hunt down \"Captain Jack Bonemarrow\"","B: Exterminate \"He Who Hunts\""};
     // String[] questranks = {"F","F","F","D"}; // depreciated for now, no use (old code is working again)
     String[][] questsboard = new String[board.length][3];
-    String[] monsternames = {"Zombie","Goblin","Skeleton","\"Black Wolf\"","Novice Wizard","Apprentice Wizard","\"Wise One\"","Wanted Criminal","Arch Skeleton","Alexander The Bones"};
+    String[] monsternames = {"Zombie","Goblin","Skeleton","\"Black Wolf\"","Novice Wizard","Apprentice Wizard","\"Wise One\"","Wanted Criminal","Arch Skeleton","Alexander The Bones","Captain Jack Bonemarrow","He Who Hunts"};
     String[] recipes = {"Wooden Sword + Low-Tier Crafting Materials (2x)","Wooden Sword + Titanium Sword","Super Potion + Health Potion + Viper Potion","Low-Tier Crafting Materials (2x)","Mid-Tier Crafting Materials + Low-Tier Crafting Materials"};
     String[] reciperesults = {"Titanium Sword", "A Sword", "C", "Mid-Tier Crafting Materials", "E"};
     int[][] questIndex = new int[30][2];
@@ -28,8 +28,8 @@ public class rpgGame {
         questIndex[2][0] = 0; questIndex[2][1] = 50; questIndex[3][0] = 80; questIndex[3][1] = 60;
         questIndex[4][0] = 15; questIndex[4][1] = 45; questIndex[5][0] = 40; questIndex[5][1] = 100;
         questIndex[6][0] = 70; questIndex[6][1] = 70; questIndex[7][0] = 80; questIndex[7][1] = 140;
-        questIndex[8][0] = 50; questIndex[8][1] = 170; /*questIndex[9][0] = 0; questIndex[9][1] = 0;
-        questIndex[10][0] = 0; questIndex[10][1] = 0; questIndex[11][0] = 0; questIndex[11][1] = 0;
+        questIndex[8][0] = 50; questIndex[8][1] = 170; questIndex[9][0] = 220; questIndex[9][1] = 120;
+        questIndex[10][0] = 190; questIndex[10][1] = 150; /*questIndex[11][0] = 0; questIndex[11][1] = 0;
         questIndex[12][0] = 0; questIndex[12][1] = 0; questIndex[13][0] = 0; questIndex[13][1] = 0;
         questIndex[14][0] = 0; questIndex[14][1] = 0; questIndex[15][0] = 0; questIndex[15][1] = 0;
         questIndex[16][0] = 0; questIndex[16][1] = 0; questIndex[17][0] = 0; questIndex[17][1] = 0;
@@ -43,9 +43,9 @@ public class rpgGame {
         questsboard[6][0] = board[6]; questsboard[6][1] = questIndex[6][0]+""; questsboard[6][2] = questIndex[6][1]+"";
         questsboard[7][0] = board[7]; questsboard[7][1] = questIndex[7][0]+""; questsboard[7][2] = questIndex[7][1]+"";
         questsboard[8][0] = board[8]; questsboard[8][1] = questIndex[8][0]+""; questsboard[8][2] = questIndex[8][1]+"";
-        /*questsboard[9][0] = board[9]; questsboard[9][1] = questIndex[9][0]+""; questsboard[9][2] = questIndex[9][1]+"";
+        questsboard[9][0] = board[9]; questsboard[9][1] = questIndex[9][0]+""; questsboard[9][2] = questIndex[9][1]+"";
         questsboard[10][0] = board[10]; questsboard[10][1] = questIndex[10][0]+""; questsboard[10][2] = questIndex[10][1]+"";
-        questsboard[11][0] = board[11]; questsboard[11][1] = questIndex[11][0]+""; questsboard[11][2] = questIndex[11][1]+"";
+        /*questsboard[11][0] = board[11]; questsboard[11][1] = questIndex[11][0]+""; questsboard[11][2] = questIndex[11][1]+"";
         questsboard[12][0] = board[12]; questsboard[12][1] = questIndex[12][0]+""; questsboard[12][2] = questIndex[12][1]+"";
         questsboard[13][0] = board[13]; questsboard[13][1] = questIndex[13][0]+""; questsboard[13][2] = questIndex[13][1]+"";
         questsboard[14][0] = board[14]; questsboard[14][1] = questIndex[14][0]+""; questsboard[14][2] = questIndex[14][1]+"";
@@ -1121,7 +1121,7 @@ public class rpgGame {
                 }
                 break;
             case 7:
-                System.out.println("You have approached the \"Lair of the Wise One\""); a();
+                System.out.println("You have approached the \"Lair of the Wise One\"."); a();
                 System.out.println("A gush of unimaginable mana blasts against you."); a();
                 System.out.println("You barely have enough vitality to withstand it."); a();
                 System.out.println("Once the mana wind disperses, a lich stands before you."); a();
@@ -1139,7 +1139,7 @@ public class rpgGame {
                 }
                 break;
             case 8:
-                System.out.println("You have arrived at the \"Hideout of the 3rd Squadron of the Skeleton Army\""); a();
+                System.out.println("You have arrived at the \"Hideout of the 3rd Squadron of the Skeleton Army\"."); a();
                 for (int i=0;i<4;i++) {
                     sendstats = "35/9/7/40/10/9/8";
                     monsterFight(sendstats);
@@ -1164,6 +1164,34 @@ public class rpgGame {
                 if (hp > 0) {
                     finished = 1;
                 }
+                break;
+            case 9:
+                System.out.println("You have arrived at \"The Black Pearl\"."); a();
+                System.out.println("A figure on the flagpost jumps down onto the boat, creating shockwaves when he lands."); a();
+                sendstats = "90/25/22/200/160/25/10";
+                monsterFight(sendstats);
+                if (hp > 0) {
+                    finished = 1;
+                } else {
+                    death();
+                    finished = 0;
+                    return finished;
+                }
+                break;
+            case 10:
+                System.out.println("You struggled to find His lair, but you finally stand infront of the entrance."); a();
+                System.out.println("Right as you open the door, an arrow comes flying towards you, gazing your ear."); a();
+                System.out.println("\"Come, hunter. Show me your true power.\""); a();
+                sendstats = "80/30/26/230/150/25/11";
+                monsterFight(sendstats);
+                if (hp > 0) {
+                    finished = 1;
+                } else {
+                    death();
+                    finished = 0;
+                    return finished;
+                }
+                break;
         }
         return finished;
     }
@@ -1223,7 +1251,7 @@ public class rpgGame {
                         bla = 'u';
                         break;
                     case 2:
-                        bla = 'w';
+                        bla = 'h';
                         break;
                     case 3:
                         bla = 'g';
@@ -1260,7 +1288,7 @@ public class rpgGame {
                 unencrypted += "0"; 
             } else if (b == 'r' || b == 'j' || b == 'm') {
                 unencrypted += "1";
-            } else if (b == 'u' || b == 'w' || b == 'g') {
+            } else if (b == 'u' || b == 'h' || b == 'g') {
                 unencrypted += "2";
             }
             else {
