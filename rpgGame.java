@@ -235,11 +235,11 @@ public class rpgGame {
                     } else {
                         System.out.println("You enter the crafting library."); a();
                     }
-                    if (guildrank == 4 && authority == 0) {
+                    if (guildrank >= 4 && authority == 0) {
                         System.out.println("\"Good thing you came in. There's been some rumors about a legendary sword recently.\""); a();
                         authority = 1;
                     }
-                    if (guildrank == 6 && authority == 1) {
+                    if (guildrank >= 6 && authority == 1) {
                         System.out.println("\"Come over here for a second.\""); a();
                         System.out.println("(The craftsman hands you a blank scrap of paper.)"); a();
                         System.out.println("You can clearly tell the paper has lasted for hundred of years, but looks recently torn."); a();
@@ -494,25 +494,27 @@ public class rpgGame {
                             }
                         } else {
                             if (activeQuest[0][0] == 0) {
-                                if (guildexp >= guildxpreqs[guildrank]) {
-                                    System.out.println("\"You are eligible for a guild promotion!\""); a();
-                                    if (guildrank == 2) {
-                                        System.out.println("\"However, per our argeement, you must pay the 30 gold.\""); a();
-                                        if (gold>=30) {
-                                            System.out.println("\"Do you wish to pay the fee?\" (Owned gold: "+gold+")");
-                                            String payfee = scan.nextLine().toLowerCase();
-                                            if (payfee.equals("yes") || payfee.equals("y")) {
+                                if (guildrank < 6) {
+                                    if (guildexp >= guildxpreqs[guildrank]) {
+                                        System.out.println("\"You are eligible for a guild promotion!\""); a();
+                                        if (guildrank == 2) {
+                                            System.out.println("\"However, per our argeement, you must pay the 30 gold.\""); a();
+                                            if (gold>=30) {
+                                                System.out.println("\"Do you wish to pay the fee?\" (Owned gold: "+gold+")");
+                                                String payfee = scan.nextLine().toLowerCase();
+                                                if (payfee.equals("yes") || payfee.equals("y")) {
+                                                    guildexp -= guildxpreqs[guildrank];
+                                                    guildrank++;
+                                                }
+                                            }
+                                        } else {
+                                            System.out.println("Do you wish to promote?");
+                                            String promoteorno = scan.nextLine().toLowerCase();
+                                            if (promoteorno.equals("yes") || promoteorno.equals("y")) {
                                                 guildexp -= guildxpreqs[guildrank];
                                                 guildrank++;
+                                                System.out.println("You have achieved guild rank "+guildranks[guildrank]+"!"); a();
                                             }
-                                        }
-                                    } else {
-                                        System.out.println("Do you wish to promote?");
-                                        String promoteorno = scan.nextLine().toLowerCase();
-                                        if (promoteorno.equals("yes") || promoteorno.equals("y")) {
-                                            guildexp -= guildxpreqs[guildrank];
-                                            guildrank++;
-                                            System.out.println("You have achieved guild rank "+guildranks[guildrank]+"!"); a();
                                         }
                                     }
                                 }
@@ -603,6 +605,24 @@ public class rpgGame {
                     gold = scan.nextInt();
                 }
             }
+            else if (answer.equals("xp")||answer.equals("exp")) {
+                System.out.println("1/2 (guild or main xp)");
+                int k=0; while (k==0) {
+                    System.out.print("");
+                    String guildorxp = scan.nextLine();
+                    if (guildorxp.equals("1")) {
+                        System.out.println("Current guild xp is "+guildexp+". What to set to?");
+                        int setToWhat = scan.nextInt();
+                        guildexp = setToWhat;
+                        k=1;
+                    } else if (guildorxp.equals("2")) {
+                        System.out.println("Current xp is "+xp+". What to set to?");
+                        int setToWhat = scan.nextInt();
+                        xp = setToWhat;
+                        k=1;
+                    }
+                }
+            }
             else if (answer.equals("quest")) {
                 //System.out.println(activeQuest[0][0]+" "+activeQuest[0][1]);
                 if (inventory[0]>0 || activeQuest[0][1] == 4){
@@ -631,8 +651,10 @@ public class rpgGame {
                                         done=0;
                                 }
                             }
-                            if (guildexp >= guildxpreqs[guildrank+1]) {
-                                System.out.println("You are now eligible for rank "+guildranks[guildrank+1]+".");
+                            if (guildrank < 6) {
+                                if (guildexp >= guildxpreqs[guildrank+1]) {
+                                    System.out.println("You are now eligible for rank "+guildranks[guildrank+1]+".");
+                                }
                             }
                             System.out.println("You have gained "+goldgain+" gold.");
                             gold += goldgain;
@@ -668,62 +690,67 @@ public class rpgGame {
             Boolean action = false;
             System.out.println("Choose an action:");
             System.out.println("1. Attack; 2. Inventory;");
-            String catchLine = scan.nextLine().toLowerCase(); if (catchLine.equals("attack") || catchLine.equals("1")) {
-                int boost = 0;
-                if (inventory[0] > 0) {
-                    if (inventory[1] > 0) {
-                        if (inventory[2] > 0) {
-                            boost = (int)(Math.random()*(15-8+8)+8);
+            int check = 0; while (check==0) {
+                System.out.print("");
+                String catchLine = scan.nextLine().toLowerCase(); if (catchLine.equals("attack") || catchLine.equals("1")) {
+                    check = 1;
+                    int boost = 0;
+                    if (inventory[0] > 0) {
+                        if (inventory[1] > 0) {
+                            if (inventory[2] > 0) {
+                                boost = (int)(Math.random()*(15-8+8)+8);
+                            } else {
+                                boost = (int)(Math.random()*(10-4+4)+4);
+                            }
                         } else {
-                            boost = (int)(Math.random()*(10-4+4)+4);
+                            boost = (int)(Math.random()*(5-1+1)+1);
                         }
-                    } else {
-                        boost = (int)(Math.random()*(5-1+1)+1);
                     }
-                }
-                int damage = (attackstat - defence) + boost;
-                if (damage < 1) {
-                    damage = 1;
-                }
-                System.out.println("You attack the "+name+", dealing "+damage+" damage."); a();
-                health -= damage;
-                int crit = (int)(Math.random()*(4-1+1)+1);
-                if (crit == 1) {
-                    int critdmg = (int)(Math.random()*(3-1+1)+1);
-                    System.out.println("You strike again, dealing "+critdmg+" CRIT damage!"); a();
-                    health -= critdmg;
-                }
-                if (health < 0) {health=0;}
-                System.out.println("The monster is at "+health+" health."); a();
-                action = true;
-                if (health==0) {
-                    done = true; action = false;
-                }
-            }
-            else if (catchLine.equals("inventory") || catchLine.equals("2")) {
-                healUp();
-            }
-            if (action == true) {
-                double dodgechance = (lvl-level)-(speedstat/20); if (dodgechance<3){dodgechance=3;}
-                int chance = (int)(Math.random()*(dodgechance-1+1)+1);
-                if (chance == 1) {
-                    System.out.println("The "+name+" misses the player!"); a();
-                } else {
-                    int damage = (attack - defencestat) + (int)(Math.random()*((1+(attack-defencestat))-1+1)+1);
-                    if (damage < 1) {damage=1;}
-                    System.out.println("The "+name+" attacks the player, dealing "+damage+" damage!"); a();
+                    int damage = (attackstat - defence) + boost;
+                    if (damage < 1) {
+                        damage = 1;
+                    }
+                    System.out.println("You attack the "+name+", dealing "+damage+" damage."); a();
+                    health -= damage;
                     int crit = (int)(Math.random()*(4-1+1)+1);
                     if (crit == 1) {
                         int critdmg = (int)(Math.random()*(3-1+1)+1);
-                        System.out.println("The "+name+" strikes again, dealing "+critdmg+" CRIT damage!"); a();
-                        hp -= critdmg;
+                        System.out.println("You strike again, dealing "+critdmg+" CRIT damage!"); a();
+                        health -= critdmg;
                     }
-                    hp -= damage;
-                    if (hp < 0) {hp=0;}
-                    System.out.println("You now have "+hp+" HP."); a();
-                    if (hp == 0) {
-                        System.out.println("You have died."); a();
-                        return "a";
+                    if (health < 0) {health=0;}
+                    System.out.println("The monster is at "+health+" health."); a();
+                    action = true;
+                    if (health==0) {
+                        done = true; action = false;
+                    }
+                }
+                else if (catchLine.equals("inventory") || catchLine.equals("2")) {
+                    check = 1;
+                    healUp();
+                }
+                if (action == true) {
+                    double dodgechance = (lvl-level)-(speedstat/20); if (dodgechance<3){dodgechance=3;}
+                    int chance = (int)(Math.random()*(dodgechance-1+1)+1);
+                    if (chance == 1) {
+                        System.out.println("The "+name+" misses the player!"); a();
+                    } else {
+                        int damage = (attack - defencestat) + (int)(Math.random()*((1+(attack-defencestat))-1+1)+1);
+                        if (damage < 1) {damage=1;}
+                        System.out.println("The "+name+" attacks the player, dealing "+damage+" damage!"); a();
+                        int crit = (int)(Math.random()*(4-1+1)+1);
+                        if (crit == 1) {
+                            int critdmg = (int)(Math.random()*(3-1+1)+1);
+                            System.out.println("The "+name+" strikes again, dealing "+critdmg+" CRIT damage!"); a();
+                            hp -= critdmg;
+                        }
+                        hp -= damage;
+                        if (hp < 0) {hp=0;}
+                        System.out.println("You now have "+hp+" HP."); a();
+                        if (hp == 0) {
+                            System.out.println("You have died."); a();
+                            return "a";
+                        }
                     }
                 }
             }
@@ -1262,7 +1289,7 @@ public class rpgGame {
                         System.out.println("(Your HP has fully recovered.)"); a();
                         System.out.println("You wake up, and decide to continue before anything crawls into you during your sleep."); a();
                         hp=maxhp;
-                        k=1;
+                        z=1;
                     } else {
                         System.out.println("Do you wish to use a potion?");
                         String ineedahero = scan.nextLine().toLowerCase();
@@ -1354,7 +1381,7 @@ public class rpgGame {
                         System.out.println("(Your HP has fully recovered.)"); a();
                         System.out.println("You wake up, and decide to continue before anything crawls into you during your sleep."); a();
                         hp=maxhp;
-                        k=1;
+                        z=1;
                     } else {
                         System.out.println("Do you wish to use a potion?");
                         String ineedahero = scan.nextLine().toLowerCase();
@@ -1441,7 +1468,7 @@ public class rpgGame {
                         System.out.println("(Your HP has fully recovered.)"); a();
                         System.out.println("You wake up, and decide to continue before anything crawls into you during your sleep."); a();
                         hp=maxhp;
-                        k=1;
+                        z=1;
                     } else {
                         System.out.println("Do you wish to use a potion?");
                         String ineedahero = scan.nextLine().toLowerCase();
@@ -1453,7 +1480,7 @@ public class rpgGame {
                 if (hp > 0) {
                     System.out.println("You approach the final boss room."); a();
                     System.out.println("The \"Courts of Heaven\" have sent a representitive to judge you."); a();
-                    sendstats = "150/45/40/400/300/45/19";
+                    sendstats = "150/45/40/400/300/45/20";
                     if (hp > 0) {
                         finished = 1;
                         System.out.println("You scavenge the corpse and discover a "+itemIndex[14]+"!");
@@ -1475,7 +1502,7 @@ public class rpgGame {
                 System.out.println("The fabled \"Kraken\" appears, and shoots its tenticles, but you swiftly cut them."); a();
                 System.out.println("To your surprise, they regenerate instantly."); a();
                 System.out.println("(How do you win against such a hellish creature...?)"); a();
-                sendstats = "250/60/60/800/700/60/20";
+                sendstats = "250/60/60/800/700/60/21";
                 monsterFight(sendstats);
                 int diedLOL = 0;
                 if (hp > 0) {
@@ -1485,7 +1512,8 @@ public class rpgGame {
                     System.out.println("\"I'm jealous of you...\""); a();
                     System.out.println("\"You will have the pleasure of dying before me...\""); a();
                     System.out.println("(This is it...)"); a();
-                    sendstats = "350/80/75/1000/900/75/21";
+                    sendstats = "350/80/75/1000/900/75/22";
+                    monsterFight(sendstats);
                     if (hp > 0) {
                         System.out.println("You have acomplished an unsurmountable feat."); a();
                         System.out.println("(...)"); a();
@@ -1496,7 +1524,7 @@ public class rpgGame {
                         System.out.println("\"I'm sure this will not be the end of your story.\""); a();
                         System.out.println("(The goddess uses her magic to show you a book of many pages.)"); a();
                         System.out.println("\"You still have many blank pages left, adventurer.\""); a();
-                        System.out.println("\"This won't be our last goodbye.\"");
+                        System.out.println("\"This won't be our last goodbye.\""); a();
                         System.out.println("The goddess begins to fade out of the dimension."); a();
                         System.out.println("As her face begins to crumble, you can make out a clear smile."); a();
                         System.out.println("\"Until next time!\""); a();
