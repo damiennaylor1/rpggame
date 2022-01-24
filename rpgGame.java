@@ -5,19 +5,21 @@ import java.io.IOException;
 import java.io.FileNotFoundException;
 public class rpgGame {
     Scanner scan = new Scanner(System.in);
-    String[] itemIndex = {"Wooden Sword","Iron Sword","Steel Sword","Gold Sword","Titanium Sword","Health Potion","Super Potion","Viper Potion","Flashbang","Poison Ink","Low-Tier Crafting Materials","Mid-Tier Crafting Materials","High-Tier Crafting Materials",""};
+    String[] itemIndex = {"Wooden Sword","Iron Sword","Steel Sword","Gold Sword","Titanium Sword","Health Potion","Super Potion","Viper Potion","Flashbang","Poison Ink","Low-Tier Crafting Materials","Mid-Tier Crafting Materials","High-Tier Crafting Materials","Demonic Essence","Angelic Essence","Demonic Crown","Mythical Dagger","Sameal's Dagger","Blade of Odysseus","Blade of Abaddon"};
     int[] goldIndex = {5,20,50,100,300,5,15,40,30,40,0,0,0,0};
     String[][] smithInv = new String[5][2]; String[][] shopInv = new String[5][2];
     int gold = 10; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0; int craftclosed = 0; int arrested = 0;
     int hp = 15; int maxhp = 15; int attackstat = 2; int defencestat = 2; int speedstat = 2; int level = 1; int xp = 0; int authority = 0;
     int [][] activeQuest = new int[1][2]; int x=0; int[] guildxpreqs = {0,100,200,400,800,2000}; String[] guildranks = {"NOTREGISTERED","F","D","C","B","A","S"};
     String encrypt = "ypxzkds$ow";
-    String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: Free EXP!","D: Hunt the \"Black Wolf\"","F: Help the Guild with Paperwork","D: Clear the Mystical Dungeon","D: Subjugate a Wanted Criminal","C: Hunt the \"Wise One\"","C: Exterminate the \"7th Squadron of the Skeleton Army\"","B: Hunt down \"Captain Jack Bonemarrow\"","B: Exterminate \"He Who Hunts\"","B: Subjugate the Undead Dungeon","A: Defeat the \"Blind Monk\""};
+    String[] board = {"F: Clear the Beginners Dungeon","F: Hunt Monsters in the Green Zone","F: Free EXP!","D: Hunt the \"Black Wolf\"","F: Help the Guild with Paperwork","D: Clear the Mystical Dungeon","D: Subjugate a Wanted Criminal","C: Hunt the \"Wise One\"","C: Exterminate the \"7th Squadron of the Skeleton Army\"","B: Hunt down \"Captain Jack Bonemarrow\"","B: Exterminate \"He Who Hunts\"","B: Subjugate the Undead Dungeon","A: Defeat the \"Blind Monk\"","A: Clear the Demonic Realm","A: Clear the Angelic Realm","S: Defeat \"Adrammelech\""};
     // String[] questranks = {"F","F","F","D"}; // depreciated for now, no use (old code is working again)
     String[][] questsboard = new String[board.length][3];
-    String[] monsternames = {"Zombie","Goblin","Skeleton","\"Black Wolf\"","Novice Wizard","Apprentice Wizard","\"Wise One\"","Wanted Criminal","Arch Skeleton","Alexander The Bones","Captain Jack Bonemarrow","He Who Hunts","Arch Bones","\"Duke Skellington\"","\"Blind Monk\""};
-    String[] recipes = {"Wooden Sword + Low-Tier Crafting Materials (2x)","Wooden Sword + Titanium Sword","Super Potion + Health Potion + Viper Potion","Low-Tier Crafting Materials (2x)","Mid-Tier Crafting Materials + Low-Tier Crafting Materials"};
-    String[] reciperesults = {"Titanium Sword", "A Sword", "C", "Mid-Tier Crafting Materials", "E"};
+    String[] monsternames = {"Zombie","Goblin","Skeleton","\"Black Wolf\"","Novice Wizard","Apprentice Wizard","\"Wise One\"","Wanted Criminal","Arch Skeleton","Alexander The Bones","Captain Jack Bonemarrow","He Who Hunts","Arch Bones","\"Duke Skellington\"","\"Blind Monk\"","Hell Lich","Hell Lich Warlord","\"Ukobach\"","Heaven Paladin","Heaven Paladin Captain","\"Azbogah\"","\"Kraken\"","\"Adrammelech\""};
+    String[] recipes = {"Mythical Dagger + High-Tier Crafting Materials (2x)","Titanium Sword + High Tier Materials (2x) + Angelic Essence","Titanium Sword + High Tier Materials (2x) + Demonic Essence","Low-Tier Crafting Materials (2x)","Mid-Tier Crafting Materials + Low-Tier Crafting Materials"};
+    String[] reciperesults = {"Sameal's Dagger", "Blade of Odysseus", "Blade of Abaddon", "Mid-Tier Crafting Materials", "E"};
+    //System.out.println("Titanium Sword + High Tier Materials (x2) + Angelic Essence = Blade of Odysseus");
+    //System.out.println("Titanium Sword + High Tier Materials (x2) + Demonic Essence = Blade of Abaddon");
     int[][] questIndex = new int[30][2];
     String data = "";
     Boolean innpaid = false;
@@ -30,9 +32,9 @@ public class rpgGame {
         questIndex[6][0] = 70; questIndex[6][1] = 70; questIndex[7][0] = 80; questIndex[7][1] = 140;
         questIndex[8][0] = 50; questIndex[8][1] = 170; questIndex[9][0] = 220; questIndex[9][1] = 120;
         questIndex[10][0] = 190; questIndex[10][1] = 150; questIndex[11][0] = 200; questIndex[11][1] = 140;
-        questIndex[12][0] = 270; questIndex[12][1] = 250; /*questIndex[13][0] = 0; questIndex[13][1] = 0;
-        questIndex[14][0] = 0; questIndex[14][1] = 0; questIndex[15][0] = 0; questIndex[15][1] = 0;
-        questIndex[16][0] = 0; questIndex[16][1] = 0; questIndex[17][0] = 0; questIndex[17][1] = 0;
+        questIndex[12][0] = 270; questIndex[12][1] = 250; questIndex[13][0] = 300; questIndex[13][1] = 220;
+        questIndex[14][0] = 300; questIndex[14][1] = 220; questIndex[15][0] = 500; questIndex[15][1] = 500;
+        /*questIndex[16][0] = 0; questIndex[16][1] = 0; questIndex[17][0] = 0; questIndex[17][1] = 0;
         questIndex[18][0] = 0; questIndex[18][1] = 0; questIndex[19][0] = 0; questIndex[19][1] = 0;*/
         questsboard[0][0] = board[0]; questsboard[0][1] = questIndex[0][0]+""; questsboard[0][2] = questIndex[0][1]+"";
         questsboard[1][0] = board[1]; questsboard[1][1] = questIndex[1][0]+""; questsboard[1][2] = questIndex[1][1]+"";
@@ -47,10 +49,10 @@ public class rpgGame {
         questsboard[10][0] = board[10]; questsboard[10][1] = questIndex[10][0]+""; questsboard[10][2] = questIndex[10][1]+"";
         questsboard[11][0] = board[11]; questsboard[11][1] = questIndex[11][0]+""; questsboard[11][2] = questIndex[11][1]+"";
         questsboard[12][0] = board[12]; questsboard[12][1] = questIndex[12][0]+""; questsboard[12][2] = questIndex[12][1]+"";
-        /*questsboard[13][0] = board[13]; questsboard[13][1] = questIndex[13][0]+""; questsboard[13][2] = questIndex[13][1]+"";
+        questsboard[13][0] = board[13]; questsboard[13][1] = questIndex[13][0]+""; questsboard[13][2] = questIndex[13][1]+"";
         questsboard[14][0] = board[14]; questsboard[14][1] = questIndex[14][0]+""; questsboard[14][2] = questIndex[14][1]+"";
         questsboard[15][0] = board[15]; questsboard[15][1] = questIndex[15][0]+""; questsboard[15][2] = questIndex[15][1]+"";
-        questsboard[16][0] = board[16]; questsboard[16][1] = questIndex[16][0]+""; questsboard[16][2] = questIndex[16][1]+"";
+        /*questsboard[16][0] = board[16]; questsboard[16][1] = questIndex[16][0]+""; questsboard[16][2] = questIndex[16][1]+"";
         questsboard[17][0] = board[17]; questsboard[17][1] = questIndex[17][0]+""; questsboard[17][2] = questIndex[17][1]+"";
         questsboard[18][0] = board[18]; questsboard[18][1] = questIndex[18][0]+""; questsboard[18][2] = questIndex[18][1]+"";
         questsboard[19][0] = board[19]; questsboard[19][1] = questIndex[19][0]+""; questsboard[19][2] = questIndex[19][1]+"";*/
@@ -234,7 +236,7 @@ public class rpgGame {
                         System.out.println("You enter the crafting library."); a();
                     }
                     if (guildrank == 4 && authority == 0) {
-                        System.out.println("\"Good thing you came in. There's been some rumors about a legendary demonic sword recently.\""); a();
+                        System.out.println("\"Good thing you came in. There's been some rumors about a legendary sword recently.\""); a();
                         authority = 1;
                     }
                     if (guildrank == 6 && authority == 1) {
@@ -254,7 +256,7 @@ public class rpgGame {
                         System.out.println("In the cover of his silhouette, you take the paper before he exits the door."); a();
                         System.out.println("While he is loaded onto the cart, he smiles and winks at you."); a();
                         System.out.println("Once the guards have made their way down the street, you hold out the paper and feed it demonic energy."); a();
-                        System.out.println("It reads:\nBlade of Odysseus + Blade of Abaddon + Demonic Crown = Adrammelech"); a();
+                        System.out.println("It reads:\nBlade of Odysseus + Blade of Abaddon + Demonic Crown = Adrammelech's Bane"); a();
                         authority = 2;
                     }
                     System.out.println("(Would you like to see the recipes?)");
@@ -266,7 +268,7 @@ public class rpgGame {
                         if (authority == 1) {
                             System.out.println("Blade of Odysseus + Blade of Abaddon + ??? = ???");
                         } else if (authority == 2) {
-                            System.out.println("Blade of Odysseus + Blade of Abaddon + Demonic Crown = Adrammelech");
+                            System.out.println("Blade of Odysseus + Blade of Abaddon + Demonic Crown = Adrammelech's Bane");
                         }
                     }
                     System.out.println("Your inventory: \n"); int b=0;
@@ -283,7 +285,7 @@ public class rpgGame {
                         System.out.println();
                     }
                     int[] legalrecipes = new int[5]; int legalindex = 0;
-                    for (int i=0;i<5;i++) {
+                    for (int i=0;i<recipes.length;i++) {
                         String firstString = recipes[i]; int bla = 0; int bla2 = 0;
                         for (int i3=0;i3<3;i3++) {
                             bla++;
@@ -403,7 +405,7 @@ public class rpgGame {
                             }
                         }
                     } else {
-                        System.out.println("There are no recipes you can craft currently."); a();
+                        System.out.println("There are no recipes you can craft currently.");
                     }
                 } else {
                     System.out.println("(They just got arrested, of course the shop would still be closed...)");
@@ -728,7 +730,7 @@ public class rpgGame {
         }
         if (health==0) {
             System.out.println("You have killed the "+name+"!"); a();
-            System.out.println("You have gained "+xpreward+" XP."); a();
+            System.out.println("You have gained "+xpreward+" XP.");
             int done2=1;while (done2<0) {
                 if (xp >= (level*40)) {
                     levelUp(done2);
@@ -737,9 +739,14 @@ public class rpgGame {
                     done2=0;
                 }
             }
-            System.out.println("You have gained "+goldreward+" gold."); a();
+            System.out.println("You have gained "+goldreward+" gold.");
             gold += goldreward;
             System.out.println("You now have "+gold+" gold."); a();
+            int rng = (int)(Math.random()*(50-1+1)+1);
+            if (rng == 1) {
+                System.out.println("You have received the rare drop "+itemIndex[16]+"!"); 
+                inventory[16]++;
+            }
         }
         return "a";
     }
@@ -1077,7 +1084,7 @@ public class rpgGame {
                         System.out.println("(Your HP has fully recovered.)"); a();
                         System.out.println("You wake up, and decide to continue before anything crawls into you during your sleep."); a();
                         hp=maxhp;
-                        k=1;
+                        z=1;
                     } else {
                         System.out.println("Do you wish to use a potion?");
                         String ineedahero = scan.nextLine().toLowerCase();
@@ -1196,8 +1203,8 @@ public class rpgGame {
                 System.out.println("You have arrived at the Undead Dungeon."); a();
                 roomcount = (int)(Math.random()*(7-4+4)+4);
                 z=0;
-                for (int i=0;i<roomcount2;i++) {
-                    int rng = (int)(Math.random()*(6-1+1)+1);
+                for (int i=0;i<roomcount;i++) {
+                    rng = (int)(Math.random()*(6-1+1)+1);
                     switch (rng) {
                         case 1:
                         case 2:
@@ -1283,6 +1290,231 @@ public class rpgGame {
                     return finished;
                 }
                 break;
+            case 13:
+                System.out.println("You have arrived at \"Kaemin's Dungeon\"."); a();
+                roomcount = (int)(Math.random()*(7-4+4)+4);
+                z=0;
+                for (int i=0;i<roomcount;i++) {
+                    rng = (int)(Math.random()*(6-1+1)+1);
+                    switch (rng) {
+                        case 1:
+                        case 2:
+                        case 3:
+                            sendstats = "90/28/25/200/150/28/14";
+                            monsterFight(sendstats);
+                            if (hp == 0) {
+                                death();
+                                finished = 0;
+                                return finished;
+                            }
+                            break;
+                        case 4:
+                        case 5:
+                            sendstats = "115/35/32/250/180/33/15";
+                            monsterFight(sendstats);
+                            if (hp == 0) {
+                                death();
+                                finished = 0;
+                                return finished;
+                            }
+                            break;
+                        case 6:
+                            int rng2 = (int)(Math.random()*(5-1+1)+1);
+                            switch (rng2) {
+                                case 1:
+                                case 2:
+                                    System.out.println("You open a chest and discover 2x "+itemIndex[12]+"!"); a();
+                                    inventory[10] += 2;
+                                    break;
+                                case 3:
+                                case 4:
+                                    System.out.println("You open a chest and discover 3x"+itemIndex[12]+"!"); a();
+                                    inventory[11] += 3;
+                                    break;
+                                case 5:
+                                    int goldrng = (int)(Math.random()*(300-150+150)+150);
+                                    System.out.println("You open a chest and discover "+goldrng+" gold!"); a();
+                                    gold += goldrng;
+                                    break;
+                            }
+                            
+                    }
+                    int healhp = (int)(Math.random()*(5-1+1)+1); int healbyhowmuch = 0;
+                    switch (healhp) {
+                        case 1: case 2: healbyhowmuch=1; break;
+                        case 3: case 4: healbyhowmuch=2; break;
+                        case 5: healbyhowmuch=3; break;
+                    }
+                    System.out.println("You have recovered "+healbyhowmuch+" HP."); a();
+                    hp += healbyhowmuch;
+                    System.out.println("You are now at "+hp+" HP."); a();
+                    if (i>=roomcount/2&&z==0) {
+                        System.out.println("You discover a resting spot, and decide to close your eyes."); a();
+                        System.out.println("(...)"); a();
+                        System.out.println("(Your HP has fully recovered.)"); a();
+                        System.out.println("You wake up, and decide to continue before anything crawls into you during your sleep."); a();
+                        hp=maxhp;
+                        k=1;
+                    } else {
+                        System.out.println("Do you wish to use a potion?");
+                        String ineedahero = scan.nextLine().toLowerCase();
+                        if (ineedahero.equals("yes") || ineedahero.equals("1")) {
+                            healUp();
+                        }
+                    }
+                }
+                if (hp > 0) {
+                    System.out.println("You approach the final boss room."); a();
+                    sendstats = "140/40/35/350/250/40/16";
+                    if (hp > 0) {
+                        finished = 1;
+                        System.out.println("You scavenge the corpse and discover a "+itemIndex[13]+"!");
+                        inventory[13]++;
+                    } else {
+                        finished = 0;
+                        death();
+                        return finished;
+                    }
+                }
+                break;
+            case 14:
+                System.out.println("You have arrived at \"Angelo's Dungeon\"."); a();
+                roomcount = (int)(Math.random()*(7-4+4)+4);
+                z=0;
+                for (int i=0;i<roomcount;i++) {
+                    rng = (int)(Math.random()*(6-1+1)+1);
+                    switch (rng) {
+                        case 1:
+                        case 2:
+                        case 3:
+                            sendstats = "85/27/24/200/150/28/17";
+                            monsterFight(sendstats);
+                            if (hp == 0) {
+                                death();
+                                finished = 0;
+                                return finished;
+                            }
+                            break;
+                        case 4:
+                        case 5:
+                            sendstats = "110/34/31/250/180/33/18";
+                            monsterFight(sendstats);
+                            if (hp == 0) {
+                                death();
+                                finished = 0;
+                                return finished;
+                            }
+                            break;
+                        case 6:
+                            int rng2 = (int)(Math.random()*(5-1+1)+1);
+                            switch (rng2) {
+                                case 1:
+                                case 2:
+                                    System.out.println("You open a chest and discover 2x "+itemIndex[12]+"!"); a();
+                                    inventory[10] += 2;
+                                    break;
+                                case 3:
+                                case 4:
+                                    System.out.println("You open a chest and discover 3x"+itemIndex[12]+"!"); a();
+                                    inventory[11] += 3;
+                                    break;
+                                case 5:
+                                    int goldrng = (int)(Math.random()*(300-150+150)+150);
+                                    System.out.println("You open a chest and discover "+goldrng+" gold!"); a();
+                                    gold += goldrng;
+                                    break;
+                            }
+                            
+                    }
+                    int healhp = (int)(Math.random()*(5-1+1)+1); int healbyhowmuch = 0;
+                    switch (healhp) {
+                        case 1: case 2: healbyhowmuch=1; break;
+                        case 3: case 4: healbyhowmuch=2; break;
+                        case 5: healbyhowmuch=3; break;
+                    }
+                    System.out.println("You have recovered "+healbyhowmuch+" HP."); a();
+                    hp += healbyhowmuch;
+                    System.out.println("You are now at "+hp+" HP."); a();
+                    if (i>=roomcount/2&&z==0) {
+                        System.out.println("You discover a resting spot, and decide to close your eyes."); a();
+                        System.out.println("(...)"); a();
+                        System.out.println("(Your HP has fully recovered.)"); a();
+                        System.out.println("You wake up, and decide to continue before anything crawls into you during your sleep."); a();
+                        hp=maxhp;
+                        k=1;
+                    } else {
+                        System.out.println("Do you wish to use a potion?");
+                        String ineedahero = scan.nextLine().toLowerCase();
+                        if (ineedahero.equals("yes") || ineedahero.equals("1")) {
+                            healUp();
+                        }
+                    }
+                }
+                if (hp > 0) {
+                    System.out.println("You approach the final boss room."); a();
+                    System.out.println("The \"Courts of Heaven\" have sent a representitive to judge you."); a();
+                    sendstats = "150/45/40/400/300/45/19";
+                    if (hp > 0) {
+                        finished = 1;
+                        System.out.println("You scavenge the corpse and discover a "+itemIndex[14]+"!");
+                        inventory[14]++;
+                    } else {
+                        finished = 0;
+                        death();
+                        return finished;
+                    }
+                }
+                break;
+            case 15:
+                System.out.println("Everything has led up to this subjugation."); a();
+                System.out.println("You adventure the seven seas and arrive at Atlantis."); a();
+                System.out.println("When you open the door, a hellish landscape displays itself."); a();
+                System.out.println("Suddenly, a voice booms your ears."); a();
+                System.out.println("\"Welcome, mortal.\""); a();
+                System.out.println("\"If you wish to challenge me, face my strongest liege and I shall consider your worth.\""); a();
+                System.out.println("The fabled \"Kraken\" appears, and shoots its tenticles, but you swiftly cut them."); a();
+                System.out.println("To your surprise, they regenerate instantly."); a();
+                System.out.println("(How do you win against such a hellish creature...?)"); a();
+                sendstats = "250/60/60/800/700/60/20";
+                monsterFight(sendstats);
+                int diedLOL = 0;
+                if (hp > 0) {
+                    System.out.println("You regenerate all of your health."); a();
+                    hp = maxhp;
+                    System.out.println("\"Well done, mortal\""); a();
+                    System.out.println("\"I'm jealous of you...\""); a();
+                    System.out.println("\"You will have the pleasure of dying before me...\""); a();
+                    System.out.println("(This is it...)"); a();
+                    sendstats = "350/80/75/1000/900/75/21";
+                    if (hp > 0) {
+                        System.out.println("You have acomplished an unsurmountable feat."); a();
+                        System.out.println("(...)"); a();
+                        System.out.println("The hellish landscape around you begins to purify into a land of beautiful green and blue."); a();
+                        System.out.println("A beautiful goddess descends from the sunlight above you."); a();
+                        System.out.println("\"Thank you, adventurer\""); a();
+                        System.out.println("\"Thanks to your endless effort and triumph, this sacred land will become as it once was.\""); a();
+                        System.out.println("\"I'm sure this will not be the end of your story.\""); a();
+                        System.out.println("(The goddess uses her magic to show you a book of many pages.)"); a();
+                        System.out.println("\"You still have many blank pages left, adventurer.\""); a();
+                        System.out.println("\"This won't be our last goodbye.\"");
+                        System.out.println("The goddess begins to fade out of the dimension."); a();
+                        System.out.println("As her face begins to crumble, you can make out a clear smile."); a();
+                        System.out.println("\"Until next time!\""); a();
+                        System.out.println("As the forest continues to bloom, you look at the corpse of Adrammelech before you."); a();
+                        System.out.println("You take the crown that resides on his head."); a();
+                        System.out.println("(You have received a "+itemIndex[15]+"!)"); a();
+                        inventory[15]++;
+                        System.out.println("(This is the end of my RPG game.)");
+                        System.out.println("(Thank you for playing!)");
+                        System.out.println("(You can still continue with quests, but this is the final story quest in the game.)"); a();
+                        finished = 1;
+                    } else {diedLOL=1;}
+                } else {diedLOL=1;}
+                if (diedLOL == 1) {
+                    finished = 0;
+                    death();
+                    return finished;
+                }
         }
         return finished;
     }
@@ -1292,6 +1524,10 @@ public class rpgGame {
     public void save() {
         String savedata = gold+"/"+smithclosed+shopclosed+innclosed+guildclosed+hp+"/"+maxhp+"/"+attackstat+"/"+defencestat+"/"+speedstat+"/"+level+"/"+xp+"/"+guildrank+"/"+guildexp+"/"+craftclosed+"/"+arrested+"/"+authority+"/";
         for (int i=0;i<30;i++) {
+            if (inventory[i] < 0) {
+                System.out.println("ERROR REPORT: Item in inventory "+itemIndex[i]+" has a value of "+inventory[i]+". Setting it to 0.");
+                inventory[i] = 0;   
+            }
             savedata += inventory[i]+"/";
         }
         System.out.println(savedata);
