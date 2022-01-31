@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.FileNotFoundException;
 public class rpgGame {
     Scanner scan = new Scanner(System.in);
-    String[] itemIndex = {"Wooden Sword","Iron Sword","Steel Sword","Gold Sword","Titanium Sword","Health Potion","Super Potion","Viper Potion","Flashbang","Poison Ink","Low-Tier Crafting Materials","Mid-Tier Crafting Materials","High-Tier Crafting Materials","Demonic Essence","Angelic Essence","Demonic Crown","Mythical Dagger","Sameal's Dagger","Blade of Odysseus","Blade of Abaddon"};
+    String[] itemIndex = {"Wooden Sword","Iron Sword","Steel Sword","Gold Sword","Titanium Sword","Health Potion","Super Potion","Viper Potion","Flashbang","Poison Ink","Low-Tier Crafting Materials","Mid-Tier Crafting Materials","High-Tier Crafting Materials","Demonic Essence","Angelic Essence","Demonic Crown","Mythical Dagger","Sameal's Dagger","Blade of Odysseus","Blade of Abaddon","Adrammelech"};
     int[] goldIndex = {5,20,50,100,300,5,15,40,30,40,0,0,0,0};
     String[][] smithInv = new String[5][2]; String[][] shopInv = new String[5][2];
     int gold = 10; int smithclosed = 0; int shopclosed = 0; int innclosed = 0; int guildclosed = 0; int craftclosed = 0; int arrested = 0;
@@ -16,8 +16,8 @@ public class rpgGame {
     // String[] questranks = {"F","F","F","D"}; // depreciated for now, no use (old code is working again)
     String[][] questsboard = new String[board.length][3];
     String[] monsternames = {"Zombie","Goblin","Skeleton","\"Black Wolf\"","Novice Wizard","Apprentice Wizard","\"Wise One\"","Wanted Criminal","Arch Skeleton","Alexander The Bones","Captain Jack Bonemarrow","He Who Hunts","Arch Bones","\"Duke Skellington\"","\"Blind Monk\"","Hell Lich","Hell Lich Warlord","\"Ukobach\"","Heaven Paladin","Heaven Paladin Captain","\"Azbogah\"","\"Kraken\"","\"Adrammelech\""};
-    String[] recipes = {"Mythical Dagger + High-Tier Crafting Materials (2x)","Titanium Sword + High Tier Materials (2x) + Angelic Essence","Titanium Sword + High Tier Materials (2x) + Demonic Essence","Low-Tier Crafting Materials (2x)","Mid-Tier Crafting Materials + Low-Tier Crafting Materials"};
-    String[] reciperesults = {"Sameal's Dagger", "Blade of Odysseus", "Blade of Abaddon", "Mid-Tier Crafting Materials", "E"};
+    String[] recipes = {"Mythical Dagger + High-Tier Crafting Materials (2x)","Titanium Sword + High Tier Materials (2x) + Angelic Essence","Titanium Sword + High Tier Materials (2x) + Demonic Essence","Low-Tier Crafting Materials (2x)","Blade of Odysseus + Blade of Abaddon"};
+    String[] reciperesults = {"Sameal's Dagger", "Blade of Odysseus", "Blade of Abaddon", "Mid-Tier Crafting Materials", "Adrammelech"};
     //System.out.println("Titanium Sword + High Tier Materials (x2) + Angelic Essence = Blade of Odysseus");
     //System.out.println("Titanium Sword + High Tier Materials (x2) + Demonic Essence = Blade of Abaddon");
     int[][] questIndex = new int[30][2];
