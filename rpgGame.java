@@ -272,13 +272,25 @@ public class rpgGame {
                         }
                     }
                     System.out.println("Your inventory: \n"); int b=0;
+                    int c=-1; for (int i=0;i<30;i++) {
+                        if (inventory[i]>0) {
+                            c=i;
+                        }
+                    }
                     for (int i=0;i<30;i++) {
                         if (inventory[i] > 0) {
-                            System.out.print(itemIndex[i]+" ");
+                            System.out.print(itemIndex[i]+"");
                             if (inventory[i] > 1) {
-                                System.out.print("(x"+inventory[i]+") ");
+                                System.out.print(" (x"+inventory[i]+")");
                             }
                             b++;
+                            if (b%3==0) {
+                                System.out.println();
+                            } else {
+                                if (c!=i) {
+                                    System.out.print(", ");
+                                }
+                            }
                         }
                     }
                     if (b>0) {
@@ -380,6 +392,9 @@ public class rpgGame {
                                                 i=3;
                                             }
                                         }
+                                    }
+                                    if (plusIndex != -1) {
+                                        firstString = firstString.substring(plusIndex+2);
                                     }
                                 }
                                 if (bla==bla2) {
